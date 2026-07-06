@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!-- saved from url=(0112)file:///C:/Users/user/OneDrive/%E3%83%87%E3%82%B9%E3%82%AF%E3%83%88%E3%83%83%E3%83%97/margherita-game/index.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マルゲリータたちのおやつ大作戦！</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#dff6ff;
+    text-align:center;
+    font-family:"Yu Gothic",sans-serif;
+}
+
+h1{
+    color:#0066cc;
+}
+
+#info{
+    font-size:24px;
+    margin:20px;
+}
+
+#startBtn{
+    font-size:24px;
+    padding:10px 30px;
+    background:orange;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+#field{
+    width:900px;
+    height:500px;
+    margin:auto;
+    background:linear-gradient(#bde9ff,#e9fbff);
+    border:4px solid #333;
+    border-radius:20px;
+    position:relative;
+    overflow:hidden;
+}
+
+.dog{
+    width:90px;
+    position:absolute;
+    cursor:pointer;
+}
+
+#treat{
+    position:absolute;
+    font-size:45px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🐶 マルゲリータたちのおやつ大作戦！ 🦴</h1>
+
+<div id="info">
+⭐ スコア：
+<span id="score">0</span>
+
+&nbsp;&nbsp;
+
+⏰ 残り：
+<span id="time">30</span>秒
+</div>
+
+<button id="startBtn">ゲームスタート！</button>
+
+<div id="field">
+
+<img id="dog1" class="dog" src="./マルゲリータたちのおやつ大作戦！_files/margherita.jpg" style="left: 16.1873px; top: 194.575px;">
+<img id="dog2" class="dog" src="./マルゲリータたちのおやつ大作戦！_files/konbu.jpg" style="left: 504.462px; top: 360.784px;">
+<img id="dog3" class="dog" src="./マルゲリータたちのおやつ大作戦！_files/okayu.jpg" style="left: 235.75px; top: 318.124px;">
+
+<div id="treat" style="left: 380.198px; top: 129.034px;">🦴</div>
+
+&lt;<script>
+let score = 0;
+let time = 30;
+let playing = false;
+let timer;
+let moveTimer;
+
+const field = document.getElementById("field");
+const dogs = [
+  document.getElementById("dog1"),
+  document.getElementById("dog2"),
+  document.getElementById("dog3")
+];
+const treat = document.getElementById("treat");
+const scoreText = document.getElementById("score");
+const timeText = document.getElementById("time");
+const startBtn = document.getElementById("startBtn");
+
+function randomMove(item){
+  const maxX = field.clientWidth - 100;
+  const maxY = field.clientHeight - 100;
+  item.style.left = Math.random() * maxX + "px";
+  item.style.top = Math.random() * maxY + "px";
+}
+
+function moveAll(){
+  dogs.forEach(dog => randomMove(dog));
+  randomMove(treat);
+}
+
+dogs.forEach(dog => {
+  dog.onclick = function(){
+    if(!playing) return;
+    score += 10;
+    scoreText.textContent = score;
+    randomMove(dog);
+  };
+});
+
+treat.onclick = function(){
+  if(!playing) return;
+  score += 30;
+  scoreText.textContent = score;
+  randomMove(treat);
+};
+
+startBtn.onclick = function(){
+  score = 0;
+  time = 30;
+  playing = true;
+
+  scoreText.textContent = score;
+  timeText.textContent = time;
+
+  moveAll();
+
+  clearInterval(timer);
+  clearInterval(moveTimer);
+
+  timer = setInterval(function(){
+    time--;
+    timeText.textContent = time;
+
+    if(time <= 0){
+      playing = false;
+      clearInterval(timer);
+      clearInterval(moveTimer);
+      alert("終了！スコアは " + score + " 点です！");
+    }
+  }, 1000);
+
+  moveTimer = setInterval(moveAll, 1000);
+};
+
+moveAll();
+</script>
+
+
+/div&gt;
+</div></body></html>
