@@ -3,162 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>マルゲリータたちのおやつ大作戦！</title>
-
+<title>青彩堂｜住宅設備工事</title>
 <style>
-
-body{
-    margin:0;
-    background:#dff6ff;
-    text-align:center;
-    font-family:"Yu Gothic",sans-serif;
-}
-
-h1{
-    color:#0066cc;
-}
-
-#info{
-    font-size:24px;
-    margin:20px;
-}
-
-#startBtn{
-    font-size:24px;
-    padding:10px 30px;
-    background:orange;
-    color:white;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-}
-
-#field{
-    width:900px;
-    height:500px;
-    margin:auto;
-    background:linear-gradient(#bde9ff,#e9fbff);
-    border:4px solid #333;
-    border-radius:20px;
-    position:relative;
-    overflow:hidden;
-}
-
-.dog{
-    width:90px;
-    position:absolute;
-    cursor:pointer;
-}
-
-#treat{
-    position:absolute;
-    font-size:45px;
-}
-
+body{margin:0;font-family:"Yu Gothic",sans-serif;background:#f7fbff;color:#222;text-align:center}
+header{background:#0066cc;color:white;padding:35px 15px}
+h1{font-size:36px;margin:0}
+section{padding:25px 15px}
+.card{background:white;margin:15px auto;padding:20px;border-radius:14px;max-width:760px;box-shadow:0 3px 10px #ddd}
+.btn{display:inline-block;background:#ff8a00;color:white;padding:14px 24px;border-radius:10px;text-decoration:none;font-weight:bold;margin:8px}
+.line{background:#06c755}
+.game{background:#ff9800}
+footer{background:#004c99;color:white;padding:18px;margin-top:25px}
 </style>
-
 </head>
-
 <body>
 
-<h1>🐶 マルゲリータたちのおやつ大作戦！ 🦴</h1>
+<header>
+  <h1>青彩堂</h1>
+  <p>給湯器・ビルトインコンロ・レンジフード・水栓・食洗機交換</p>
+</header>
 
-<div id="info">
-⭐ スコア：
-<span id="score">0</span>
+<section class="card">
+  <h2>住宅設備工事なら青彩堂へ</h2>
+  <p>埼玉県加須市を中心に、住宅設備の交換・取付工事を承ります。</p>
+</section>
 
-&nbsp;&nbsp;
+<section class="card">
+  <h2>対応工事</h2>
+  <p>給湯器交換</p>
+  <p>ビルトインコンロ交換</p>
+  <p>レンジフード交換</p>
+  <p>水栓交換</p>
+  <p>ビルトイン食洗機交換</p>
+</section>
 
-⏰ 残り：
-<span id="time">30</span>秒
-</div>
+<section class="card">
+  <h2>お問い合わせ</h2>
+  <p>電話：090-3356-7827</p>
+  <p>メール：konbu19700308@gmail.com</p>
+  <p>LINE ID：seisaido0510</p>
+  <a class="btn line" href="https://line.me/ti/p/~seisaido0510">LINEで相談</a>
+</section>
 
-<button id="startBtn">ゲームスタート！</button>
+<section class="card">
+  <h2>青彩堂ゲーム</h2>
+  <p>マルゲリータたちのおやつ大作戦！</p>
+  <a class="btn game" href="gama/index.html">ゲームで遊ぶ</a>
+</section>
 
-<div id="field">
-
-<img id="dog1" class="dog" src="assets/margherita.jpg">
-<img id="dog2" class="dog" src="assets/konbu.jpg">
-<img id="dog3" class="dog" src="assets/okayu.jpg">
-
-<div id="treat">🦴</div>
-
-<<script>
-let score = 0;
-let time = 30;
-let playing = false;
-let timer;
-let moveTimer;
-
-const field = document.getElementById("field");
-const dogs = [
-  document.getElementById("dog1"),
-  document.getElementById("dog2"),
-  document.getElementById("dog3")
-];
-const treat = document.getElementById("treat");
-const scoreText = document.getElementById("score");
-const timeText = document.getElementById("time");
-const startBtn = document.getElementById("startBtn");
-
-function randomMove(item){
-  const maxX = field.clientWidth - 100;
-  const maxY = field.clientHeight - 100;
-  item.style.left = Math.random() * maxX + "px";
-  item.style.top = Math.random() * maxY + "px";
-}
-
-function moveAll(){
-  dogs.forEach(dog => randomMove(dog));
-  randomMove(treat);
-}
-
-dogs.forEach(dog => {
-  dog.onclick = function(){
-    if(!playing) return;
-    score += 10;
-    scoreText.textContent = score;
-    randomMove(dog);
-  };
-});
-
-treat.onclick = function(){
-  if(!playing) return;
-  score += 30;
-  scoreText.textContent = score;
-  randomMove(treat);
-};
-
-startBtn.onclick = function(){
-  score = 0;
-  time = 30;
-  playing = true;
-
-  scoreText.textContent = score;
-  timeText.textContent = time;
-
-  moveAll();
-
-  clearInterval(timer);
-  clearInterval(moveTimer);
-
-  timer = setInterval(function(){
-    time--;
-    timeText.textContent = time;
-
-    if(time <= 0){
-      playing = false;
-      clearInterval(timer);
-      clearInterval(moveTimer);
-      alert("終了！スコアは " + score + " 点です！");
-    }
-  }, 1000);
-
-  moveTimer = setInterval(moveAll, 1000);
-};
-
-moveAll();
-</script>
-
-</body>
-</html>/div>
+<footer>
+  <p>© 青彩堂</p>
+</footer>
