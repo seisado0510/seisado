@@ -258,6 +258,8 @@ requestAnimationFrame(gameLoop);
 
 function startGame(){
 score=0;
+level = 1;
+levelMessage = "";
 time=30;
 frame=0;
 lastSecond=0;
