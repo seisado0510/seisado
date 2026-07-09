@@ -157,6 +157,7 @@ const dy=(dog.y+45+dog.jump)-(snack.y-15);
 
 if(Math.abs(dx)<48&&Math.abs(dy)<58){
 score += snack.item.point;
+pointText.textContent = score;
 if(score >= 20 && level === 1){
     level = 2;
     levelMessage = "LEVEL 2!";
@@ -177,7 +178,6 @@ if(score >= 100 && level === 3){
     dogs.forEach(d => d.speed = 6);
     setTimeout(()=>{ levelMessage = ""; },1500);
 }
-pointText.textContent=score;
 addEffect(snack.x+15,snack.y-30);
 dog.jump=-24;
 playWan();
