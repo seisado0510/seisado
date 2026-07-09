@@ -105,28 +105,25 @@ snack.item=snacks[Math.floor(Math.random()*snacks.length)];
 }
 
 function addEffect(x,y){
-for(let i=0;i<12;i++){
-effects.push({x:x,y:y,dx:(Math.random()-.5)*6,dy:(Math.random()-.5)*6,life:25});
+    effects.push({
+        x: x,
+        y: y,
+        dx: 0,
+        dy: -1.5,
+        life: 35,
+        text: "+1"
+    });
 }
-}
-
 function drawEffects(){
     effects.forEach(e=>{
-        // キラキラ
-        ctx.fillStyle="gold";
-        ctx.beginPath();
-        ctx.arc(e.x,e.y,4,0,Math.PI*2);
-        ctx.fill();
+        ctx.fillStyle = "yellow";
+        ctx.font = "bold 34px sans-serif";
+        ctx.fillText(e.text, e.x, e.y);
 
-        // +1
-        ctx.fillStyle="yellow";
-        ctx.font="bold 22px sans-serif";
-        ctx.fillText("+1",e.x-8,e.y-15);
-
-        e.x+=e.dx;
-        e.y+=e.dy;
+        e.x += e.dx;
+        e.y += e.dy;
         e.life--;
     });
 
-    effects=effects.filter(e=>e.life>0);
+    effects = effects.filter(e => e.life > 0);
 }
