@@ -70,8 +70,18 @@ function drawDog(dog){
   ctx.fillText(dog.name,dog.x+8,dog.y+110+bounce);
 }
 function drawStartText(){
-    drawBackground();
-    dogs.forEach(drawDog);
+   drawBackground();
+
+dogs[0].x = 180;
+dogs[0].y = 260;
+
+dogs[1].x = 340;
+dogs[1].y = 260;
+
+dogs[2].x = 500;
+dogs[2].y = 260;
+
+dogs.forEach(drawDog); 
 
     ctx.fillStyle="rgba(0,0,0,0.35)";
     ctx.fillRect(0,0,800,500);
