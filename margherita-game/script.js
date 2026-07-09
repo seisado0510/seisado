@@ -19,8 +19,14 @@ dogs[0].img.src="assets/margherita.png";
 dogs[1].img.src="assets/konbu.png";
 dogs[2].img.src="assets/okayu.png";
 
-const snacks=["🦴","🍖","🧀","🍪","🌭"];
-let snack={x:650,y:240,item:"🦴"};
+const snacks=[
+  {icon:"🦴", point:1},
+  {icon:"🍪", point:2},
+  {icon:"🧀", point:3},
+  {icon:"🌭", point:5},
+  {icon:"🍖", point:10}
+];
+let snack={x:650,y:240,item:snacks[0]};
 
 function playWan(){
 try{
@@ -106,7 +112,11 @@ ctx.lineWidth=4;
 ctx.stroke();
 
 ctx.font="32px serif";
-ctx.fillText(snack.item,snack.x+7,snack.y-4);
+ctx.fillText(snack.item.icon,snack.x+7,snack.y-4);
+
+ctx.fillStyle="#073b2a";
+ctx.font="bold 14px sans-serif";
+ctx.fillText(snack.item.point+"点",snack.x+6,snack.y+20);
 }
 
 function resetSnack(){
@@ -141,7 +151,7 @@ const dx=(dog.x+45)-(snack.x+15);
 const dy=(dog.y+45+dog.jump)-(snack.y-15);
 
 if(Math.abs(dx)<48&&Math.abs(dy)<58){
-score++;
+score += snack.item.point;
 pointText.textContent=score;
 addEffect(snack.x+15,snack.y-30);
 dog.jump=-24;
