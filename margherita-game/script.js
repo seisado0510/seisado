@@ -6,20 +6,20 @@ const startButton=document.getElementById("startButton");
 
 let score=0,time=30,gameRunning=false,frame=0,lastSecond=0;
 let bestScore=localStorage.getItem("bestScore")||0;
-let clouds=[{x:80,y:70},{x:420,y:95},{x:650,y:55}];
 let effects=[];
+let clouds=[{x:80,y:70},{x:420,y:95},{x:650,y:55}];
 
 const dogs=[
-{name:"マルゲリータ",img:new Image(),x:80,y:300,baseY:300,speed:3.2,jump:0},
-{name:"こんぶ",img:new Image(),x:-150,y:205,baseY:205,speed:2.7,jump:0},
-{name:"おかゆ",img:new Image(),x:-300,y:110,baseY:110,speed:3.0,jump:0}
+{name:"マルゲリータ",img:new Image(),x:80,y:300,speed:3.2,jump:0},
+{name:"こんぶ",img:new Image(),x:-150,y:205,speed:2.7,jump:0},
+{name:"おかゆ",img:new Image(),x:-300,y:110,speed:3.0,jump:0}
 ];
 
 dogs[0].img.src="assets/margherita.png";
 dogs[1].img.src="assets/konbu.png";
 dogs[2].img.src="assets/okayu.png";
 
-const snacks=["🦴","🍖","🍪","🌭"];
+const snacks=["🦴","🍖","🧀","🍪","🌭"];
 let snack={x:650,y:240,item:"🦴"};
 
 function playWan(){
@@ -40,7 +40,8 @@ ctx.fillStyle="#bdefff";
 ctx.fillRect(0,0,800,500);
 
 clouds.forEach(c=>{
-c.x+=0.25;if(c.x>860)c.x=-120;
+c.x+=0.25;
+if(c.x>860)c.x=-120;
 ctx.fillStyle="rgba(255,255,255,.8)";
 ctx.beginPath();
 ctx.arc(c.x,c.y,25,0,Math.PI*2);
@@ -56,10 +57,13 @@ ctx.fill();
 
 ctx.fillStyle="#7bd66f";
 ctx.fillRect(0,378,800,122);
-ctx.fillStyle="#4aaa45";
-for(let i=0;i<800;i+=40){ctx.fillRect(i,365,22,22);}
 
-ctx.fillStyle="#ffffff";
+ctx.fillStyle="#4aaa45";
+for(let i=0;i<800;i+=40){
+ctx.fillRect(i,365,22,22);
+}
+
+ctx.fillStyle="#fff";
 ctx.font="bold 28px sans-serif";
 ctx.fillText("青彩堂ドッグラン",280,58);
 
@@ -70,17 +74,22 @@ ctx.fillText("最高スコア："+bestScore,20,35);
 
 function drawDog(dog){
 const bounce=Math.sin(frame*.18)*8+dog.jump;
+
 ctx.save();
 ctx.beginPath();
 ctx.arc(dog.x+45,dog.y+45+bounce,45,0,Math.PI*2);
 ctx.clip();
-if(dog.img.complete){ctx.drawImage(dog.img,dog.x,dog.y+bounce,90,90);}
+if(dog.img.complete){
+ctx.drawImage(dog.img,dog.x,dog.y+bounce,90,90);
+}
 ctx.restore();
+
 ctx.strokeStyle="#fff";
 ctx.lineWidth=4;
 ctx.beginPath();
 ctx.arc(dog.x+45,dog.y+45+bounce,45,0,Math.PI*2);
 ctx.stroke();
+
 ctx.fillStyle="#073b2a";
 ctx.font="bold 16px sans-serif";
 ctx.fillText(dog.name,dog.x+8,dog.y+110+bounce);
@@ -91,9 +100,11 @@ ctx.fillStyle="#fff";
 ctx.beginPath();
 ctx.arc(snack.x+25,snack.y-15,38,0,Math.PI*2);
 ctx.fill();
+
 ctx.strokeStyle="#c99a2e";
 ctx.lineWidth=4;
 ctx.stroke();
+
 ctx.font="32px serif";
 ctx.fillText(snack.item,snack.x+7,snack.y-4);
 }
@@ -105,28 +116,21 @@ snack.item=snacks[Math.floor(Math.random()*snacks.length)];
 }
 
 function addEffect(x,y){
-    effects.push({
-        x: x,
-        y: y,
-        dx: 0,
-        dy: -1.5,
-        life: 35,
-        text: "+1"
-    });
+effects.push({x:x,y:y,dx:0,dy:-1.5,life:35,text:"+1"});
 }
+
 function drawEffects(){
-    effects.forEach(e=>{
-        ctx.fillStyle = "yellow";
-        ctx.font = "bold 34px sans-serif";
-        ctx.fillText(e.text, e.x, e.y);
-
-        e.x += e.dx;
-        e.y += e.dy;
-        e.life--;
-    });
-
-    effects = effects.filter(e => e.life > 0);
+effects.forEach(e=>{
+ctx.fillStyle="yellow";
+ctx.font="bold 34px sans-serif";
+ctx.fillText(e.text,e.x,e.y);
+e.x+=e.dx;
+e.y+=e.dy;
+e.life--;
+});
+effects=effects.filter(e=>e.life>0);
 }
+
 function moveDogs(){
 dogs.forEach(dog=>{
 dog.x+=dog.speed;
@@ -139,7 +143,7 @@ const dy=(dog.y+45+dog.jump)-(snack.y-15);
 if(Math.abs(dx)<48&&Math.abs(dy)<58){
 score++;
 pointText.textContent=score;
-addEffect(snack.x+25,snack.y-15);
+addEffect(snack.x+15,snack.y-30);
 dog.jump=-24;
 playWan();
 resetSnack();
@@ -149,12 +153,16 @@ resetSnack();
 
 function drawStartText(){
 drawBackground();
+
 dogs[0].x=180;dogs[0].y=260;
 dogs[1].x=340;dogs[1].y=260;
 dogs[2].x=500;dogs[2].y=260;
+
 dogs.forEach(drawDog);
+
 ctx.fillStyle="rgba(0,0,0,.35)";
 ctx.fillRect(0,0,800,500);
+
 ctx.fillStyle="#fff";
 ctx.font="bold 34px sans-serif";
 ctx.fillText("ゲームスタートを押してね！",210,245);
@@ -165,11 +173,14 @@ if(score>bestScore){
 bestScore=score;
 localStorage.setItem("bestScore",bestScore);
 }
+
 ctx.fillStyle="rgba(0,0,0,.6)";
 ctx.fillRect(0,0,800,500);
+
 ctx.fillStyle="#fff";
 ctx.font="bold 38px sans-serif";
 ctx.fillText("ゲーム終了！",290,200);
+
 ctx.font="bold 30px sans-serif";
 ctx.fillText("スコア："+score,335,260);
 ctx.fillText("最高："+bestScore,335,310);
@@ -177,43 +188,62 @@ ctx.fillText("最高："+bestScore,335,310);
 
 function gameLoop(ts){
 if(!gameRunning)return;
+
 frame++;
+
 if(!lastSecond)lastSecond=ts;
+
 if(ts-lastSecond>=1000){
 time--;
 timeText.textContent=time;
 lastSecond=ts;
+
 if(time<=0){
 gameRunning=false;
 drawGameOver();
 return;
 }
 }
+
 drawBackground();
 drawSnack();
 dogs.forEach(drawDog);
 moveDogs();
 drawEffects();
+
 requestAnimationFrame(gameLoop);
 }
 
 function startGame(){
-score=0;time=30;frame=0;lastSecond=0;
+score=0;
+time=30;
+frame=0;
+lastSecond=0;
+
 pointText.textContent=0;
 timeText.textContent=30;
+
 dogs[0].x=80;dogs[0].y=300;
 dogs[1].x=-150;dogs[1].y=205;
 dogs[2].x=-300;dogs[2].y=110;
+
 dogs.forEach(d=>d.jump=0);
 resetSnack();
+
 gameRunning=true;
 requestAnimationFrame(gameLoop);
 }
 
 startButton.addEventListener("click",startGame);
+
 document.addEventListener("keydown",e=>{
-if(e.code==="Space")dogs.forEach(d=>d.jump=-28);
+if(e.code==="Space"){
+dogs.forEach(d=>d.jump=-28);
+}
 });
-canvas.addEventListener("click",()=>dogs.forEach(d=>d.jump=-28));
+
+canvas.addEventListener("click",()=>{
+dogs.forEach(d=>d.jump=-28);
+});
 
 drawStartText();
