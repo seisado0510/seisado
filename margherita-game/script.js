@@ -146,11 +146,12 @@ e.y+=e.dy;
 e.life--;
 });
 effects=effects.filter(e=>e.life>0);
-}
+
 if(levelMessage){
 ctx.fillStyle="orange";
 ctx.font="bold 46px sans-serif";
-ctx.fillText(levelMessage,285,250);
+ctx.textAlign = "center";
+ctx.fillText(levelMessage, canvas.width / 2, 100);
 }
 
 function moveDogs(){
