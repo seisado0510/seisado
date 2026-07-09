@@ -92,11 +92,11 @@ dogs.forEach(drawDog);
 }
 function drawSnack(){
   const mark = {
-    bone: "🦴",
-    meat: "🍖",
-    oimo: "🍠",
-    cheese: "🧀"
-  };
+  bone: "🦴",
+  meat: "🍖",
+  cheese: "🧀",
+  cookie: "🍪"
+};
 
   ctx.fillStyle = "#ffffff";
   ctx.beginPath();
