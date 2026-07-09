@@ -186,8 +186,8 @@ function startGame(){
   timeText.textContent = 30;
 
   dogs[0].x = 80;
-  dogs[1].x = 30;
-  dogs[2].x = 10;
+  dogs[1].x = 150;
+  dogs[2].x = 300;
 
   dogs.forEach(d=>d.jump=0);
 
