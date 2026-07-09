@@ -111,102 +111,22 @@ effects.push({x:x,y:y,dx:(Math.random()-.5)*6,dy:(Math.random()-.5)*6,life:25});
 }
 
 function drawEffects(){
-effects.forEach(e=>{
-ctx.fillStyle="gold";
-ctx.beginPath();
-ctx.arc(e.x,e.y,4,0,Math.PI*2);
-ctx.fill();
-e.x+=e.dx;e.y+=e.dy;e.life--;
-});
-effects=effects.filter(e=>e.life>0);
+    effects.forEach(e=>{
+        // キラキラ
+        ctx.fillStyle="gold";
+        ctx.beginPath();
+        ctx.arc(e.x,e.y,4,0,Math.PI*2);
+        ctx.fill();
+
+        // +1
+        ctx.fillStyle="yellow";
+        ctx.font="bold 22px sans-serif";
+        ctx.fillText("+1",e.x-8,e.y-15);
+
+        e.x+=e.dx;
+        e.y+=e.dy;
+        e.life--;
+    });
+
+    effects=effects.filter(e=>e.life>0);
 }
-
-function moveDogs(){
-dogs.forEach(dog=>{
-dog.x+=dog.speed;
-if(dog.x>840)dog.x=-110;
-if(dog.jump<0)dog.jump+=1;
-const dx=(dog.x+45)-(snack.x+15);
-const dy=(dog.y+45+dog.jump)-(snack.y-15);
-if(Math.abs(dx)<48&&Math.abs(dy)<58){
-score++;
-pointText.textContent = score;
-
-addEffect(snack.x + 25, snack.y - 15);
-
-ctx.fillStyle = "yellow";
-ctx.font = "bold 24px sans-serif";
-ctx.fillText("+1", snack.x + 15, snack.y - 30);
-
-dog.jump=-24;
-
-playWan();
-resetSnack();
-}
-});
-}
-
-function drawStartText(){
-drawBackground();
-dogs[0].x=180;dogs[0].y=260;
-dogs[1].x=340;dogs[1].y=260;
-dogs[2].x=500;dogs[2].y=260;
-dogs.forEach(drawDog);
-ctx.fillStyle="rgba(0,0,0,.35)";
-ctx.fillRect(0,0,800,500);
-ctx.fillStyle="#fff";
-ctx.font="bold 34px sans-serif";
-ctx.fillText("ゲームスタートを押してね！",210,245);
-}
-
-function drawGameOver(){
-if(score>bestScore){
-bestScore=score;
-localStorage.setItem("bestScore",bestScore);
-}
-ctx.fillStyle="rgba(0,0,0,.6)";
-ctx.fillRect(0,0,800,500);
-ctx.fillStyle="#fff";
-ctx.font="bold 38px sans-serif";
-ctx.fillText("ゲーム終了！",290,200);
-ctx.font="bold 30px sans-serif";
-ctx.fillText("スコア："+score,335,260);
-ctx.fillText("最高："+bestScore,335,310);
-}
-
-function gameLoop(ts){
-if(!gameRunning)return;
-frame++;
-if(!lastSecond)lastSecond=ts;
-if(ts-lastSecond>=1000){
-time--;timeText.textContent=time;lastSecond=ts;
-if(time<=0){gameRunning=false;drawGameOver();return;}
-}
-drawBackground();
-drawSnack();
-dogs.forEach(drawDog);
-moveDogs();
-drawEffects();
-requestAnimationFrame(gameLoop);
-}
-
-function startGame(){
-score=0;time=30;frame=0;lastSecond=0;
-pointText.textContent=0;timeText.textContent=30;
-dogs[0].x=80;dogs[0].y=300;
-dogs[1].x=-150;dogs[1].y=205;
-dogs[2].x=-300;dogs[2].y=110;
-dogs.forEach(d=>d.jump=0);
-resetSnack();
-gameRunning=true;
-requestAnimationFrame(gameLoop);
-}
-
-startButton.addEventListener("click",startGame);
-document.addEventListener("keydown",e=>{if(e.code==="Space")dogs.forEach(d=>d.jump=-28);});
-canvas.addEventListener("click",()=>dogs.forEach(d=>d.jump=-28));
-
-function drawEffects(){
-    // 今後エフェクトを追加する場所
-}
-drawStartText();
