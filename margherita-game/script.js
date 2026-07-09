@@ -220,9 +220,9 @@ ctx.fillText("ゲーム終了！",290,200);
 ctx.font="bold 30px sans-serif";
 ctx.fillText("スコア："+score,335,260);
 ctx.fillText("最高："+bestScore,335,310);
-ctx.fillText("🥇 1位 : " + bestScore, 300, 360);
-ctx.fillText("🥈 2位 : ---", 300, 400);
-ctx.fillText("🥉 3位 : ---", 300, 440);
+ctx.fillText("1位 : " + bestScore, 300, 360);
+ctx.fillText(" 2位 : ---", 300, 400);
+ctx.fillText("3位 : ---", 300, 440);
 }
 
 function gameLoop(ts){
