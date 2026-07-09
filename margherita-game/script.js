@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 const pointText = document.getElementById("point");
 const timeText = document.getElementById("time");
 const startButton = document.getElementById("startButton");
-
+let bestScore = localStorage.getItem("bestScore") || 0;
 let score = 0;
 let time = 30;
 let gameRunning = false;
@@ -162,9 +162,14 @@ function drawGameOver(){
   ctx.fillStyle = "#ffffff";
   ctx.font = "bold 38px sans-serif";
   ctx.fillText("ゲーム終了！",290,215);
+  if(score > bestScore){
+    bestScore = score;
+    localStorage.setItem("bestScore", bestScore);
+}
 
   ctx.font = "bold 30px sans-serif";
   ctx.fillText("スコア：" + score,335,270);
+  ctx.fillText("最高：" + bestScore,335,310);
 }
 
 function gameLoop(ts){
