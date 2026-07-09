@@ -16,7 +16,7 @@ dogs[0].img.src="assets/margherita.png";
 dogs[1].img.src="assets/konbu.png";
 dogs[2].img.src="assets/okayu.png";
 
-const snacks=["🦴","🍖","🧀","🍪"];
+const snacks=["bone","meat","cheese","cookie"];
 let snack={x:650,y:240,item:"🦴"};
 
 function drawBackground(){
@@ -54,9 +54,15 @@ ctx.fillText(dog.name,dog.x+8,dog.y+110+bounce);
 }
 
 function drawSnack(){
+const mark={
+  bone:"🦴",
+  meat:"🍖",
+  cheese:"🧀",
+  cookie:"🍪"
+};
+
 ctx.font="42px serif";
-ctx.fillText(snack.item,snack.x,snack.y);
-}
+ctx.fillText(mark[snack.item] || "🦴", snack.x, snack.y);
 
 function resetSnack(){
 snack.x=Math.random()*630+80;
