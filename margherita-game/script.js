@@ -63,7 +63,7 @@ const mark={
 
 ctx.font="42px serif";
 ctx.fillText(mark[snack.item] || "🦴", snack.x, snack.y);
-
+}
 function resetSnack(){
 snack.x=Math.random()*630+80;
 snack.y=Math.random()*245+105;
