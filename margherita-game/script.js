@@ -69,7 +69,17 @@ function drawDog(dog){
   ctx.font = "bold 16px sans-serif";
   ctx.fillText(dog.name,dog.x+8,dog.y+110+bounce);
 }
+function drawStartText(){
+    drawBackground();
+    dogs.forEach(drawDog);
 
+    ctx.fillStyle="rgba(0,0,0,0.35)";
+    ctx.fillRect(0,0,800,500);
+
+    ctx.fillStyle="#fff";
+    ctx.font="bold 34px Yu Gothic";
+    ctx.fillText("ゲームスタートを押してね！",210,245);
+}
 function drawSnack(){
   const mark = {
     bone: "BONE",
