@@ -10,11 +10,16 @@ const dogs=[
 {name:"おかゆ",img:new Image(),x:10,y:110,baseY:110,speed:3.0,jump:0}
 ];
 dogs[0].img.src="assets/margherita.png";dogs[1].img.src="assets/konbu.png";dogs[2].img.src="assets/okayu.png";
-let snack={x:650,y:240,size:42};
+const snackList=["🦴","🍖","🧀","🍪"];
+let snack={x:650,y:240,size:42,item:"🦴"};
 function drawBackground(){ctx.fillStyle="#bdefff";ctx.fillRect(0,0,800,500);ctx.fillStyle="#fff7b3";ctx.beginPath();ctx.arc(690,80,45,0,Math.PI*2);ctx.fill();ctx.fillStyle="#7bd66f";ctx.fillRect(0,378,800,122);ctx.fillStyle="#4aaa45";for(let i=0;i<800;i+=40){ctx.fillRect(i,365,22,22)}ctx.fillStyle="#fff";ctx.font="bold 28px Yu Gothic";ctx.fillText("青彩堂ドッグラン",280,58)}
 function drawDog(dog){const bounce=Math.sin(frame*.18)*8+dog.jump;ctx.save();ctx.beginPath();ctx.arc(dog.x+45,dog.y+45+bounce,45,0,Math.PI*2);ctx.clip();ctx.drawImage(dog.img,dog.x,dog.y+bounce,90,90);ctx.restore();ctx.strokeStyle="#fff";ctx.lineWidth=4;ctx.beginPath();ctx.arc(dog.x+45,dog.y+45+bounce,45,0,Math.PI*2);ctx.stroke();ctx.fillStyle="#073b2a";ctx.font="bold 16px Yu Gothic";ctx.fillText(dog.name,dog.x+8,dog.y+110+bounce)}
-function drawSnack(){ctx.font="42px serif";ctx.fillText("🦴",snack.x,snack.y)}
-function resetSnack(){snack.x=Math.random()*630+80;snack.y=Math.random()*245+105}
+function drawSnack(){ctx.font="42px serif";ctx.fillText(snack.item,snack.x,snack.y)}
+function function resetSnack(){
+snack.x=Math.random()*630+80;
+snack.y=Math.random()*245+105;
+snack.item=snackList[Math.floor(Math.random()*snackList.length)];
+}
 function moveDogs(){dogs.forEach(dog=>{dog.x+=dog.speed;if(dog.x>840)dog.x=-110;if(dog.jump<0)dog.jump+=1;const dx=(dog.x+45)-(snack.x+15);const dy=(dog.y+45+dog.jump)-(snack.y-15);if(Math.abs(dx)<48&&Math.abs(dy)<58){score++;pointText.textContent=score;dog.jump=-24;resetSnack()}})}
 function drawStartText(){ctx.fillStyle="rgba(0,0,0,.55)";ctx.fillRect(0,0,800,500);ctx.fillStyle="#fff";ctx.font="bold 34px Yu Gothic";ctx.fillText("ゲームスタートを押してね！",210,245)}
 function drawGameOver(){ctx.fillStyle="rgba(0,0,0,.6)";ctx.fillRect(0,0,800,500);ctx.fillStyle="#fff";ctx.font="bold 38px Yu Gothic";ctx.fillText("ゲーム終了！",290,215);ctx.font="bold 30px Yu Gothic";ctx.fillText(`スコア：${score}`,335,270)}
