@@ -4,14 +4,7 @@ const pointText=document.getElementById("point");
 const timeText=document.getElementById("time");
 const startButton=document.getElementById("startButton");
 
-let score = 0,
-    time = 30,
-    gameRunning = false,
-    frame = 0,
-    lastSecond = 0;
-
-let level = 1;
-let levelMessage = "";
+let score=0,time=30,gameRunning=false,frame=0,lastSecond=0,level=1;
 let bestScore=localStorage.getItem("bestScore")||0;
 let effects=[];
 let clouds=[{x:80,y:70},{x:420,y:95},{x:650,y:55}];
@@ -27,12 +20,13 @@ dogs[1].img.src="assets/konbu.png";
 dogs[2].img.src="assets/okayu.png";
 
 const snacks=[
-  {icon:"🦴", point:1},
-  {icon:"🍪", point:2},
-  {icon:"🧀", point:3},
-  {icon:"🌭", point:5},
-  {icon:"🍖", point:10}
+{icon:"🦴",point:1},
+{icon:"🍪",point:2},
+{icon:"🧀",point:3},
+{icon:"🌭",point:5},
+{icon:"🍖",point:10}
 ];
+
 let snack={x:650,y:240,item:snacks[0]};
 
 function playWan(){
@@ -78,6 +72,7 @@ ctx.fillRect(i,365,22,22);
 
 ctx.fillStyle="#fff";
 ctx.font="bold 28px sans-serif";
+ctx.textAlign="left";
 ctx.fillText("青彩堂ドッグラン",280,58);
 
 ctx.fillStyle="#073b2a";
@@ -105,6 +100,7 @@ ctx.stroke();
 
 ctx.fillStyle="#073b2a";
 ctx.font="bold 16px sans-serif";
+ctx.textAlign="left";
 ctx.fillText(dog.name,dog.x+8,dog.y+110+bounce);
 }
 
@@ -132,28 +128,24 @@ snack.y=Math.random()*245+105;
 snack.item=snacks[Math.floor(Math.random()*snacks.length)];
 }
 
-function addEffect(x,y){
-effects.push({x:x,y:y,dx:0,dy:-1.5,life:35,text:"+1"});
+function addEffect(x,y,text="+1"){
+effects.push({x:x,y:y,dx:0,dy:-1.5,life:35,text:text});
 }
 
 function drawEffects(){
 effects.forEach(e=>{
-ctx.fillStyle="yellow";
-ctx.font="bold 34px sans-serif";
+ctx.fillStyle=e.text.includes("LEVEL")?"orange":"yellow";
+ctx.font=e.text.includes("LEVEL")?"bold 46px sans-serif":"bold 34px sans-serif";
+ctx.textAlign="center";
 ctx.fillText(e.text,e.x,e.y);
 e.x+=e.dx;
 e.y+=e.dy;
 e.life--;
 });
 effects=effects.filter(e=>e.life>0);
+ctx.textAlign="left";
+}
 
-if(levelMessage){
-ctx.fillStyle="orange";
-ctx.font="bold 46px sans-serif";
-ctx.textAlign = "center";
-ctx.fillText(levelMessage, canvas.width / 2, 100);
-}
-}
 function moveDogs(){
 dogs.forEach(dog=>{
 dog.x+=dog.speed;
@@ -164,28 +156,28 @@ const dx=(dog.x+45)-(snack.x+15);
 const dy=(dog.y+45+dog.jump)-(snack.y-15);
 
 if(Math.abs(dx)<48&&Math.abs(dy)<58){
-score += snack.item.point;
-pointText.textContent = score;
+score+=snack.item.point;
+pointText.textContent=score;
 
-if(score >= 20 && level === 1){
-level = 2;
-effects.push({x:260,y:120,dx:0,dy:-0.5,life:60,text:"LEVEL 2!"});
+if(score>=20&&level===1){
+level=2;
+addEffect(400,120,"LEVEL 2!");
 dogs.forEach(d=>d.speed=4);
 }
 
-if(score >= 50 && level === 2){
-level = 3;
-effects.push({x:260,y:120,dx:0,dy:-0.5,life:60,text:"LEVEL 3!"});
+if(score>=50&&level===2){
+level=3;
+addEffect(400,120,"LEVEL 3!");
 dogs.forEach(d=>d.speed=5);
 }
 
-if(score >= 100 && level === 3){
-level = 4;
-effects.push({x:230,y:120,dx:0,dy:-0.5,life:60,text:"LEVEL MAX!"});
+if(score>=100&&level===3){
+level=4;
+addEffect(400,120,"LEVEL MAX!");
 dogs.forEach(d=>d.speed=6);
 }
 
-addEffect(snack.x+15,snack.y-30);
+addEffect(snack.x+15,snack.y-30,"+"+snack.item.point);
 dog.jump=-24;
 playWan();
 resetSnack();
@@ -207,6 +199,7 @@ ctx.fillRect(0,0,800,500);
 
 ctx.fillStyle="#fff";
 ctx.font="bold 34px sans-serif";
+ctx.textAlign="left";
 ctx.fillText("ゲームスタートを押してね！",210,245);
 }
 
@@ -221,6 +214,7 @@ ctx.fillRect(0,0,800,500);
 
 ctx.fillStyle="#fff";
 ctx.font="bold 38px sans-serif";
+ctx.textAlign="left";
 ctx.fillText("ゲーム終了！",290,200);
 
 ctx.font="bold 30px sans-serif";
@@ -258,18 +252,18 @@ requestAnimationFrame(gameLoop);
 
 function startGame(){
 score=0;
-level = 1;
-levelMessage = "";
 time=30;
 frame=0;
 lastSecond=0;
+level=1;
+effects=[];
 
 pointText.textContent=0;
 timeText.textContent=30;
 
-dogs[0].x=80;dogs[0].y=300;
-dogs[1].x=-150;dogs[1].y=205;
-dogs[2].x=-300;dogs[2].y=110;
+dogs[0].x=80;dogs[0].y=300;dogs[0].speed=3.2;
+dogs[1].x=-150;dogs[1].y=205;dogs[1].speed=2.7;
+dogs[2].x=-300;dogs[2].y=110;dogs[2].speed=3.0;
 
 dogs.forEach(d=>d.jump=0);
 resetSnack();
