@@ -17,7 +17,7 @@ dogs[1].img.src="assets/konbu.png";
 dogs[2].img.src="assets/okayu.png";
 
 const snacks=["bone","meat","cheese","cookie"];
-let snack={x:650,y:240,item:"🦴"};
+let snack={x:650,y:240,item:"bone"};
 
 function drawBackground(){
 ctx.fillStyle="#bdefff";
