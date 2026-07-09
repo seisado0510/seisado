@@ -153,6 +153,17 @@ const dy=(dog.y+45+dog.jump)-(snack.y-15);
 if(Math.abs(dx)<48&&Math.abs(dy)<58){
 score += snack.item.point;
 pointText.textContent=score;
+if(score>=20){
+    dogs.forEach(d=>d.speed=4);
+}
+
+if(score>=50){
+    dogs.forEach(d=>d.speed=5);
+}
+
+if(score>=100){
+    dogs.forEach(d=>d.speed=6);
+}
 addEffect(snack.x+15,snack.y-30);
 dog.jump=-24;
 playWan();
