@@ -4,7 +4,7 @@ const pointText=document.getElementById("point");
 const timeText=document.getElementById("time");
 const startButton=document.getElementById("startButton");
 
-let score=0,time=30,gameRunning=false,frame=0,lastSecond=0;
+let score=0,time=30,gameRunning=false,frame=0,lastSecond=0,levei1=0;
 let bestScore=localStorage.getItem("bestScore")||0;
 let effects=[];
 let clouds=[{x:80,y:70},{x:420,y:95},{x:650,y:55}];
