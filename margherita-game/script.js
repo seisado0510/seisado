@@ -166,26 +166,25 @@ const dy=(dog.y+45+dog.jump)-(snack.y-15);
 if(Math.abs(dx)<48&&Math.abs(dy)<58){
 score += snack.item.point;
 pointText.textContent = score;
+
 if(score >= 20 && level === 1){
-    level = 2;
-    levelMessage = "LEVEL 2!";
-    dogs.forEach(d => d.speed = 4);
-    setTimeout(()=>{ levelMessage = ""; },1500);
+level = 2;
+effects.push({x:260,y:120,dx:0,dy:-0.5,life:60,text:"LEVEL 2!"});
+dogs.forEach(d=>d.speed=4);
 }
 
 if(score >= 50 && level === 2){
-    level = 3;
-    levelMessage = "LEVEL 3!";
-    dogs.forEach(d => d.speed = 5);
-    setTimeout(()=>{ levelMessage = ""; },1500);
+level = 3;
+effects.push({x:260,y:120,dx:0,dy:-0.5,life:60,text:"LEVEL 3!"});
+dogs.forEach(d=>d.speed=5);
 }
 
 if(score >= 100 && level === 3){
-    level = 4;
-    levelMessage = "LEVEL MAX!";
-    dogs.forEach(d => d.speed = 6);
-    setTimeout(()=>{ levelMessage = ""; },1500);
+level = 4;
+effects.push({x:230,y:120,dx:0,dy:-0.5,life:60,text:"LEVEL MAX!"});
+dogs.forEach(d=>d.speed=6);
 }
+
 addEffect(snack.x+15,snack.y-30);
 dog.jump=-24;
 playWan();
