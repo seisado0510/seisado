@@ -130,9 +130,16 @@ const dx=(dog.x+45)-(snack.x+15);
 const dy=(dog.y+45+dog.jump)-(snack.y-15);
 if(Math.abs(dx)<48&&Math.abs(dy)<58){
 score++;
-pointText.textContent=score;
+pointText.textContent = score;
+
+addEffect(snack.x + 25, snack.y - 15);
+
+ctx.fillStyle = "yellow";
+ctx.font = "bold 24px sans-serif";
+ctx.fillText("+1", snack.x + 15, snack.y - 30);
+
 dog.jump=-24;
-addEffect(snack.x+25,snack.y-15);
+
 playWan();
 resetSnack();
 }
@@ -199,4 +206,7 @@ startButton.addEventListener("click",startGame);
 document.addEventListener("keydown",e=>{if(e.code==="Space")dogs.forEach(d=>d.jump=-28);});
 canvas.addEventListener("click",()=>dogs.forEach(d=>d.jump=-28));
 
+function drawEffects(){
+    // 今後エフェクトを追加する場所
+}
 drawStartText();
