@@ -153,7 +153,7 @@ ctx.font="bold 46px sans-serif";
 ctx.textAlign = "center";
 ctx.fillText(levelMessage, canvas.width / 2, 100);
 }
-
+}
 function moveDogs(){
 dogs.forEach(dog=>{
 dog.x+=dog.speed;
