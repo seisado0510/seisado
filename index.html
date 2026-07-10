@@ -815,7 +815,20 @@
       ✉️ メール
     </a>
   </div>
+<div id="imageModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.9);" onclick="closeModal()">
+  <span style="position:absolute;top:20px;right:30px;font-size:40px;color:#fff;cursor:pointer;">&times;</span>
+  <img id="modalImage" style="display:block;max-width:90%;max-height:90%;margin:3% auto;">
+</div>
 
+<script>
+function openModal(src){
+  document.getElementById("imageModal").style.display="block";
+  document.getElementById("modalImage").src=src;
+}
+function closeModal(){
+  document.getElementById("imageModal").style.display="none";
+}
+</script>
 </body>
 
 </html>
