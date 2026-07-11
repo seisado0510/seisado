@@ -831,11 +831,12 @@
 
 <script>
 function openModal(src){
-  document.getElementById("imageModal").style.display="block";
-  document.getElementById("modalImage").src=src;
+  document.getElementById("modalImage").src = src;
+  document.getElementById("imageModal").style.display = "flex";
 }
+
 function closeModal(){
-  document.getElementById("imageModal").style.display="none";
+  document.getElementById("imageModal").style.display = "none";
 }
 </script>
 </body>
