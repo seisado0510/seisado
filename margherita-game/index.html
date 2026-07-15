@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#8b5a2b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="ワンパグゲーム">
-  <title>ワンパグゲーム Ver.9.1</title>
+  <title>ワンパグゲーム Ver.9.3</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -22,7 +22,7 @@
   </section>
 
   <header>
-    <h1>🐶 ワンパグゲーム Ver.9.1 ☕</h1>
+    <h1>🐶 ワンパグゲーム Ver.9.3 ☕</h1>
     <p>おやつを集めて、うさぎ・爆弾・ボスをよけよう！</p>
   </header>
 
@@ -51,15 +51,12 @@
         <strong id="player2Score">0</strong>
       </div>
     </section>
-
     <section class="game-shell">
       <canvas id="gameCanvas" width="800" height="500"></canvas>
+      <button id="startButton" class="start-on-screen">🎮 ゲームスタート</button>
     </section>
 
-
-
-
-    <section class="mode-select">
+<section class="mode-select">
       <h2>👥 プレイモードを選んでください</h2>
       <div class="mode-grid">
         <button class="mode-card selected" data-mode="solo">
@@ -112,7 +109,7 @@
     </section>
 
     <section class="character-select">
-      <h2>🐶 遊ぶパグを選んでください</h2>
+      <h2>🐶 1人プレイで使うパグを選んでください</h2>
       <div class="character-grid">
         <button class="character-card selected" data-character="margherita">
           <img src="assets/margherita.png" alt="マルゲリータ">
@@ -130,6 +127,7 @@
           <span>ライフが4つ</span>
         </button>
       </div>
+      <p class="solo-character-note">1人プレイでは、ここで選んだ1匹だけが登場します。</p>
       <p id="selectedCharacterText" class="selected-character-text">
         選択中：マルゲリータ（ジャンプが高い）
       </p>
@@ -141,7 +139,6 @@
     </section>
 
     <div class="controls">
-      <button id="startButton">ゲームスタート</button>
       <button id="jumpButton" class="jump-btn">⬆️ ジャンプ</button>
       <button id="soundButton" class="sub">🔊 効果音あり</button>
       <button id="bgmButton" class="bgm-btn">🎵 BGMあり</button>
@@ -189,6 +186,6 @@
   </main>
 
   <footer>© 青彩堂・ワンパグ</footer>
-  <script src="script.js?v=19"></script>
+  <script src="script.js?v=21"></script>
 </body>
 </html>

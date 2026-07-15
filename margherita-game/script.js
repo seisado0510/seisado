@@ -138,6 +138,7 @@ const dogs=[playerDog];
 
 function applySelectedCharacter(){
   const setting=characterSettings[selectedCharacter];
+
   playerDog.name=setting.name;
   playerDog.img=new Image();
   playerDog.img.src=setting.image;
@@ -145,77 +146,10 @@ function applySelectedCharacter(){
   playerDog.jumpPower=setting.jumpPower;
   maxLives=setting.maxLives;
 
-  openingStartButton.addEventListener("click",()=>{
-  openingScreen.classList.add("hide");
-  localStorage.setItem("onepugOpeningSeenV7","1");
-});
-
-jumpButton.addEventListener("click",jump);
-
-bgmButton.addEventListener("click",()=>{
-  bgmOn=!bgmOn;
-  bgmButton.textContent=bgmOn?"🎵 BGMあり":"🔇 BGMなし";
-  if(bgmOn)startBgm();else stopBgm();
-});
-
-seasonButtons.forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    selectedSeason=btn.dataset.season;
-    localStorage.setItem("onepugSeasonV7",selectedSeason);
-    updateSeasonButtons();
-updateModeUi();
-updateStageCards();
-chooseWeather();
-renderAchievements();
-  });
-});
-
-modeCards.forEach(card=>{
-  card.addEventListener("click",()=>{
-    selectedMode=card.dataset.mode;
-    localStorage.setItem(MODE_KEY,selectedMode);
-
-    // ゲーム開始前の表示もモードに合わせて整理
-    if(!gameRunning){
-      player2Dog=null;
-      dogs.length=0;
-      dogs.push(playerDog);
-      if(selectedMode!=="solo"){
-        makePlayer2Dog();
-        dogs.push(player2Dog);
-      }
-    }
-
-    updateModeUi();
-  });
-});
-
-stageCards.forEach(card=>{
-  card.addEventListener("click",()=>{
-    selectedStage=card.dataset.stage;
-    localStorage.setItem(STAGE_KEY,selectedStage);
-    updateStageCards();
-    chooseWeather();
-  });
-});
-
-achievementButton.addEventListener("click",()=>{
-  renderAchievements();
-  achievementPanel.classList.add("open");
-});
-closeAchievement.addEventListener("click",()=>achievementPanel.classList.remove("open"));
-achievementPanel.addEventListener("click",e=>{if(e.target===achievementPanel)achievementPanel.classList.remove("open")});
-
-photoButton.addEventListener("click",()=>{
-  createPhoto();
-  photoPanel.classList.add("open");
-});
-closePhoto.addEventListener("click",()=>photoPanel.classList.remove("open"));
-photoPanel.addEventListener("click",e=>{if(e.target===photoPanel)photoPanel.classList.remove("open")});
-
-characterCards.forEach(card=>{
+  characterCards.forEach(card=>{
     card.classList.toggle("selected",card.dataset.character===selectedCharacter);
   });
+
   selectedCharacterText.textContent=`選択中：${setting.name}（${setting.ability}）`;
 }
 
@@ -734,7 +668,7 @@ function applyChest(){
 function collision(cx,cy,x,y,rx=55,ry=62){return Math.abs(cx-x)<rx&&Math.abs(cy-y)<ry}
 
 function moveDogs(){
-  const activeDogs = selectedMode==="solo" ? dogs.filter(d=>d.playerIndex===0) : dogs;
+  const activeDogs=selectedMode==="solo" ? [playerDog] : dogs;
   activeDogs.forEach(d=>{
     d.x+=d.speed*(feverMode?1.5:1)*(activePowerup==="speed"?1.45:1);
     if(d.x>840)d.x=-110;
@@ -839,7 +773,7 @@ function draw(){
   const powerEmoji={speed:"⚡",shield:"🛡️",timeStop:"⏰",double:"💎"}[powerItem.type];
   drawEmoji(powerItem,powerEmoji,52,"POWER","#6a35c7");
   drawBoss();
-  const visibleDogs = selectedMode==="solo" ? dogs.filter(d=>d.playerIndex===0) : dogs;
+  const visibleDogs=selectedMode==="solo" ? [playerDog] : dogs;
   visibleDogs.forEach(drawDog);
   drawEffects();
   drawParticles();
@@ -870,11 +804,14 @@ function startGame(){
   player1HudName.textContent=playerNameInput.value.trim()||"プレイヤー1";
   player2HudName.textContent=player2NameInput.value.trim()||"プレイヤー2";
   updateDualHud();
-  // 毎回プレイヤー配列を初期化して、1人プレイでは必ず1匹だけにする
+  // Ver.9.3：モードと選択キャラクターに合わせて完全初期化
   player2Dog=null;
   dogs.length=0;
+
+  // 1人プレイでは、選択した1匹だけを使用
   dogs.push(playerDog);
 
+  // 2人協力・対戦だけ2匹目を追加
   if(selectedMode!=="solo"){
     makePlayer2Dog();
     dogs.push(player2Dog);
@@ -921,14 +858,92 @@ resetRankingButton.addEventListener("click",()=>{
     renderRanking();
   }
 });
+openingStartButton.addEventListener("click",()=>{
+  openingScreen.classList.add("hide");
+  localStorage.setItem("onepugOpeningSeenV7","1");
+});
+
+jumpButton.addEventListener("click",jump);
+
+bgmButton.addEventListener("click",()=>{
+  bgmOn=!bgmOn;
+  bgmButton.textContent=bgmOn?"🎵 BGMあり":"🔇 BGMなし";
+  if(bgmOn)startBgm();else stopBgm();
+});
+
+seasonButtons.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    selectedSeason=btn.dataset.season;
+    localStorage.setItem("onepugSeasonV7",selectedSeason);
+    updateSeasonButtons();
+  });
+});
+
+modeCards.forEach(card=>{
+  card.addEventListener("click",()=>{
+    selectedMode=card.dataset.mode;
+    localStorage.setItem(MODE_KEY,selectedMode);
+
+    if(!gameRunning){
+      player2Dog=null;
+      dogs.length=0;
+      dogs.push(playerDog);
+
+      if(selectedMode!=="solo"){
+        makePlayer2Dog();
+        dogs.push(player2Dog);
+      }
+    }
+
+    updateModeUi();
+  });
+});
+
+stageCards.forEach(card=>{
+  card.addEventListener("click",()=>{
+    selectedStage=card.dataset.stage;
+    localStorage.setItem(STAGE_KEY,selectedStage);
+    updateStageCards();
+    chooseWeather();
+  });
+});
+
+achievementButton.addEventListener("click",()=>{
+  renderAchievements();
+  achievementPanel.classList.add("open");
+});
+closeAchievement.addEventListener("click",()=>achievementPanel.classList.remove("open"));
+achievementPanel.addEventListener("click",e=>{
+  if(e.target===achievementPanel)achievementPanel.classList.remove("open");
+});
+
+photoButton.addEventListener("click",()=>{
+  createPhoto();
+  photoPanel.classList.add("open");
+});
+closePhoto.addEventListener("click",()=>photoPanel.classList.remove("open"));
+photoPanel.addEventListener("click",e=>{
+  if(e.target===photoPanel)photoPanel.classList.remove("open");
+});
+
 characterCards.forEach(card=>{
   card.addEventListener("click",()=>{
-    if(gameRunning){
-      message.textContent="キャラクター変更は次のゲームから反映されます";
-    }
     selectedCharacter=card.dataset.character;
     localStorage.setItem(CHARACTER_KEY,selectedCharacter);
     applySelectedCharacter();
+
+    if(!gameRunning&&selectedMode==="solo"){
+      player2Dog=null;
+      dogs.length=0;
+      dogs.push(playerDog);
+      playerDog.x=70;
+      playerDog.y=250;
+      playerDog.jump=0;
+    }
+
+    message.textContent=gameRunning
+      ? `${characterSettings[selectedCharacter].name}への変更は次のゲームから反映されます`
+      : `${characterSettings[selectedCharacter].name}を選びました`;
     updateHud();
   });
 });
@@ -942,6 +957,10 @@ window.addEventListener("keydown",e=>{
 playerNameInput.value=localStorage.getItem("onepugPlayerName")||"ゲスト";
 applySelectedCharacter();
 updateSeasonButtons();
+updateModeUi();
+updateStageCards();
+chooseWeather();
+renderAchievements();
 lives=maxLives;
 if(localStorage.getItem("onepugOpeningSeenV7")==="1"){
   openingScreen.classList.add("hide");

@@ -125,3 +125,46 @@ linear-gradient(135deg,#6f4326,#d39555 48%,#fff0d2)}
   .dual-hud{grid-template-columns:1fr}
   .dual-center{text-align:center}
 }
+
+/* Ver.9.2：ゲーム画面内スタートボタン */
+.game-shell{
+  position:relative;
+}
+
+.start-on-screen{
+  position:absolute;
+  left:50%;
+  bottom:24px;
+  transform:translateX(-50%);
+  z-index:20;
+  min-width:250px;
+  padding:17px 34px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(180deg,#ff9f27,#ff7a00);
+  color:#fff;
+  font-size:clamp(19px,4vw,25px);
+  font-weight:bold;
+  box-shadow:0 6px 0 #bd5700,0 10px 22px rgba(0,0,0,.22);
+  cursor:pointer;
+}
+
+.start-on-screen:hover{
+  transform:translateX(-50%) scale(1.04);
+}
+
+.start-on-screen:active{
+  transform:translateX(-50%) translateY(4px);
+  box-shadow:0 2px 0 #bd5700;
+}
+
+.solo-character-note{
+  margin:12px 0 4px;
+  text-align:center;
+  font-weight:bold;
+  color:#2f6d48;
+  background:#e9fff0;
+  border:2px solid #93d5a8;
+  border-radius:10px;
+  padding:9px 12px;
+}
