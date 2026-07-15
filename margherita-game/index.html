@@ -1,16 +1,49 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>マルゲリータたちのおやつ争奪戦</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#087bc1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="おやつ争奪戦">
+  <title>マルゲリータたちのおやつ争奪戦 Ver.2</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><h1>🐶 マルゲリータたちのおやつ争奪戦 🦴</h1><p>おやつを集めてスコアを伸ばそう！</p></header>
-<main><div id="score">スコア：<span id="point">0</span>　残り：<span id="time">30</span>秒</div><canvas id="gameCanvas" width="800" height="500"></canvas><div><button id="startButton">ゲームスタート</button></div><p class="help">スマホ：画面をタップ ／ パソコン：スペースキーでジャンプ</p></main>
-<footer>© 青彩堂</footer>
-<script src="script.js"></script>
+  <header>
+    <div class="title-wrap">
+      <span class="title-icon">🐶</span>
+      <div>
+        <h1>マルゲリータたちのおやつ争奪戦</h1>
+        <p>Ver.2　3匹でおやつを集めよう！</p>
+      </div>
+      <span class="title-icon">🦴</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="scoreboard">
+      <div>スコア<strong id="point">0</strong></div>
+      <div>残り<strong><span id="time">30</span>秒</strong></div>
+      <div>最高<strong id="best">0</strong></div>
+    </section>
+
+    <section class="game-shell">
+      <canvas id="gameCanvas" width="960" height="540" aria-label="ゲーム画面"></canvas>
+    </section>
+
+    <div class="controls">
+      <button id="startButton">ゲームスタート</button>
+      <button id="soundButton" class="sub">🔊 音あり</button>
+    </div>
+
+    <p class="help">スマホ：ゲーム画面をタップ　／　パソコン：スペースキーでジャンプ</p>
+    <p id="message" class="message">3匹が画面内に収まるように改良しました！</p>
+  </main>
+
+  <footer>© 青彩堂・ワンパグプロジェクト</footer>
+  <script src="script.js"></script>
 </body>
 </html>
-c:\Users\user\OneDrive\デスクトップ\favicon.png
