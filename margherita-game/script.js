@@ -174,6 +174,18 @@ modeCards.forEach(card=>{
   card.addEventListener("click",()=>{
     selectedMode=card.dataset.mode;
     localStorage.setItem(MODE_KEY,selectedMode);
+
+    // ゲーム開始前の表示もモードに合わせて整理
+    if(!gameRunning){
+      player2Dog=null;
+      dogs.length=0;
+      dogs.push(playerDog);
+      if(selectedMode!=="solo"){
+        makePlayer2Dog();
+        dogs.push(player2Dog);
+      }
+    }
+
     updateModeUi();
   });
 });
@@ -722,7 +734,8 @@ function applyChest(){
 function collision(cx,cy,x,y,rx=55,ry=62){return Math.abs(cx-x)<rx&&Math.abs(cy-y)<ry}
 
 function moveDogs(){
-  dogs.forEach(d=>{
+  const activeDogs = selectedMode==="solo" ? dogs.filter(d=>d.playerIndex===0) : dogs;
+  activeDogs.forEach(d=>{
     d.x+=d.speed*(feverMode?1.5:1)*(activePowerup==="speed"?1.45:1);
     if(d.x>840)d.x=-110;
     if(d.jump<0){d.jump+=1.4;if(d.jump>0)d.jump=0}
@@ -826,7 +839,8 @@ function draw(){
   const powerEmoji={speed:"⚡",shield:"🛡️",timeStop:"⏰",double:"💎"}[powerItem.type];
   drawEmoji(powerItem,powerEmoji,52,"POWER","#6a35c7");
   drawBoss();
-  dogs.forEach(drawDog);
+  const visibleDogs = selectedMode==="solo" ? dogs.filter(d=>d.playerIndex===0) : dogs;
+  visibleDogs.forEach(drawDog);
   drawEffects();
   drawParticles();
 }
@@ -856,7 +870,11 @@ function startGame(){
   player1HudName.textContent=playerNameInput.value.trim()||"プレイヤー1";
   player2HudName.textContent=player2NameInput.value.trim()||"プレイヤー2";
   updateDualHud();
-  dogs.length=1;
+  // 毎回プレイヤー配列を初期化して、1人プレイでは必ず1匹だけにする
+  player2Dog=null;
+  dogs.length=0;
+  dogs.push(playerDog);
+
   if(selectedMode!=="solo"){
     makePlayer2Dog();
     dogs.push(player2Dog);
