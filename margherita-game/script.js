@@ -20,6 +20,9 @@ let sparkles = [];
 let explosions = [];
 let hitCooldown = 0;
 let bombRespawnTimer = 0;
+let feverMode = false;
+let feverTimer = 0;
+let feverBannerTimer = 0;
 let bestScore = Number(localStorage.getItem("margheritaBestScore") || 0);
 bestText.textContent = bestScore;
 
@@ -33,7 +36,7 @@ dogs[0].img.src = "assets/margherita.png";
 dogs[1].img.src = "assets/konbu.png";
 dogs[2].img.src = "assets/okayu.png";
 
-const snacks = [
+const normalSnacks = [
   {icon:"🦴", point:1},
   {icon:"🍪", point:2},
   {icon:"🧀", point:3},
@@ -42,7 +45,14 @@ const snacks = [
   {icon:"🍠", point:15}
 ];
 
-let snack = {x:650, y:240, item:snacks[0], pulse:0};
+const feverSnacks = [
+  {icon:"🍠", point:30},
+  {icon:"🥩", point:50},
+  {icon:"🍖", point:20},
+  {icon:"🌭", point:10}
+];
+
+let snack = {x:650, y:240, item:normalSnacks[0], pulse:0};
 let bomb = {x:720, y:320, active:false, pulse:0, speed:2.6};
 
 function updateLife(){
@@ -67,34 +77,48 @@ function playTone(startFreq,endFreq,duration,volume=.1){
 
 function playSnackSound(){ playTone(520,820,.12,.1); }
 function playBombSound(){ playTone(180,55,.32,.18); }
+function playFeverSound(){ playTone(380,1200,.45,.14); }
 
 function drawBackground(){
-  const sky=ctx.createLinearGradient(0,0,0,500);
-  sky.addColorStop(0,"#9ee8ff");
-  sky.addColorStop(1,"#e8fbff");
-  ctx.fillStyle=sky; ctx.fillRect(0,0,800,500);
+  if(feverMode){
+    const hue=(frame*4)%360;
+    const grad=ctx.createLinearGradient(0,0,800,500);
+    grad.addColorStop(0,`hsl(${hue},90%,70%)`);
+    grad.addColorStop(.5,`hsl(${(hue+120)%360},90%,75%)`);
+    grad.addColorStop(1,`hsl(${(hue+240)%360},90%,70%)`);
+    ctx.fillStyle=grad;
+    ctx.fillRect(0,0,800,500);
+  }else{
+    const sky=ctx.createLinearGradient(0,0,0,500);
+    sky.addColorStop(0,"#9ee8ff");
+    sky.addColorStop(1,"#e8fbff");
+    ctx.fillStyle=sky;
+    ctx.fillRect(0,0,800,500);
+  }
 
   ctx.fillStyle="#fff4a8";
   ctx.beginPath(); ctx.arc(690,80,45,0,Math.PI*2); ctx.fill();
 
-  ctx.fillStyle="#7bd66f"; ctx.fillRect(0,378,800,122);
-  ctx.fillStyle="#4aaa45";
+  ctx.fillStyle=feverMode?"rgba(255,255,255,.55)":"#7bd66f";
+  ctx.fillRect(0,378,800,122);
+
+  ctx.fillStyle=feverMode?"rgba(255,255,255,.45)":"#4aaa45";
   for(let i=0;i<800;i+=40) ctx.fillRect(i,365,22,22);
 
   ctx.fillStyle="rgba(255,255,255,.92)";
   ctx.font="bold 28px sans-serif";
   ctx.textAlign="center";
-  ctx.fillText("青彩堂ドッグラン",400,58);
+  ctx.fillText(feverMode?"🌈 ワンパグ・フィーバー 🌈":"青彩堂ドッグラン",400,58);
   ctx.textAlign="left";
 }
 
 function drawSpeedLines(dog,bounce){
   if(!gameRunning) return;
   ctx.save();
-  ctx.globalAlpha=.25;
-  ctx.strokeStyle="#fff";
-  ctx.lineWidth=4;
-  for(let i=0;i<3;i++){
+  ctx.globalAlpha=feverMode?.55:.25;
+  ctx.strokeStyle=feverMode?"#fff600":"#fff";
+  ctx.lineWidth=feverMode?6:4;
+  for(let i=0;i<(feverMode?5:3);i++){
     const offset=i*14;
     ctx.beginPath();
     ctx.moveTo(dog.x-25-offset,dog.y+35+bounce+i*7);
@@ -128,8 +152,8 @@ function drawDog(dog){
   }
   ctx.restore();
 
-  ctx.strokeStyle=hitCooldown>0?"#ff3b30":"#fff";
-  ctx.lineWidth=hitCooldown>0?7:4;
+  ctx.strokeStyle=hitCooldown>0?"#ff3b30":(feverMode?"#fff600":"#fff");
+  ctx.lineWidth=feverMode?7:4;
   ctx.beginPath();
   ctx.arc(dog.x+45,dog.y+45+bounce,45,0,Math.PI*2);
   ctx.stroke();
@@ -140,12 +164,12 @@ function drawDog(dog){
 }
 
 function drawSnack(){
-  snack.pulse+=.08;
-  const scale=1+Math.sin(snack.pulse)*.1;
+  snack.pulse+=feverMode?.14:.08;
+  const scale=1+Math.sin(snack.pulse)*(feverMode?.18:.1);
   ctx.save();
   ctx.translate(snack.x+18,snack.y-15);
   ctx.scale(scale,scale);
-  ctx.font="42px serif";
+  ctx.font=feverMode?"54px serif":"42px serif";
   ctx.textAlign="center";
   ctx.fillText(snack.item.icon,0,0);
   ctx.restore();
@@ -154,21 +178,17 @@ function drawSnack(){
 
 function drawBomb(){
   if(!bomb.active) return;
-
   bomb.pulse+=.14;
   const scale=1+Math.sin(bomb.pulse)*.12;
 
   ctx.save();
   ctx.translate(bomb.x,bomb.y);
   ctx.scale(scale,scale);
-
-  // 赤い警告リングを付けて必ず見えるようにする
   ctx.strokeStyle="#ff2d2d";
   ctx.lineWidth=6;
   ctx.beginPath();
   ctx.arc(0,-14,34,0,Math.PI*2);
   ctx.stroke();
-
   ctx.font="56px serif";
   ctx.textAlign="center";
   ctx.fillText("💣",0,0);
@@ -206,11 +226,11 @@ function drawEffects(){
 }
 
 function createSparkles(x,y,point){
-  const symbols=point>=10?["🌟","✨","💫","⭐","🎉"]:["✨","⭐","💫"];
-  const count=point>=10?24:15;
+  const symbols=feverMode?["🌈","🌟","✨","💫","⭐","🎉"]:["✨","⭐","💫"];
+  const count=feverMode?32:(point>=10?24:15);
   for(let i=0;i<count;i++){
     const angle=Math.random()*Math.PI*2;
-    const speed=2+Math.random()*4.5;
+    const speed=2+Math.random()*(feverMode?6:4.5);
     sparkles.push({
       x:x+18,y:y-15,
       vx:Math.cos(angle)*speed,
@@ -271,10 +291,41 @@ function drawExplosions(){
   ctx.textAlign="left";
 }
 
+function drawFeverBanner(){
+  if(feverBannerTimer<=0) return;
+
+  const alpha=Math.min(1,feverBannerTimer/45);
+  const scale=1+Math.sin(frame*.25)*.08;
+
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.translate(400,250);
+  ctx.scale(scale,scale);
+  ctx.fillStyle="rgba(255,255,255,.88)";
+  ctx.strokeStyle="#ff4bd8";
+  ctx.lineWidth=8;
+  ctx.beginPath();
+  ctx.roundRect(-280,-60,560,120,30);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle="#ff1493";
+  ctx.strokeStyle="#fff";
+  ctx.lineWidth=6;
+  ctx.font="bold 38px sans-serif";
+  ctx.textAlign="center";
+  ctx.strokeText("🎊 ワンパグ フィーバー!! 🎊",0,15);
+  ctx.fillText("🎊 ワンパグ フィーバー!! 🎊",0,15);
+  ctx.restore();
+
+  feverBannerTimer--;
+}
+
 function resetSnack(){
+  const list=feverMode?feverSnacks:normalSnacks;
   snack.x=Math.random()*630+80;
   snack.y=Math.random()*245+105;
-  snack.item=snacks[Math.floor(Math.random()*snacks.length)];
+  snack.item=list[Math.floor(Math.random()*list.length)];
   snack.pulse=0;
 }
 
@@ -283,30 +334,47 @@ function resetBomb(){
   bomb.y=Math.random()*230+125;
   bomb.active=true;
   bomb.pulse=0;
-  bomb.speed=2.2+Math.random()*1.2;
+  bomb.speed=feverMode?3.6:(2.2+Math.random()*1.2);
   bombRespawnTimer=0;
 }
 
 function moveBomb(){
   if(!bomb.active){
     bombRespawnTimer++;
-    // 約5秒で必ず再出現
     if(bombRespawnTimer>=300) resetBomb();
     return;
   }
 
   bomb.x-=bomb.speed;
 
-  // 左端まで行ったら5秒待たず、1秒ほどで再出現
   if(bomb.x<-50){
     bomb.active=false;
     bombRespawnTimer=240;
   }
 }
 
+function startFever(){
+  if(feverMode) return;
+  feverMode=true;
+  feverTimer=600;
+  feverBannerTimer=120;
+  playFeverSound();
+  message.textContent="ワンパグ・フィーバー！10秒間、得点2倍！";
+  resetSnack();
+}
+
+function endFever(){
+  feverMode=false;
+  feverTimer=0;
+  message.textContent="フィーバー終了！爆弾をよけて続けよう！";
+  resetSnack();
+}
+
 function moveDogs(){
   dogs.forEach(dog=>{
-    dog.x+=dog.speed;
+    const speedMultiplier=feverMode?1.5:1;
+    dog.x+=dog.speed*speedMultiplier;
+
     if(dog.x>840) dog.x=-110;
 
     if(dog.jump<0){
@@ -322,13 +390,17 @@ function moveDogs(){
     const snackDy=centerY-(snack.y-15);
 
     if(Math.abs(snackDx)<50 && Math.abs(snackDy)<60){
-      score+=snack.item.point;
+      const earned=snack.item.point*(feverMode?2:1);
+      score+=earned;
       pointText.textContent=score;
       dog.jump=-28;
-      addEffect(snack.x,snack.y,`+${snack.item.point}`);
-      createSparkles(snack.x,snack.y,snack.item.point);
+
+      addEffect(snack.x,snack.y,`+${earned}`,feverMode?"#ff00c8":"#ff6b00");
+      createSparkles(snack.x,snack.y,earned);
       playSnackSound();
       resetSnack();
+
+      if(score>=30 && !feverMode && feverTimer===0) startFever();
     }
 
     if(bomb.active && hitCooldown===0){
@@ -357,6 +429,11 @@ function moveDogs(){
   });
 
   if(hitCooldown>0) hitCooldown--;
+
+  if(feverMode){
+    feverTimer--;
+    if(feverTimer<=0) endFever();
+  }
 }
 
 function jump(){
@@ -376,6 +453,7 @@ function draw(){
   drawEffects();
   drawSparkles();
   drawExplosions();
+  drawFeverBanner();
 }
 
 function loop(timestamp){
@@ -412,6 +490,9 @@ function startGame(){
   explosions=[];
   hitCooldown=0;
   bombRespawnTimer=0;
+  feverMode=false;
+  feverTimer=0;
+  feverBannerTimer=0;
 
   dogs[0].x=80;
   dogs[1].x=-150;
@@ -420,7 +501,7 @@ function startGame(){
   pointText.textContent=score;
   timeText.textContent=time;
   updateLife();
-  message.textContent="開始直後から爆弾が出ます。ジャンプしてよけよう！";
+  message.textContent="30点でワンパグ・フィーバー！";
   startButton.textContent="もう一度スタート";
 
   resetSnack();
@@ -430,6 +511,7 @@ function startGame(){
 function endGame(byBomb=false){
   gameRunning=false;
   bomb.active=false;
+  feverMode=false;
 
   if(score>bestScore){
     bestScore=score;
