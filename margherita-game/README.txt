@@ -1,22 +1,24 @@
-【キラキラ演出付き完成版】
+【ライフ＋爆弾付き完成版】
 
-このZIPには以下が入っています。
-・index.html
-・style.css
-・script.js
-・manifest.json
+追加機能
+・ライフ3つ
+・爆弾に当たるとライフが1つ減る
+・ライフ0でゲームオーバー
+・爆発エフェクト
+・爆弾の効果音
+・キラキラ演出
+・さつまいも15点
 
 assetsフォルダは入っていません。
-今ある犬3匹の画像を消さないためです。
+今ある3匹の画像をそのまま使います。
 
-【入れ替え方】
-1. ZIPを右クリック → すべて展開
-2. 中の4ファイルを全部コピー
-3. ドキュメント → GitHub → seisado → margherita-game を開く
-4. 貼り付け
-5. 「ファイルを置き換える」を押す
+入れ替え方
+1. ZIPをすべて展開
+2. 中の4ファイルをコピー
+3. GitHub → seisado → margherita-game に貼り付け
+4. ファイルを置き換える
 
-【GitHubへ反映】
+GitHub反映
 git add .
-git commit -m "キラキラ演出追加"
+git commit -m "ライフと爆弾追加"
 git push origin main

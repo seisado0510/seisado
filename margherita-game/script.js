@@ -3,18 +3,22 @@ const ctx = canvas.getContext("2d");
 const pointText = document.getElementById("point");
 const timeText = document.getElementById("time");
 const bestText = document.getElementById("best");
+const lifeText = document.getElementById("life");
 const startButton = document.getElementById("startButton");
 const soundButton = document.getElementById("soundButton");
 const message = document.getElementById("message");
 
 let score = 0;
 let time = 30;
+let lives = 3;
 let gameRunning = false;
 let frame = 0;
 let lastSecond = 0;
 let soundOn = true;
 let effects = [];
 let sparkles = [];
+let explosions = [];
+let hitCooldown = 0;
 let bestScore = Number(localStorage.getItem("margheritaBestScore") || 0);
 bestText.textContent = bestScore;
 
@@ -38,8 +42,13 @@ const snacks = [
 ];
 
 let snack = {x:650, y:240, item:snacks[0], pulse:0};
+let bomb = {x:720, y:320, active:false, pulse:0};
 
-function playSound(){
+function updateLife(){
+  lifeText.textContent = "❤️".repeat(lives) + "🖤".repeat(3-lives);
+}
+
+function playTone(startFreq,endFreq,duration,volume=.1){
   if(!soundOn) return;
   try{
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -47,29 +56,27 @@ function playSound(){
     const o = a.createOscillator();
     const g = a.createGain();
     o.connect(g); g.connect(a.destination);
-    o.frequency.setValueAtTime(520,a.currentTime);
-    o.frequency.exponentialRampToValueAtTime(820,a.currentTime+.08);
-    g.gain.setValueAtTime(.1,a.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.12);
-    o.start(); o.stop(a.currentTime+.12);
+    o.frequency.setValueAtTime(startFreq,a.currentTime);
+    o.frequency.exponentialRampToValueAtTime(endFreq,a.currentTime+duration);
+    g.gain.setValueAtTime(volume,a.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,a.currentTime+duration);
+    o.start(); o.stop(a.currentTime+duration);
   }catch(e){}
 }
+
+function playSnackSound(){ playTone(520,820,.12,.1); }
+function playBombSound(){ playTone(180,55,.32,.18); }
 
 function drawBackground(){
   const sky=ctx.createLinearGradient(0,0,0,500);
   sky.addColorStop(0,"#9ee8ff");
   sky.addColorStop(1,"#e8fbff");
-  ctx.fillStyle=sky;
-  ctx.fillRect(0,0,800,500);
+  ctx.fillStyle=sky; ctx.fillRect(0,0,800,500);
 
   ctx.fillStyle="#fff4a8";
-  ctx.beginPath();
-  ctx.arc(690,80,45,0,Math.PI*2);
-  ctx.fill();
+  ctx.beginPath(); ctx.arc(690,80,45,0,Math.PI*2); ctx.fill();
 
-  ctx.fillStyle="#7bd66f";
-  ctx.fillRect(0,378,800,122);
-
+  ctx.fillStyle="#7bd66f"; ctx.fillRect(0,378,800,122);
   ctx.fillStyle="#4aaa45";
   for(let i=0;i<800;i+=40) ctx.fillRect(i,365,22,22);
 
@@ -86,7 +93,6 @@ function drawSpeedLines(dog,bounce){
   ctx.globalAlpha=.25;
   ctx.strokeStyle="#fff";
   ctx.lineWidth=4;
-
   for(let i=0;i<3;i++){
     const offset=i*14;
     ctx.beginPath();
@@ -121,8 +127,8 @@ function drawDog(dog){
   }
   ctx.restore();
 
-  ctx.strokeStyle="#fff";
-  ctx.lineWidth=4;
+  ctx.strokeStyle=hitCooldown>0?"#ff3b30":"#fff";
+  ctx.lineWidth=hitCooldown>0?7:4;
   ctx.beginPath();
   ctx.arc(dog.x+45,dog.y+45+bounce,45,0,Math.PI*2);
   ctx.stroke();
@@ -135,7 +141,6 @@ function drawDog(dog){
 function drawSnack(){
   snack.pulse+=.08;
   const scale=1+Math.sin(snack.pulse)*.1;
-
   ctx.save();
   ctx.translate(snack.x+18,snack.y-15);
   ctx.scale(scale,scale);
@@ -146,8 +151,22 @@ function drawSnack(){
   ctx.textAlign="left";
 }
 
-function addEffect(x,y,point){
-  effects.push({x,y,text:`+${point}`,life:55});
+function drawBomb(){
+  if(!bomb.active) return;
+  bomb.pulse+=.12;
+  const scale=1+Math.sin(bomb.pulse)*.08;
+  ctx.save();
+  ctx.translate(bomb.x,bomb.y);
+  ctx.scale(scale,scale);
+  ctx.font="48px serif";
+  ctx.textAlign="center";
+  ctx.fillText("💣",0,0);
+  ctx.restore();
+  ctx.textAlign="left";
+}
+
+function addEffect(x,y,text,color="#ff6b00"){
+  effects.push({x,y,text,life:55,color});
 }
 
 function drawEffects(){
@@ -155,40 +174,35 @@ function drawEffects(){
     const alpha=Math.max(0,e.life/55);
     ctx.save();
     ctx.globalAlpha=alpha;
-    ctx.fillStyle="#ff6b00";
+    ctx.fillStyle=e.color;
     ctx.strokeStyle="#fff";
     ctx.lineWidth=4;
     ctx.font="bold 30px sans-serif";
+    ctx.textAlign="center";
     ctx.strokeText(e.text,e.x,e.y);
     ctx.fillText(e.text,e.x,e.y);
     ctx.restore();
-
     e.y-=1.2;
     e.life--;
   });
-
   effects=effects.filter(e=>e.life>0);
+  ctx.textAlign="left";
 }
 
 function createSparkles(x,y,point){
-  const symbols = point >= 10 ? ["🌟","✨","💫","⭐","🎉"] : ["✨","⭐","💫"];
-  const count = point >= 10 ? 24 : 15;
-
+  const symbols=point>=10?["🌟","✨","💫","⭐","🎉"]:["✨","⭐","💫"];
+  const count=point>=10?24:15;
   for(let i=0;i<count;i++){
     const angle=Math.random()*Math.PI*2;
     const speed=2+Math.random()*4.5;
-
     sparkles.push({
-      x:x+18,
-      y:y-15,
+      x:x+18,y:y-15,
       vx:Math.cos(angle)*speed,
       vy:Math.sin(angle)*speed-1.5,
-      gravity:0.08+Math.random()*0.05,
+      gravity:.08+Math.random()*.05,
       life:38+Math.random()*28,
       maxLife:66,
       size:15+Math.random()*18,
-      spin:(Math.random()-.5)*0.25,
-      rotation:Math.random()*Math.PI*2,
       symbol:symbols[Math.floor(Math.random()*symbols.length)]
     });
   }
@@ -197,28 +211,48 @@ function createSparkles(x,y,point){
 function drawSparkles(){
   sparkles.forEach(s=>{
     const alpha=Math.max(0,s.life/s.maxLife);
-
     ctx.save();
     ctx.globalAlpha=alpha;
-    ctx.translate(s.x,s.y);
-    ctx.rotate(s.rotation);
     ctx.font=`${s.size}px serif`;
     ctx.textAlign="center";
-    ctx.textBaseline="middle";
-    ctx.fillText(s.symbol,0,0);
+    ctx.fillText(s.symbol,s.x,s.y);
     ctx.restore();
-
-    s.x+=s.vx;
-    s.y+=s.vy;
-    s.vy+=s.gravity;
-    s.vx*=0.985;
-    s.rotation+=s.spin;
-    s.life--;
+    s.x+=s.vx; s.y+=s.vy; s.vy+=s.gravity; s.vx*=.985; s.life--;
   });
-
   sparkles=sparkles.filter(s=>s.life>0);
   ctx.textAlign="left";
-  ctx.textBaseline="alphabetic";
+}
+
+function createExplosion(x,y){
+  const symbols=["💥","🔥","💨","⚡"];
+  for(let i=0;i<18;i++){
+    const angle=Math.random()*Math.PI*2;
+    const speed=2.5+Math.random()*5;
+    explosions.push({
+      x,y,
+      vx:Math.cos(angle)*speed,
+      vy:Math.sin(angle)*speed,
+      life:30+Math.random()*25,
+      maxLife:55,
+      size:20+Math.random()*22,
+      symbol:symbols[Math.floor(Math.random()*symbols.length)]
+    });
+  }
+}
+
+function drawExplosions(){
+  explosions.forEach(e=>{
+    const alpha=Math.max(0,e.life/e.maxLife);
+    ctx.save();
+    ctx.globalAlpha=alpha;
+    ctx.font=`${e.size}px serif`;
+    ctx.textAlign="center";
+    ctx.fillText(e.symbol,e.x,e.y);
+    ctx.restore();
+    e.x+=e.vx; e.y+=e.vy; e.vx*=.97; e.vy*=.97; e.life--;
+  });
+  explosions=explosions.filter(e=>e.life>0);
+  ctx.textAlign="left";
 }
 
 function resetSnack(){
@@ -228,10 +262,16 @@ function resetSnack(){
   snack.pulse=0;
 }
 
+function resetBomb(){
+  bomb.x=Math.random()*620+100;
+  bomb.y=Math.random()*235+120;
+  bomb.active=true;
+  bomb.pulse=0;
+}
+
 function moveDogs(){
   dogs.forEach(dog=>{
     dog.x+=dog.speed;
-
     if(dog.x>840) dog.x=-110;
 
     if(dog.jump<0){
@@ -240,25 +280,56 @@ function moveDogs(){
     }
 
     const bounce=Math.sin((frame*.28+dog.phase)*2)*6;
-    const dx=(dog.x+45)-(snack.x+18);
-    const dy=(dog.y+45+dog.jump+bounce)-(snack.y-15);
+    const centerX=dog.x+45;
+    const centerY=dog.y+45+dog.jump+bounce;
 
-    if(Math.abs(dx)<50 && Math.abs(dy)<60){
+    const snackDx=centerX-(snack.x+18);
+    const snackDy=centerY-(snack.y-15);
+
+    if(Math.abs(snackDx)<50 && Math.abs(snackDy)<60){
       score+=snack.item.point;
       pointText.textContent=score;
       dog.jump=-28;
-
-      addEffect(snack.x,snack.y,snack.item.point);
+      addEffect(snack.x,snack.y,`+${snack.item.point}`);
       createSparkles(snack.x,snack.y,snack.item.point);
-      playSound();
+      playSnackSound();
       resetSnack();
+
+      if(!bomb.active && Math.random()<.45) resetBomb();
+    }
+
+    if(bomb.active && hitCooldown===0){
+      const bombDx=centerX-bomb.x;
+      const bombDy=centerY-bomb.y;
+
+      if(Math.abs(bombDx)<50 && Math.abs(bombDy)<60){
+        lives--;
+        updateLife();
+        hitCooldown=75;
+        dog.x-=80;
+
+        createExplosion(bomb.x,bomb.y);
+        addEffect(bomb.x,bomb.y,"-1 LIFE","#e30000");
+        playBombSound();
+        bomb.active=false;
+
+        if(lives<=0){
+          endGame(true);
+        }else{
+          message.textContent=`爆弾に当たった！ 残りライフ ${lives}`;
+          setTimeout(()=>{
+            if(gameRunning) resetBomb();
+          },1200);
+        }
+      }
     }
   });
+
+  if(hitCooldown>0) hitCooldown--;
 }
 
 function jump(){
   if(!gameRunning) return;
-
   dogs.forEach((dog,index)=>{
     setTimeout(()=>{
       if(dog.jump===0) dog.jump=-30;
@@ -269,9 +340,11 @@ function jump(){
 function draw(){
   drawBackground();
   drawSnack();
+  drawBomb();
   dogs.forEach(drawDog);
   drawEffects();
   drawSparkles();
+  drawExplosions();
 }
 
 function loop(timestamp){
@@ -288,7 +361,7 @@ function loop(timestamp){
       timeText.textContent=time;
       lastSecond=timestamp;
 
-      if(time<=0) endGame();
+      if(time<=0) endGame(false);
     }
   }
 
@@ -298,11 +371,14 @@ function loop(timestamp){
 function startGame(){
   score=0;
   time=30;
+  lives=3;
   frame=0;
   lastSecond=0;
   gameRunning=true;
   effects=[];
   sparkles=[];
+  explosions=[];
+  hitCooldown=0;
 
   dogs[0].x=80;
   dogs[1].x=-150;
@@ -310,34 +386,38 @@ function startGame(){
 
   pointText.textContent=score;
   timeText.textContent=time;
-  message.textContent="3匹でおやつをたくさん集めよう！";
+  updateLife();
+  message.textContent="おやつを集めて爆弾をよけよう！";
   startButton.textContent="もう一度スタート";
 
   resetSnack();
+  resetBomb();
 }
 
-function endGame(){
+function endGame(byBomb=false){
   gameRunning=false;
+  bomb.active=false;
 
   if(score>bestScore){
     bestScore=score;
     localStorage.setItem("margheritaBestScore",String(bestScore));
     bestText.textContent=bestScore;
-    message.textContent=`新記録！ スコア ${score} 点 🎉`;
+  }
+
+  if(byBomb){
+    message.textContent=`ゲームオーバー！ スコア ${score}点 💥`;
+    addEffect(400,250,"GAME OVER","#e30000");
   }else{
-    message.textContent=`ゲーム終了！ スコア ${score} 点`;
+    message.textContent=`タイムアップ！ スコア ${score}点`;
   }
 }
 
 startButton.addEventListener("click",startGame);
-
 soundButton.addEventListener("click",()=>{
   soundOn=!soundOn;
   soundButton.textContent=soundOn?"🔊 音あり":"🔇 音なし";
 });
-
 canvas.addEventListener("pointerdown",jump);
-
 window.addEventListener("keydown",e=>{
   if(e.code==="Space"){
     e.preventDefault();
@@ -345,5 +425,6 @@ window.addEventListener("keydown",e=>{
   }
 });
 
+updateLife();
 draw();
 requestAnimationFrame(loop);

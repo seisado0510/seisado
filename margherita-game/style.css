@@ -4,9 +4,10 @@ header{background:linear-gradient(135deg,#006ec4,#1296db);color:#fff;text-align:
 header h1{font-size:clamp(21px,5vw,36px);margin:0}
 header p{margin:8px 0 0}
 main{width:min(100%,920px);margin:auto;padding:14px}
-.scoreboard{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.scoreboard{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}
 .scoreboard div{background:#fff;border:2px solid #87c9ef;border-radius:14px;text-align:center;padding:9px 5px;font-weight:bold;color:#116ca8}
-.scoreboard strong{display:block;font-size:clamp(20px,5vw,30px)}
+.scoreboard strong{display:block;font-size:clamp(18px,4vw,28px)}
+#life{letter-spacing:2px;font-size:clamp(18px,4vw,25px)}
 .game-shell{overflow:hidden;border:4px solid #087bc1;border-radius:18px;background:#fff;box-shadow:0 7px 20px rgba(0,0,0,.17)}
 #gameCanvas{display:block;width:100%;height:auto;touch-action:manipulation}
 .controls{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:17px}
@@ -16,9 +17,8 @@ button:active{transform:translateY(3px)}
 .help,.message{text-align:center}
 .message{font-weight:bold;color:#087bc1;min-height:1.5em}
 footer{text-align:center;padding:18px;color:#6b7e8b}
-@media(max-width:600px){
+@media(max-width:650px){
   main{padding:8px}
-  .scoreboard{gap:5px}
-  .scoreboard div{font-size:13px;padding:7px 2px}
+  .scoreboard{grid-template-columns:repeat(2,1fr);gap:6px}
   button{width:100%;max-width:340px}
 }
