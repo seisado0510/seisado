@@ -6,13 +6,13 @@
   <meta name="theme-color" content="#8b5a2b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="ワンパグゲーム">
-  <title>ワンパグゲーム Ver.5</title>
+  <title>ワンパグゲーム Ver.6</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>🐶 ワンパグゲーム Ver.5 ☕</h1>
+    <h1>🐶 ワンパグゲーム Ver.6 ☕</h1>
     <p>おやつを集めて、うさぎ・爆弾・ボスをよけよう！</p>
   </header>
 
@@ -27,6 +27,31 @@
 
     <section class="game-shell">
       <canvas id="gameCanvas" width="800" height="500"></canvas>
+    </section>
+
+
+    <section class="character-select">
+      <h2>🐶 遊ぶパグを選んでください</h2>
+      <div class="character-grid">
+        <button class="character-card selected" data-character="margherita">
+          <img src="assets/margherita.png" alt="マルゲリータ">
+          <strong>マルゲリータ</strong>
+          <span>ジャンプが高い</span>
+        </button>
+        <button class="character-card" data-character="okayu">
+          <img src="assets/okayu.png" alt="おかゆ">
+          <strong>おかゆ</strong>
+          <span>走るスピードが速い</span>
+        </button>
+        <button class="character-card" data-character="konbu">
+          <img src="assets/konbu.png" alt="こんぶ">
+          <strong>こんぶ</strong>
+          <span>ライフが4つ</span>
+        </button>
+      </div>
+      <p id="selectedCharacterText" class="selected-character-text">
+        選択中：マルゲリータ（ジャンプが高い）
+      </p>
     </section>
 
     <section class="player-panel">
@@ -53,6 +78,6 @@
   </main>
 
   <footer>© 青彩堂・ワンパグ</footer>
-  <script src="script.js?v=12"></script>
+  <script src="script.js?v=14"></script>
 </body>
 </html>

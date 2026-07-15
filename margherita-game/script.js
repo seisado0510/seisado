@@ -15,6 +15,39 @@ const rankingList=document.getElementById("rankingList");
 const closeRanking=document.getElementById("closeRanking");
 const resetRankingButton=document.getElementById("resetRanking");
 const RANKING_KEY="onepugRankingV5";
+const characterCards=[...document.querySelectorAll(".character-card")];
+const selectedCharacterText=document.getElementById("selectedCharacterText");
+const CHARACTER_KEY="onepugSelectedCharacterV6";
+
+const characterSettings={
+  margherita:{
+    name:"マルゲリータ",
+    image:"assets/margherita.png",
+    speed:3.4,
+    jumpPower:-42,
+    maxLives:3,
+    ability:"ジャンプが高い"
+  },
+  okayu:{
+    name:"おかゆ",
+    image:"assets/okayu.png",
+    speed:4.5,
+    jumpPower:-30,
+    maxLives:3,
+    ability:"走るスピードが速い"
+  },
+  konbu:{
+    name:"こんぶ",
+    image:"assets/konbu.png",
+    speed:3.0,
+    jumpPower:-30,
+    maxLives:4,
+    ability:"ライフが4つ"
+  }
+};
+
+let selectedCharacter=localStorage.getItem(CHARACTER_KEY)||"margherita";
+let maxLives=characterSettings[selectedCharacter].maxLives;
 
 let score=0,time=45,lives=3,coins=0,gameRunning=false,frame=0,lastSecond=0,soundOn=true;
 let effects=[],particles=[];
@@ -22,14 +55,32 @@ let hitCooldown=0,feverMode=false,feverFrames=0,feverUsed=false;
 let bestScore=Number(localStorage.getItem("onepugBestScoreV4")||0);
 bestText.textContent=bestScore;
 
-const dogs=[
-  {name:"マルゲリータ",img:new Image(),x:70,y:305,speed:3.4,jump:0,phase:0},
-  {name:"こんぶ",img:new Image(),x:-150,y:210,speed:3.0,jump:0,phase:1.8},
-  {name:"おかゆ",img:new Image(),x:-300,y:115,speed:3.2,jump:0,phase:3.5}
-];
-dogs[0].img.src="assets/margherita.png";
-dogs[1].img.src="assets/konbu.png";
-dogs[2].img.src="assets/okayu.png";
+const playerDog={
+  name:"",
+  img:new Image(),
+  x:70,
+  y:250,
+  speed:3.4,
+  jump:0,
+  phase:0,
+  jumpPower:-30
+};
+const dogs=[playerDog];
+
+function applySelectedCharacter(){
+  const setting=characterSettings[selectedCharacter];
+  playerDog.name=setting.name;
+  playerDog.img=new Image();
+  playerDog.img.src=setting.image;
+  playerDog.speed=setting.speed;
+  playerDog.jumpPower=setting.jumpPower;
+  maxLives=setting.maxLives;
+
+  characterCards.forEach(card=>{
+    card.classList.toggle("selected",card.dataset.character===selectedCharacter);
+  });
+  selectedCharacterText.textContent=`選択中：${setting.name}（${setting.ability}）`;
+}
 
 const normalSnacks=[
   {icon:"🦴",point:1},{icon:"🍪",point:2},{icon:"🧀",point:3},
@@ -100,7 +151,7 @@ function closeRankingPanel(){
 function updateHud(){
   pointText.textContent=score;
   timeText.textContent=time;
-  lifeText.textContent="❤️".repeat(Math.max(0,lives))+"🖤".repeat(Math.max(0,3-lives));
+  lifeText.textContent="❤️".repeat(Math.max(0,lives))+"🖤".repeat(Math.max(0,maxLives-lives));
   coinText.textContent=coins;
 }
 
@@ -317,7 +368,7 @@ function moveDogs(){
 
 function jump(){
   if(!gameRunning)return;
-  dogs.forEach((d,i)=>setTimeout(()=>{if(d.jump===0)d.jump=-30},i*60));
+  dogs.forEach((d,i)=>setTimeout(()=>{if(d.jump===0)d.jump=d.jumpPower},i*60));
 }
 
 function draw(){
@@ -350,9 +401,10 @@ function loop(ts){
 function startGame(){
   if(!playerNameInput.value.trim()) playerNameInput.value="ゲスト";
   localStorage.setItem("onepugPlayerName",playerNameInput.value.trim().slice(0,10));
-  score=0;time=45;lives=3;coins=0;gameRunning=true;frame=0;lastSecond=0;effects=[];particles=[];
+  applySelectedCharacter();
+  score=0;time=45;lives=maxLives;coins=0;gameRunning=true;frame=0;lastSecond=0;effects=[];particles=[];
   hitCooldown=0;feverMode=false;feverFrames=0;feverUsed=false;
-  dogs[0].x=70;dogs[1].x=-150;dogs[2].x=-300;
+  playerDog.x=70;playerDog.y=250;playerDog.jump=0;
   bomb.active=false;bomb.timer=0;rabbit.active=false;rabbit.timer=0;goldenBone.active=false;goldenBone.timer=0;
   coin.active=false;coin.timer=0;chest.active=false;chest.timer=0;boss.active=false;boss.hits=0;
   resetSnack();spawnBomb();spawnRabbit();spawnCoin();
@@ -366,7 +418,7 @@ function endGame(reason){
   const playerName=(playerNameInput.value||"ゲスト").trim().slice(0,10)||"ゲスト";
   const ranking=saveRanking(playerName,score,coins);
   const rank=ranking.findIndex(item=>item.name===playerName&&item.score===score&&item.coins===coins)+1;
-  message.textContent=`ゲーム終了（${reason}） ${playerName}：${score}点・コイン${coins}枚${rank>0?`／第${rank}位！`:""}`;
+  message.textContent=`ゲーム終了（${reason}） ${playerName}／${characterSettings[selectedCharacter].name}：${score}点・コイン${coins}枚${rank>0?`／第${rank}位！`:""}`;
   addEffect(400,250,"GAME OVER","#d40000",44);
   setTimeout(openRankingPanel,700);
 }
@@ -382,8 +434,21 @@ resetRankingButton.addEventListener("click",()=>{
     renderRanking();
   }
 });
+characterCards.forEach(card=>{
+  card.addEventListener("click",()=>{
+    if(gameRunning){
+      message.textContent="キャラクター変更は次のゲームから反映されます";
+    }
+    selectedCharacter=card.dataset.character;
+    localStorage.setItem(CHARACTER_KEY,selectedCharacter);
+    applySelectedCharacter();
+    updateHud();
+  });
+});
 canvas.addEventListener("pointerdown",jump);
 window.addEventListener("keydown",e=>{if(e.code==="Space"){e.preventDefault();jump()}});
 
 playerNameInput.value=localStorage.getItem("onepugPlayerName")||"ゲスト";
+applySelectedCharacter();
+lives=maxLives;
 updateHud();resetSnack();renderRanking();draw();requestAnimationFrame(loop);
