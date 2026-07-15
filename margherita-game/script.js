@@ -36,6 +36,17 @@ const photoPanel=document.getElementById("photoPanel");
 const closePhoto=document.getElementById("closePhoto");
 const photoCanvas=document.getElementById("photoCanvas");
 const photoCtx=photoCanvas.getContext("2d");
+const modeCards=[...document.querySelectorAll(".mode-card")];
+const selectedModeText=document.getElementById("selectedModeText");
+const player2Panel=document.getElementById("player2Panel");
+const player2NameInput=document.getElementById("player2Name");
+const player2CharacterSelect=document.getElementById("player2Character");
+const dualHud=document.getElementById("dualHud");
+const player1HudName=document.getElementById("player1HudName");
+const player2HudName=document.getElementById("player2HudName");
+const player1ScoreText=document.getElementById("player1Score");
+const player2ScoreText=document.getElementById("player2Score");
+const dualModeLabel=document.getElementById("dualModeLabel");
 const CHARACTER_KEY="onepugSelectedCharacterV6";
 
 const characterSettings={
@@ -81,6 +92,12 @@ let powerupFrames=0;
 let totalGoldenBones=Number(localStorage.getItem("onepugGoldenBonesV8")||0);
 let bossDefeats=Number(localStorage.getItem("onepugBossDefeatsV8")||0);
 let achievements=JSON.parse(localStorage.getItem(ACHIEVEMENT_KEY)||"{}");
+const MODE_KEY="onepugModeV9";
+let selectedMode=localStorage.getItem(MODE_KEY)||"solo";
+let player1Score=0;
+let player2Score=0;
+let activePlayerIndex=0;
+let player2Dog=null;
 
 const stageNames={
   cafe:"ワンパグカフェ",
@@ -114,7 +131,8 @@ const playerDog={
   speed:3.4,
   jump:0,
   phase:0,
-  jumpPower:-30
+  jumpPower:-30,
+  playerIndex:0
 };
 const dogs=[playerDog];
 
@@ -145,9 +163,18 @@ seasonButtons.forEach(btn=>{
     selectedSeason=btn.dataset.season;
     localStorage.setItem("onepugSeasonV7",selectedSeason);
     updateSeasonButtons();
+updateModeUi();
 updateStageCards();
 chooseWeather();
 renderAchievements();
+  });
+});
+
+modeCards.forEach(card=>{
+  card.addEventListener("click",()=>{
+    selectedMode=card.dataset.mode;
+    localStorage.setItem(MODE_KEY,selectedMode);
+    updateModeUi();
   });
 });
 
@@ -287,6 +314,39 @@ function stopBgm(){
 }
 
 
+
+function updateModeUi(){
+  const labels={solo:"1人プレイ",coop:"2人協力",versus:"2人対戦"};
+  modeCards.forEach(card=>card.classList.toggle("selected",card.dataset.mode===selectedMode));
+  selectedModeText.textContent=`選択中：${labels[selectedMode]}`;
+  const dual=selectedMode!=="solo";
+  player2Panel.classList.toggle("hidden",!dual);
+  dualHud.classList.toggle("hidden",!dual);
+  dualModeLabel.textContent=selectedMode==="coop"?"🤝 協力":"⚔️ 対戦";
+}
+
+function makePlayer2Dog(){
+  const key=player2CharacterSelect.value;
+  const setting=characterSettings[key];
+  player2Dog={
+    name:setting.name,
+    img:new Image(),
+    x:-180,
+    y:145,
+    speed:setting.speed,
+    jump:0,
+    phase:2.2,
+    jumpPower:setting.jumpPower,
+    playerIndex:1
+  };
+  player2Dog.img.src=setting.image;
+}
+
+function updateDualHud(){
+  player1ScoreText.textContent=player1Score;
+  player2ScoreText.textContent=player2Score;
+}
+
 function updateStageCards(){
   stageCards.forEach(card=>card.classList.toggle("selected",card.dataset.stage===selectedStage));
   selectedStageText.textContent=`選択中：${stageNames[selectedStage]}`;
@@ -412,6 +472,56 @@ function drawBackground(){
   if(time<=5){top="#18213d";bottom="#3d315f"}
   else if(time<=15){top="#f2a16e";bottom="#844d63"}
   if(feverMode){top=`hsl(${(frame*4)%360},90%,72%)`;bottom=`hsl(${(frame*4+150)%360},90%,72%)`}
+
+  if(selectedStage==="cafe"){
+    // 木目の床
+    ctx.fillStyle="#8a5a35";ctx.fillRect(0,345,800,155);
+    for(let y=345;y<500;y+=26){
+      ctx.strokeStyle="rgba(76,43,24,.55)";ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(800,y);ctx.stroke();
+    }
+    for(let x=0;x<800;x+=95){
+      ctx.beginPath();ctx.moveTo(x,345);ctx.lineTo(x+22,500);ctx.stroke();
+    }
+
+    // 奥の壁・窓
+    ctx.fillStyle="#efe2cf";ctx.fillRect(0,70,800,275);
+    ctx.fillStyle="#74472b";ctx.fillRect(45,90,210,150);
+    ctx.fillStyle="#bfe7ff";ctx.fillRect(60,105,180,120);
+    ctx.strokeStyle="#fff";ctx.lineWidth=6;
+    ctx.beginPath();ctx.moveTo(150,105);ctx.lineTo(150,225);ctx.moveTo(60,165);ctx.lineTo(240,165);ctx.stroke();
+
+    // カウンター
+    ctx.fillStyle="#5f3924";ctx.fillRect(500,190,270,135);
+    ctx.fillStyle="#b77a48";ctx.fillRect(485,175,300,24);
+    ctx.fillStyle="#2e211a";ctx.fillRect(525,220,105,70);
+    ctx.fillStyle="#d9d3c7";ctx.fillRect(535,228,85,54);
+    ctx.font="30px serif";ctx.fillText("☕",680,250);ctx.fillText("🧁",725,250);
+
+    // 看板・照明
+    ctx.fillStyle="#654127";ctx.fillRect(290,92,205,72);
+    ctx.fillStyle="#fff7e9";ctx.fillRect(300,102,185,52);
+    ctx.fillStyle="#8b5a2b";ctx.font="bold 21px sans-serif";ctx.textAlign="center";ctx.fillText("ONE PUG CAFE",392,135);
+    ctx.strokeStyle="#4c3425";ctx.lineWidth=4;
+    for(const x of [325,410,495]){
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,58);ctx.stroke();
+      ctx.fillStyle="#ffd98a";ctx.beginPath();ctx.arc(x,70,17,0,Math.PI*2);ctx.fill();
+    }
+
+    // テーブル・椅子
+    for(const x of [125,350,620]){
+      ctx.fillStyle="#7d4b2c";ctx.fillRect(x,290,115,15);ctx.fillRect(x+50,305,13,62);
+      ctx.fillStyle="#b97c49";ctx.fillRect(x-30,330,38,13);ctx.fillRect(x+106,330,38,13);
+    }
+
+    // 観葉植物
+    ctx.fillStyle="#6e4327";ctx.fillRect(35,300,35,55);
+    ctx.fillStyle="#3b9d58";
+    for(const [x,y,r] of [[52,280,28],[30,295,24],[75,295,25]]){
+      ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+    }
+    ctx.textAlign="left";
+  }
 
   if(selectedStage==="dogrun"){top="#9ee8ff";bottom="#c8f4b8"}
   if(selectedStage==="park"){top="#ffd6e7";bottom="#c7efb1"}
@@ -620,19 +730,39 @@ function moveDogs(){
 
     if(collision(cx,cy,snack.x+18,snack.y-15,50,60)){
       const earned=snack.item.point*(feverMode?2:1)*(activePowerup==="double"?2:1);
-      score+=earned;d.jump=-28;addEffect(snack.x,snack.y,`+${earned}`,feverMode?"#ff00c8":"#ff6b00");burst(snack.x,snack.y,feverMode);
+      score+=earned;
+      if(selectedMode!=="solo"){
+        if(d.playerIndex===1)player2Score+=earned;else player1Score+=earned;
+        updateDualHud();
+      }
+      d.jump=-28;addEffect(snack.x,snack.y,`+${earned}`,feverMode?"#ff00c8":"#ff6b00");burst(snack.x,snack.y,feverMode);
       playTone(520,820,.12,.09);resetSnack();
       if(score>=30)startFever();
     }
     if(rabbit.active&&collision(cx,cy,rabbit.x,rabbit.y,55,65)){
-      score=Math.max(0,score-10);rabbit.active=false;rabbit.timer=0;d.x-=70;addEffect(rabbit.x,rabbit.y,"-10","#d40000");message.textContent="うさぎに当たって10点減点！";playTone(240,90,.22,.12);
+      score=Math.max(0,score-10);
+      if(selectedMode!=="solo"){
+        if(d.playerIndex===1)player2Score=Math.max(0,player2Score-10);else player1Score=Math.max(0,player1Score-10);
+        updateDualHud();
+      }
+      rabbit.active=false;rabbit.timer=0;d.x-=70;addEffect(rabbit.x,rabbit.y,"-10","#d40000");message.textContent="うさぎに当たって10点減点！";playTone(240,90,.22,.12);
     }
     if(goldenBone.active&&collision(cx,cy,goldenBone.x,goldenBone.y,60,65)){
-      score+=100;totalGoldenBones++;localStorage.setItem("onepugGoldenBonesV8",String(totalGoldenBones));
+      score+=100;
+      if(selectedMode!=="solo"){
+        if(d.playerIndex===1)player2Score+=100;else player1Score+=100;
+        updateDualHud();
+      }
+      totalGoldenBones++;localStorage.setItem("onepugGoldenBonesV8",String(totalGoldenBones));
       goldenBone.active=false;goldenBone.timer=0;addEffect(goldenBone.x,goldenBone.y,"JACKPOT +100","#d19000",38);burst(goldenBone.x,goldenBone.y,true);playTone(500,1600,.6,.15);
     }
     if(coin.active&&collision(cx,cy,coin.x,coin.y,55,60)){
-      coins++;coin.active=false;coin.timer=0;addEffect(coin.x,coin.y,"+1 COIN","#c58a00");playTone(700,1100,.12,.08);
+      coins++;
+      if(selectedMode!=="solo"){
+        if(d.playerIndex===1)player2Score+=5;else player1Score+=5;
+        updateDualHud();
+      }
+      coin.active=false;coin.timer=0;addEffect(coin.x,coin.y,"+1 COIN","#c58a00");playTone(700,1100,.12,.08);
     }
     if(chest.active&&collision(cx,cy,chest.x,chest.y,60,65)){
       chest.active=false;chest.timer=0;applyChest();
@@ -669,9 +799,20 @@ function moveDogs(){
   updateHud();
 }
 
+function jumpPlayer(index){
+  if(!gameRunning)return;
+  const d=dogs.find(dog=>dog.playerIndex===index);
+  if(d&&d.jump===0)d.jump=d.jumpPower;
+}
+
 function jump(){
   if(!gameRunning)return;
-  dogs.forEach((d,i)=>setTimeout(()=>{if(d.jump===0)d.jump=d.jumpPower},i*60));
+  if(selectedMode==="solo"){
+    jumpPlayer(0);
+  }else{
+    jumpPlayer(activePlayerIndex);
+    activePlayerIndex=activePlayerIndex===0?1:0;
+  }
 }
 
 function draw(){
@@ -710,9 +851,19 @@ function startGame(){
   if(!playerNameInput.value.trim()) playerNameInput.value="ゲスト";
   localStorage.setItem("onepugPlayerName",playerNameInput.value.trim().slice(0,10));
   applySelectedCharacter();
-  score=0;time=45;lives=maxLives;coins=0;gameRunning=true;frame=0;lastSecond=0;effects=[];particles=[];
+  score=0;time=45;lives=maxLives;coins=0;gameRunning=true;
+  player1Score=0;player2Score=0;activePlayerIndex=0;
+  player1HudName.textContent=playerNameInput.value.trim()||"プレイヤー1";
+  player2HudName.textContent=player2NameInput.value.trim()||"プレイヤー2";
+  updateDualHud();
+  dogs.length=1;
+  if(selectedMode!=="solo"){
+    makePlayer2Dog();
+    dogs.push(player2Dog);
+  }frame=0;lastSecond=0;effects=[];particles=[];
   hitCooldown=0;feverMode=false;feverFrames=0;feverUsed=false;
   playerDog.x=70;playerDog.y=250;playerDog.jump=0;
+  if(player2Dog){player2Dog.x=-180;player2Dog.y=145;player2Dog.jump=0;}
   bomb.active=false;bomb.timer=0;rabbit.active=false;rabbit.timer=0;goldenBone.active=false;goldenBone.timer=0;
   coin.active=false;coin.timer=0;chest.active=false;chest.timer=0;powerItem.active=false;powerItem.timer=0;
   boss.active=false;boss.hits=0;clearPowerup();weatherTimer=0;chooseWeather();
@@ -725,9 +876,18 @@ function endGame(reason){
   gameRunning=false;boss.active=false;bomb.active=false;rabbit.active=false;stopBgm();
   if(score>bestScore){bestScore=score;localStorage.setItem("onepugBestScoreV4",String(bestScore));bestText.textContent=bestScore}
   const playerName=(playerNameInput.value||"ゲスト").trim().slice(0,10)||"ゲスト";
+  if(selectedMode==="versus"){
+    const p2=(player2NameInput.value||"プレイヤー2").trim().slice(0,10)||"プレイヤー2";
+    const result=player1Score===player2Score?"引き分け":(player1Score>player2Score?`${playerName}の勝ち！`:`${p2}の勝ち！`);
+    message.textContent=`対戦終了：${playerName} ${player1Score}点 ／ ${p2} ${player2Score}点　${result}`;
+  }else if(selectedMode==="coop"){
+    message.textContent=`協力プレイ終了！ 合計${player1Score+player2Score}点`;
+  }
   const ranking=saveRanking(playerName,score,coins);
   const rank=ranking.findIndex(item=>item.name===playerName&&item.score===score&&item.coins===coins)+1;
-  message.textContent=`ゲーム終了（${reason}） ${playerName}／${characterSettings[selectedCharacter].name}：${score}点・コイン${coins}枚${rank>0?`／第${rank}位！`:""}`;
+  if(selectedMode==="solo"){
+    message.textContent=`ゲーム終了（${reason}） ${playerName}／${characterSettings[selectedCharacter].name}：${score}点・コイン${coins}枚${rank>0?`／第${rank}位！`:""}`;
+  }
   addEffect(400,250,"GAME OVER","#d40000",44);
   setTimeout(openRankingPanel,700);
 }
@@ -755,7 +915,11 @@ characterCards.forEach(card=>{
   });
 });
 canvas.addEventListener("pointerdown",jump);
-window.addEventListener("keydown",e=>{if(e.code==="Space"){e.preventDefault();jump()}});
+window.addEventListener("keydown",e=>{
+  if(e.code==="Space"){e.preventDefault();jump()}
+  if(e.code==="KeyW"){e.preventDefault();jumpPlayer(0)}
+  if(e.code==="ArrowUp"){e.preventDefault();jumpPlayer(1)}
+});
 
 playerNameInput.value=localStorage.getItem("onepugPlayerName")||"ゲスト";
 applySelectedCharacter();

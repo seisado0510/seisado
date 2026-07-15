@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#8b5a2b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="ワンパグゲーム">
-  <title>ワンパグゲーム Ver.8</title>
+  <title>ワンパグゲーム Ver.9</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,14 +15,14 @@
   <section id="openingScreen" class="opening-screen">
     <div class="opening-card">
       <div class="opening-logo">🐶☕</div>
-      <h2>Welcome to ワンパグ！</h2>
-      <p>好きなパグを選んで、おやつ争奪戦へ！</p>
+      <h2>Welcome to ONE PUG CAFE！</h2>
+      <p>豪華になったワンパグカフェで、対戦・協力プレイを楽しもう！</p>
       <button id="openingStartButton">ゲーム画面へ</button>
     </div>
   </section>
 
   <header>
-    <h1>🐶 ワンパグゲーム Ver.8 ☕</h1>
+    <h1>🐶 ワンパグゲーム Ver.9 ☕</h1>
     <p>おやつを集めて、うさぎ・爆弾・ボスをよけよう！</p>
   </header>
 
@@ -40,11 +40,59 @@
       <span id="achievementCount">実績：0/6</span>
     </section>
 
+    <section id="dualHud" class="dual-hud hidden">
+      <div class="dual-player one">
+        <span id="player1HudName">プレイヤー1</span>
+        <strong id="player1Score">0</strong>
+      </div>
+      <div class="dual-center" id="dualModeLabel">協力プレイ</div>
+      <div class="dual-player two">
+        <span id="player2HudName">プレイヤー2</span>
+        <strong id="player2Score">0</strong>
+      </div>
+    </section>
+
     <section class="game-shell">
       <canvas id="gameCanvas" width="800" height="500"></canvas>
     </section>
 
 
+
+
+    <section class="mode-select">
+      <h2>👥 プレイモードを選んでください</h2>
+      <div class="mode-grid">
+        <button class="mode-card selected" data-mode="solo">
+          <span class="mode-icon">🐶</span>
+          <strong>1人プレイ</strong>
+          <small>これまで通り遊ぶ</small>
+        </button>
+        <button class="mode-card" data-mode="coop">
+          <span class="mode-icon">🤝</span>
+          <strong>2人協力</strong>
+          <small>2人の得点を合算</small>
+        </button>
+        <button class="mode-card" data-mode="versus">
+          <span class="mode-icon">⚔️</span>
+          <strong>2人対戦</strong>
+          <small>高得点の人が勝ち</small>
+        </button>
+      </div>
+      <p id="selectedModeText" class="selected-mode-text">選択中：1人プレイ</p>
+    </section>
+
+    <section id="player2Panel" class="player2-panel hidden">
+      <label for="player2Name">プレイヤー2</label>
+      <input id="player2Name" type="text" maxlength="10" placeholder="2人目の名前" value="プレイヤー2">
+      <div class="player2-character">
+        <span>2人目のパグ：</span>
+        <select id="player2Character">
+          <option value="margherita">マルゲリータ</option>
+          <option value="okayu">おかゆ</option>
+          <option value="konbu">こんぶ</option>
+        </select>
+      </div>
+    </section>
 
     <section class="stage-select">
       <h2>🗺️ ステージを選んでください</h2>
@@ -141,6 +189,6 @@
   </main>
 
   <footer>© 青彩堂・ワンパグ</footer>
-  <script src="script.js?v=17"></script>
+  <script src="script.js?v=18"></script>
 </body>
 </html>
