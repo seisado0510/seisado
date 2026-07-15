@@ -16,12 +16,12 @@
 
   <style>
     :root {
-      --black: #080b0b;
-      --deep: #0d1715;
-      --green: #0b5c4e;
-      --green-light: #11806b;
-      --gold: #d7ad4f;
-      --gold-light: #f3d78e;
+      --black: #073b22;
+      --deep: #075c31;
+      --green: #159447;
+      --green-light: #29bd59;
+      --gold: #d8aa2f;
+      --gold-light: #ffe08a;
       --white: #ffffff;
       --cream: #f5f1e8;
       --text: #202524;
@@ -34,7 +34,7 @@
     body {
       font-family: "Yu Gothic", "Meiryo", sans-serif;
       color: var(--text);
-      background: #f4f6f5;
+      background: #f8fbf4;
       line-height: 1.8;
       overflow-x: hidden;
     }
@@ -49,9 +49,9 @@
       position: relative;
       color: #fff;
       text-align: center;
-      padding: 95px 20px 75px;
+      padding: 92px 20px 72px;
       background:
-        linear-gradient(135deg, rgba(2, 6, 6, .90), rgba(7, 38, 32, .72)),
+        linear-gradient(120deg, rgba(3, 91, 38, .92), rgba(25, 174, 73, .68) 48%, rgba(255,255,255,.12)),
         url("assets/range-after.jpg") center/cover no-repeat;
     }
 
@@ -59,7 +59,9 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, transparent 0, rgba(0, 0, 0, .35) 100%);
+      background:
+        radial-gradient(circle at 78% 18%, rgba(255,255,255,.38), transparent 28%),
+        linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,49,19,.34));
     }
 
     .hero-content {
@@ -80,7 +82,7 @@
       gap: 8px;
       padding: 8px 18px;
       border: 1px solid rgba(243, 215, 142, .7);
-      background: rgba(0, 0, 0, .35);
+      background: rgba(0, 91, 38, .74);
       color: var(--gold-light);
       border-radius: 999px;
       font-size: 14px;
@@ -96,7 +98,7 @@
       letter-spacing: .18em;
       text-indent: .18em;
       font-weight: 900;
-      text-shadow: 0 10px 35px rgba(0, 0, 0, .55);
+      text-shadow: 0 5px 0 rgba(255,255,255,.18), 0 12px 35px rgba(0, 55, 20, .48);
     }
 
     .hero-copy {
@@ -109,7 +111,7 @@
     .hero-copy span { color: var(--gold-light); }
 
     .hero-sub {
-      max-width: 760px;
+      max-width: 680px;
       margin: 20px auto 0;
       color: rgba(255,255,255,.9);
       font-size: clamp(15px, 2vw, 19px);
@@ -149,10 +151,10 @@
 
     .mini-crowdfund {
       max-width: 760px;
-      margin: 28px auto 0;
+      margin: 22px auto 0;
       padding: 11px 16px;
       border-left: 3px solid var(--gold);
-      background: rgba(0, 0, 0, .42);
+      background: rgba(5, 91, 38, .68);
       color: rgba(255,255,255,.88);
       font-size: 13px;
       text-align: left;
@@ -164,9 +166,9 @@
     nav {
       position: static;
       z-index: 1000;
-      background: rgba(8, 11, 11, .95);
-      border-bottom: 1px solid rgba(215, 173, 79, .25);
-      backdrop-filter: blur(10px);
+      background: linear-gradient(90deg, #087337, #12a94d);
+      border-bottom: 3px solid var(--gold);
+      box-shadow: 0 7px 20px rgba(0, 92, 38, .20);
     }
     nav ul {
       max-width: 1180px;
@@ -183,7 +185,7 @@
       font-size: 13px;
       font-weight: 700;
     }
-    nav a:hover { color: var(--gold-light); }
+    nav a:hover { color: #173b1f; background: var(--gold-light); }
 
     .trust-strip {
       position: relative;
@@ -192,8 +194,8 @@
       margin: 20px auto 45px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      background: #fff;
-      border-radius: 14px;
+      background: linear-gradient(180deg, #fffef8, #f7f5e9);
+      border-radius: 18px;
       box-shadow: var(--shadow);
       overflow: hidden;
     }
@@ -205,8 +207,8 @@
     .trust-item:last-child { border-right: 0; }
     .trust-item strong {
       display: block;
-      color: var(--green);
-      font-size: 24px;
+      color: #0b873d;
+      font-size: 25px;
       line-height: 1.2;
     }
     .trust-item span { color: var(--muted); font-size: 13px; }
@@ -228,7 +230,7 @@
     section h2 {
       margin-top: 5px;
       text-align: center;
-      color: var(--deep);
+      color: #08743a;
       font-size: clamp(29px, 4vw, 42px);
       line-height: 1.35;
     }
@@ -252,7 +254,7 @@
       width: 100%;
       max-width: none;
       padding: 75px max(18px, calc((100% - 1140px)/2));
-      background: linear-gradient(135deg, var(--black), #10221e);
+      background: linear-gradient(135deg, #075d30, #0fa348);
       color: #fff;
     }
     .dark-section h2 { color: #fff; }
@@ -269,12 +271,19 @@
       border-radius: 15px;
       padding: 28px 22px;
       box-shadow: 0 10px 30px rgba(0,0,0,.08);
-      border: 1px solid rgba(8, 69, 58, .07);
+      border: 1px solid rgba(19, 153, 68, .16);
+      border-top: 5px solid #20ae52;
       transition: .3s ease;
     }
     .card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
     .card .icon { font-size: 40px; }
     .card h3 { color: var(--green); margin: 10px 0 6px; font-size: 20px; }
+
+
+    .service-card { padding: 0; overflow: hidden; }
+    .service-card img { height: 180px; object-fit: cover; }
+    .service-card .service-body { padding: 22px; }
+    .service-card .service-tag { display:inline-block; margin-top:10px; padding:4px 10px; border-radius:999px; background:#eff9e9; color:#08743a; font-size:12px; font-weight:800; }
 
     .work-card {
       margin-top: 28px;
@@ -351,7 +360,7 @@
     .profile-box p + p { margin-top: 12px; }
 
     .cafe-banner {
-      background: linear-gradient(135deg, #fff8e8, #f3e1bc);
+      background: linear-gradient(135deg, #f8ffe9, #fff2b8);
       border: 1px solid #dfbd72;
       text-align: center;
     }
@@ -368,7 +377,7 @@
     }
 
     .contact {
-      background: linear-gradient(135deg, #092f29, #0b5c4e);
+      background: linear-gradient(135deg, #08743a, #15b856);
       color: #fff;
       text-align: center;
     }
@@ -417,87 +426,6 @@
       cursor: pointer;
     }
 
-    .problem-band {
-      width: 100%;
-      max-width: none;
-      margin: 0;
-      padding: 64px max(18px, calc((100% - 1140px)/2));
-      background: linear-gradient(135deg, #efe5cc, #fbf8f0);
-      border-top: 1px solid rgba(215, 173, 79, .3);
-      border-bottom: 1px solid rgba(215, 173, 79, .3);
-    }
-    .problem-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 28px;
-    }
-    .problem-card {
-      min-height: 150px;
-      padding: 26px 20px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.85);
-      border: 1px solid rgba(77,55,17,.12);
-      text-align: center;
-      box-shadow: 0 10px 28px rgba(77,55,17,.08);
-    }
-    .problem-card strong { display:block; margin-top:10px; color:var(--deep); font-size:18px; }
-    .problem-icon { font-size: 34px; }
-
-    .cta-band {
-      width: min(1140px, calc(100% - 34px));
-      margin: 58px auto;
-      padding: 34px 24px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, #0a1d1a, #0b5c4e);
-      color: #fff;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-    .cta-band h2 { color:#fff; margin:0; font-size:clamp(25px,4vw,36px); }
-    .cta-band h2::after { display:none; }
-    .cta-band p { margin:10px 0 22px; color:rgba(255,255,255,.78); }
-
-    .faq-list { display:grid; gap:14px; margin-top:30px; }
-    .faq-item {
-      overflow:hidden;
-      border-radius:12px;
-      background:#fff;
-      box-shadow:0 8px 24px rgba(0,0,0,.07);
-      border:1px solid rgba(8,69,58,.08);
-    }
-    .faq-item summary {
-      cursor:pointer;
-      list-style:none;
-      padding:18px 52px 18px 20px;
-      position:relative;
-      color:var(--deep);
-      font-weight:800;
-    }
-    .faq-item summary::-webkit-details-marker { display:none; }
-    .faq-item summary::after {
-      content:'＋';
-      position:absolute;
-      right:20px;
-      top:50%;
-      transform:translateY(-50%);
-      color:var(--gold);
-      font-size:22px;
-    }
-    .faq-item[open] summary::after { content:'−'; }
-    .faq-answer { padding:0 20px 20px; color:var(--muted); }
-
-    .price-clarity {
-      margin-top:18px;
-      padding:16px 18px;
-      border-radius:10px;
-      background:#fff8e8;
-      border:1px solid #ead39f;
-      color:#5f4b1d;
-      font-size:14px;
-      text-align:center;
-    }
-
     @media (max-width: 800px) {
       body { padding-bottom: 64px; }
       .hero { min-height: 82vh; padding: 78px 18px 55px; }
@@ -513,9 +441,6 @@
       .before-after { grid-template-columns: 1fr; }
       .photo-box img { height: 340px; }
       .profile-box, .contact, .cafe-banner { padding: 26px 18px; }
-      .problem-grid { grid-template-columns: 1fr; }
-      .problem-band { padding-top: 48px; padding-bottom: 48px; }
-      .cta-band { margin: 42px auto; padding: 28px 18px; }
       .fixed-contact {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -538,9 +463,9 @@
 <body>
   <header class="hero">
     <div class="hero-content">
-      <div class="eyebrow">加須市を中心に地域密着・お見積り無料</div>
+      <div class="eyebrow">加須市を中心に　地域密着！迅速対応！</div>
       <h1>青彩堂</h1>
-      <p class="hero-copy">暮らしを支える、<span>確かな施工。</span></p>
+      <p class="hero-copy"><span>住宅設備のプロフェッショナル</span><br>安心・丁寧・確実な施工</p>
       <p class="hero-sub">給湯器・ビルトインコンロ・レンジフード・食洗機・キッチン水栓の交換に対応。工事内容と料金を分かりやすくご案内します。</p>
 
       <div class="hero-actions">
@@ -562,39 +487,28 @@
       <li><a href="#price">料金目安</a></li>
       <li><a href="#promise">選ばれる理由</a></li>
       <li><a href="#flow">施工の流れ</a></li>
-      <li><a href="#faq">よくある質問</a></li>
       <li><a href="#profile">会社案内</a></li>
       <li><a href="#contact">お問い合わせ</a></li>
     </ul>
   </nav>
 
   <div class="trust-strip reveal">
-    <div class="trust-item"><strong>無料</strong><span>お見積り・ご相談</span></div>
     <div class="trust-item"><strong>地域密着</strong><span>加須市と周辺地域</span></div>
-    <div class="trust-item"><strong>5種類</strong><span>主要な住宅設備に対応</span></div>
-    <div class="trust-item"><strong>LINE</strong><span>写真でかんたん相談</span></div>
+    <div class="trust-item"><strong>見積無料</strong><span>相談・現地確認</span></div>
+    <div class="trust-item"><strong>安心施工</strong><span>丁寧に事前説明</span></div>
+    <div class="trust-item"><strong>迅速対応</strong><span>日程はご相談ください</span></div>
   </div>
-
-  <section class="problem-band reveal" aria-labelledby="problem-title">
-    <p class="section-kicker">Trouble</p>
-    <h2 id="problem-title">こんなお困りごとはありませんか？</h2>
-    <div class="problem-grid">
-      <div class="problem-card"><div class="problem-icon">♨️</div><strong>お湯が出ない・給湯器が古い</strong><p>突然の故障や交換時期のご相談に対応します。</p></div>
-      <div class="problem-card"><div class="problem-icon">🔥</div><strong>コンロや換気扇を新しくしたい</strong><p>機種選びから交換工事まで分かりやすくご案内します。</p></div>
-      <div class="problem-card"><div class="problem-icon">📱</div><strong>まず写真だけで相談したい</strong><p>LINEで写真を送って、工事内容を気軽にご相談いただけます。</p></div>
-    </div>
-  </section>
 
   <section id="service" class="reveal">
     <p class="section-kicker">Service</p>
     <h2>住宅設備の交換は青彩堂へ</h2>
     <p class="section-lead">暮らしに欠かせない設備を、丁寧な説明と確かな施工で交換します。</p>
     <div class="cards">
-      <div class="card"><div class="icon">♨️</div><h3>給湯器交換</h3><p>ガス給湯器の撤去・設置・試運転まで対応します。</p></div>
-      <div class="card"><div class="icon">🔥</div><h3>ビルトインコンロ</h3><p>古いコンロの撤去から新品の設置まで行います。</p></div>
-      <div class="card"><div class="icon">💨</div><h3>レンジフード</h3><p>交換・ダクト接続・動作確認まで丁寧に施工します。</p></div>
-      <div class="card"><div class="icon">🍽️</div><h3>ビルトイン食洗機</h3><p>交換・給排水接続・試運転まで対応します。</p></div>
-      <div class="card"><div class="icon">🚰</div><h3>キッチン水栓</h3><p>水栓交換や水漏れのご相談にも対応します。</p></div>
+      <div class="card service-card"><img src="assets/waterheater-after.jpg" alt="給湯器交換"><div class="service-body"><h3>給湯器交換</h3><p>ガス給湯器の撤去・設置・試運転まで対応します。</p><span class="service-tag">各メーカー対応</span></div></div>
+      <div class="card service-card"><img src="assets/stove-after.jpg" alt="3つ口ビルトインコンロ交換"><div class="service-body"><h3>ビルトインコンロ交換</h3><p>3つ口タイプを中心に、古いコンロの撤去から新品設置まで行います。</p><span class="service-tag">3つ口タイプ</span></div></div>
+      <div class="card service-card"><img src="assets/range-after.jpg" alt="レンジフード交換"><div class="service-body"><h3>レンジフード交換</h3><p>交換・ダクト接続・動作確認まで丁寧に施工します。</p><span class="service-tag">すっきり快適</span></div></div>
+      <div class="card service-card"><img src="assets/faucet-after.jpg" alt="キッチン水栓交換"><div class="service-body"><h3>キッチン水栓交換</h3><p>水栓交換や水漏れのご相談にも対応します。</p><span class="service-tag">水まわり対応</span></div></div>
+      <div class="card service-card"><img src="assets/dishwasher-after.jpg" alt="ビルトイン食洗機交換"><div class="service-body"><h3>ビルトイン食洗機交換</h3><p>交換・給排水接続・試運転まで対応します。</p><span class="service-tag">家事を快適に</span></div></div>
     </div>
   </section>
 
@@ -649,15 +563,6 @@
     </div>
   </section>
 
-  <div class="cta-band reveal">
-    <h2>写真を送るだけでも大丈夫です</h2>
-    <p>型番や設置状況が分かる写真をLINEで送っていただければ、交換工事についてご案内します。</p>
-    <div class="button-area">
-      <a href="https://line.me/ti/p/Nkr58LmcFn" class="btn btn-line">LINEで写真を送る</a>
-      <a href="tel:09033567827" class="btn btn-gold">電話で相談する</a>
-    </div>
-  </div>
-
   <section id="price" class="reveal">
     <p class="section-kicker">Price</p>
     <h2>料金の目安</h2>
@@ -669,8 +574,7 @@
       <div class="card price-card"><strong>食洗機交換</strong><div class="price">18,000円</div></div>
       <div class="card price-card"><strong>キッチン水栓交換</strong><div class="price">10,000円</div></div>
     </div>
-    <p class="price-note">他社のお見積りがある場合や、お急ぎの場合もお気軽にご相談ください。</p>
-    <div class="price-clarity">表示金額は工事内容ごとの目安です。商品代・処分費・追加部材などの有無は、現場状況を確認したうえで事前にご案内します。</div>
+    <p class="price-note">表示価格は工事費の目安です。商品代・部材代・現場状況により変わります。他社のお見積りがある場合や、お急ぎの場合もお気軽にご相談ください。</p>
   </section>
 
   <section id="promise" class="dark-section reveal">
@@ -705,19 +609,6 @@
       <div class="card"><h3>主な対応エリア</h3><p>加須市・久喜市・羽生市・幸手市・白岡市・蓮田市・古河市・館林市・行田市・熊谷市・鴻巣市・北本市・桶川市・伊奈町 ほか</p></div>
       <div class="card"><h3>給湯器・ガス機器</h3><p>リンナイ・ノーリツ・パロマ・パーパス</p></div>
       <div class="card"><h3>キッチン・水まわり</h3><p>LIXIL・TOTO・クリナップ・タカラスタンダード・Panasonic・富士工業 ほか</p></div>
-    </div>
-  </section>
-
-  <section id="faq" class="reveal">
-    <p class="section-kicker">FAQ</p>
-    <h2>よくある質問</h2>
-    <p class="section-lead">ご依頼前によくいただくご質問をまとめました。</p>
-    <div class="faq-list">
-      <details class="faq-item"><summary>見積りは本当に無料ですか？</summary><div class="faq-answer">はい。ご相談・お見積りは無料です。工事内容や地域によって現地確認が必要な場合があります。</div></details>
-      <details class="faq-item"><summary>他店やインターネットで購入した商品も取り付けできますか？</summary><div class="faq-answer">商品や設置状況によって対応できる場合があります。型番と設置場所の写真をLINEでお送りください。</div></details>
-      <details class="faq-item"><summary>土日や祝日も対応できますか？</summary><div class="faq-answer">可能な限り対応します。空き状況がありますので、ご希望日をお知らせください。</div></details>
-      <details class="faq-item"><summary>追加料金が発生することはありますか？</summary><div class="faq-answer">追加部材や現場状況により必要になる場合があります。その際は、施工前に内容と金額をご説明します。</div></details>
-      <details class="faq-item"><summary>どの写真を送ればよいですか？</summary><div class="faq-answer">設備全体、型番シール、周辺の配管や設置状況が分かる写真があると確認がスムーズです。</div></details>
     </div>
   </section>
 
