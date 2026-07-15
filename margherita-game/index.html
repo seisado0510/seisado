@@ -6,21 +6,14 @@
   <meta name="theme-color" content="#087bc1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="おやつ争奪戦">
-  <title>マルゲリータたちのおやつ争奪戦 Ver.2</title>
+  <title>マルゲリータたちのおやつ争奪戦</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <div class="title-wrap">
-      <span class="title-icon">🐶</span>
-      <div>
-        <h1>マルゲリータたちのおやつ争奪戦</h1>
-        <p>Ver.2　3匹でおやつを集めよう！</p>
-      </div>
-      <span class="title-icon">🦴</span>
-    </div>
+    <h1>🐶 マルゲリータたちのおやつ争奪戦 🦴</h1>
+    <p>3匹でおやつを集めて最高スコアを目指そう！</p>
   </header>
 
   <main>
@@ -31,7 +24,7 @@
     </section>
 
     <section class="game-shell">
-      <canvas id="gameCanvas" width="960" height="540" aria-label="ゲーム画面"></canvas>
+      <canvas id="gameCanvas" width="800" height="500"></canvas>
     </section>
 
     <div class="controls">
@@ -39,11 +32,11 @@
       <button id="soundButton" class="sub">🔊 音あり</button>
     </div>
 
-    <p class="help">スマホ：ゲーム画面をタップ　／　パソコン：スペースキーでジャンプ</p>
-    <p id="message" class="message">3匹が画面内に収まるように改良しました！</p>
+    <p class="help">スマホ：ゲーム画面をタップ ／ パソコン：スペースキーでジャンプ</p>
+    <p id="message" class="message">準備ができたらスタート！</p>
   </main>
 
-  <footer>© 青彩堂・ワンパグプロジェクト</footer>
+  <footer>© 青彩堂</footer>
   <script src="script.js"></script>
 </body>
 </html>

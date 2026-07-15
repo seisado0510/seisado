@@ -1,20 +1,8 @@
 {
-  "name": "マルゲリータたちのおやつ争奪戦 Ver.2",
+  "name": "マルゲリータたちのおやつ争奪戦",
   "short_name": "おやつ争奪戦",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#edf8ff",
-  "theme_color": "#087bc1",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "theme_color": "#087bc1"
 }

@@ -1,21 +1,22 @@
-マルゲリータたちのおやつ争奪戦 Ver.2
+【キラキラ演出付き完成版】
 
-【改善した点】
-・16:9のゲーム画面で左右が切れにくい
-・3匹の初期位置を画面内に調整
-・スマホ、パソコン両対応
-・スタート前から3匹を表示
-・名前ラベルを読みやすく改善
-・おやつの表示位置を画面内に制限
-・キャッシュを更新しやすいService Workerへ変更
-・さつまいも（15点）を追加
+このZIPには以下が入っています。
+・index.html
+・style.css
+・script.js
+・manifest.json
 
-【青彩堂ホームページへ入れる方法】
-1. このZIPをすべて展開
-2. 中のファイルを全部コピー
-3. seisado → margherita-game フォルダへ貼り付け
-4. 「ファイルを置き換える」を選択
-5. VS Codeのターミナルで以下を順番に実行
-   git add .
-   git commit -m "ゲームVer2公開"
-   git push origin main
+assetsフォルダは入っていません。
+今ある犬3匹の画像を消さないためです。
+
+【入れ替え方】
+1. ZIPを右クリック → すべて展開
+2. 中の4ファイルを全部コピー
+3. ドキュメント → GitHub → seisado → margherita-game を開く
+4. 貼り付け
+5. 「ファイルを置き換える」を押す
+
+【GitHubへ反映】
+git add .
+git commit -m "キラキラ演出追加"
+git push origin main
