@@ -1,6 +1,6 @@
 {
-  "name": "ワンパグカフェ・おやつ争奪戦",
-  "short_name": "ワンパグカフェ",
+  "name": "ワンパグゲーム Ver.4",
+  "short_name": "ワンパグゲーム",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff7ef",

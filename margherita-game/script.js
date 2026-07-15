@@ -4,269 +4,308 @@ const pointText=document.getElementById("point");
 const timeText=document.getElementById("time");
 const bestText=document.getElementById("best");
 const lifeText=document.getElementById("life");
+const coinText=document.getElementById("coins");
 const startButton=document.getElementById("startButton");
 const soundButton=document.getElementById("soundButton");
 const message=document.getElementById("message");
 
-let score=0,time=30,lives=3,gameRunning=false,frame=0,lastSecond=0,soundOn=true;
-let effects=[],sparkles=[],explosions=[];
-let hitCooldown=0,bombRespawnTimer=0,feverMode=false,feverTimer=0,feverBannerTimer=0;
-let rabbitTimer=0,goldenBoneTimer=0,jackpotTimer=0;
-let bestScore=Number(localStorage.getItem("margheritaBestScore")||0);
+let score=0,time=45,lives=3,coins=0,gameRunning=false,frame=0,lastSecond=0,soundOn=true;
+let effects=[],particles=[];
+let hitCooldown=0,feverMode=false,feverFrames=0,feverUsed=false;
+let bestScore=Number(localStorage.getItem("onepugBestScoreV4")||0);
 bestText.textContent=bestScore;
 
 const dogs=[
-{name:"マルゲリータ",img:new Image(),x:80,y:300,speed:3.4,jump:0,phase:0},
-{name:"こんぶ",img:new Image(),x:-150,y:205,speed:3.0,jump:0,phase:1.8},
-{name:"おかゆ",img:new Image(),x:-300,y:110,speed:3.2,jump:0,phase:3.5}
+  {name:"マルゲリータ",img:new Image(),x:70,y:305,speed:3.4,jump:0,phase:0},
+  {name:"こんぶ",img:new Image(),x:-150,y:210,speed:3.0,jump:0,phase:1.8},
+  {name:"おかゆ",img:new Image(),x:-300,y:115,speed:3.2,jump:0,phase:3.5}
 ];
 dogs[0].img.src="assets/margherita.png";
 dogs[1].img.src="assets/konbu.png";
 dogs[2].img.src="assets/okayu.png";
 
 const normalSnacks=[
-{icon:"🦴",point:1},{icon:"🍪",point:2},{icon:"🧀",point:3},
-{icon:"🌭",point:5},{icon:"🍖",point:10},{icon:"🍠",point:15}
+  {icon:"🦴",point:1},{icon:"🍪",point:2},{icon:"🧀",point:3},
+  {icon:"🌭",point:5},{icon:"🍖",point:10},{icon:"🍠",point:15}
 ];
 const feverSnacks=[
-{icon:"🍠",point:30},{icon:"🥩",point:50},{icon:"🍖",point:20},{icon:"🌭",point:10}
+  {icon:"🍠",point:20},{icon:"🥩",point:30},{icon:"🍖",point:15},{icon:"🌭",point:10}
 ];
 
-let snack={x:650,y:240,item:normalSnacks[0],pulse:0};
-let bomb={x:720,y:320,active:false,pulse:0,speed:2.6};
-let rabbit={x:760,y:345,active:false,speed:2.2,bounce:0};
-let goldenBone={x:650,y:180,active:false,pulse:0};
+let snack={x:650,y:230,item:normalSnacks[0],pulse:0};
+let bomb={x:760,y:310,active:false,speed:2.5,timer:0,pulse:0};
+let rabbit={x:760,y:335,active:false,speed:2.3,timer:0,bounce:0};
+let goldenBone={x:620,y:160,active:false,timer:0,pulse:0};
+let coin={x:700,y:220,active:false,timer:0,pulse:0};
+let chest={x:690,y:290,active:false,timer:0,pulse:0};
+let boss={x:860,y:175,active:false,speed:1.35,hits:0,phase:0};
 
-function updateLife(){lifeText.textContent="❤️".repeat(lives)+"🖤".repeat(3-lives)}
-
-function playTone(a,b,d,v=.1){
- if(!soundOn)return;
- try{
-  const A=window.AudioContext||window.webkitAudioContext,c=new A(),o=c.createOscillator(),g=c.createGain();
-  o.connect(g);g.connect(c.destination);
-  o.frequency.setValueAtTime(a,c.currentTime);
-  o.frequency.exponentialRampToValueAtTime(b,c.currentTime+d);
-  g.gain.setValueAtTime(v,c.currentTime);
-  g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);
-  o.start();o.stop(c.currentTime+d);
- }catch(e){}
+function updateHud(){
+  pointText.textContent=score;
+  timeText.textContent=time;
+  lifeText.textContent="❤️".repeat(Math.max(0,lives))+"🖤".repeat(Math.max(0,3-lives));
+  coinText.textContent=coins;
 }
-const playSnackSound=()=>playTone(520,820,.12,.1);
-const playBombSound=()=>playTone(180,55,.32,.18);
-const playFeverSound=()=>playTone(380,1200,.45,.14);
-const playJackpotSound=()=>playTone(500,1600,.65,.16);
 
-function drawCafeBackground(){
- const wall=ctx.createLinearGradient(0,0,0,500);
- wall.addColorStop(0,feverMode?"#ffe0ff":"#f8dfc1");
- wall.addColorStop(1,feverMode?"#e0ffff":"#f3cfa7");
- ctx.fillStyle=wall;ctx.fillRect(0,0,800,500);
+function playTone(a,b,d,v=.08){
+  if(!soundOn)return;
+  try{
+    const A=window.AudioContext||window.webkitAudioContext;
+    const ac=new A(),o=ac.createOscillator(),g=ac.createGain();
+    o.connect(g);g.connect(ac.destination);
+    o.frequency.setValueAtTime(a,ac.currentTime);
+    o.frequency.exponentialRampToValueAtTime(Math.max(1,b),ac.currentTime+d);
+    g.gain.setValueAtTime(v,ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);
+    o.start();o.stop(ac.currentTime+d);
+  }catch(e){}
+}
 
- ctx.fillStyle="#9a6335";ctx.fillRect(0,380,800,120);
- for(let i=0;i<800;i+=80){
+function addEffect(x,y,text,color="#ff6b00",size=30){
+  effects.push({x,y,text,color,size,life:60,maxLife:60});
+}
+function burst(x,y,big=false){
+  const symbols=big?["🌈","🌟","✨","💫","⭐","🎉"]:["✨","⭐","💫"];
+  const count=big?38:16;
+  for(let i=0;i<count;i++){
+    const a=Math.random()*Math.PI*2,s=2+Math.random()*(big?6:4);
+    particles.push({
+      x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-1,
+      gravity:.07,life:45+Math.random()*25,maxLife:70,
+      size:15+Math.random()*20,symbol:symbols[Math.floor(Math.random()*symbols.length)]
+    });
+  }
+}
+
+function drawBackground(){
+  let top="#f7d8b0",bottom="#f2c58f";
+  if(time<=5){top="#18213d";bottom="#3d315f"}
+  else if(time<=15){top="#f2a16e";bottom="#844d63"}
+  if(feverMode){top=`hsl(${(frame*4)%360},90%,72%)`;bottom=`hsl(${(frame*4+150)%360},90%,72%)`}
+
+  const g=ctx.createLinearGradient(0,0,0,500);
+  g.addColorStop(0,top);g.addColorStop(1,bottom);
+  ctx.fillStyle=g;ctx.fillRect(0,0,800,500);
+
+  if(time<=5){
+    ctx.fillStyle="#fff";
+    for(let i=0;i<25;i++)ctx.fillRect((i*97)%800,(i*43)%180+20,3,3);
+  }
+
+  ctx.fillStyle="#9a6335";ctx.fillRect(0,380,800,120);
   ctx.strokeStyle="#6d4527";ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(i,380);ctx.lineTo(i,500);ctx.stroke();
- }
+  for(let x=0;x<800;x+=80){ctx.beginPath();ctx.moveTo(x,380);ctx.lineTo(x,500);ctx.stroke()}
 
- ctx.fillStyle="#6b4226";ctx.fillRect(55,85,165,110);
- ctx.fillStyle="#fff8e8";ctx.fillRect(70,100,135,80);
- ctx.fillStyle="#8b5a2b";ctx.font="bold 30px sans-serif";ctx.textAlign="center";
- ctx.fillText("ワンパグ",137,150);
+  ctx.fillStyle="#6b4226";ctx.fillRect(48,78,180,110);
+  ctx.fillStyle="#fff8e8";ctx.fillRect(63,93,150,80);
+  ctx.fillStyle="#8b5a2b";ctx.font="bold 30px sans-serif";ctx.textAlign="center";ctx.fillText("ワンパグ",138,145);
 
- ctx.fillStyle="#7a4c2b";ctx.fillRect(540,70,210,90);
- ctx.fillStyle="#f8f1df";ctx.fillRect(555,85,180,60);
- ctx.fillStyle="#6b4226";ctx.font="bold 22px sans-serif";ctx.fillText("ONE PUG CAFE",645,123);
+  ctx.fillStyle="#754829";ctx.fillRect(545,70,205,90);
+  ctx.fillStyle="#f8f1df";ctx.fillRect(560,85,175,60);
+  ctx.fillStyle="#6b4226";ctx.font="bold 21px sans-serif";ctx.fillText("ONE PUG CAFE",648,123);
 
- for(const x of [190,430,650]){
-  ctx.fillStyle="#8d5a34";ctx.fillRect(x,300,90,14);
-  ctx.fillRect(x+40,314,10,56);
-  ctx.fillStyle="#c9844d";ctx.fillRect(x-25,335,34,12);
-  ctx.fillRect(x+82,335,34,12);
- }
+  for(const x of [175,410,640]){
+    ctx.fillStyle="#8d5a34";ctx.fillRect(x,300,95,14);ctx.fillRect(x+42,314,10,56);
+    ctx.fillStyle="#c9844d";ctx.fillRect(x-24,335,34,12);ctx.fillRect(x+86,335,34,12);
+  }
 
- ctx.fillStyle="#2f8f4e";ctx.beginPath();ctx.arc(760,300,35,0,Math.PI*2);ctx.fill();
- ctx.fillStyle="#7b4d28";ctx.fillRect(752,325,16,45);
+  ctx.fillStyle="#2f8f4e";ctx.beginPath();ctx.arc(760,300,34,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#7b4d28";ctx.fillRect(752,325,16,45);
 
- ctx.fillStyle="rgba(255,255,255,.92)";
- ctx.font="bold 26px sans-serif";ctx.fillText(feverMode?"🌈 カフェ・フィーバー 🌈":"☕ ワンパグカフェ ☕",400,45);
- ctx.textAlign="left";
+  ctx.fillStyle="rgba(255,255,255,.92)";ctx.font="bold 25px sans-serif";ctx.textAlign="center";
+  let title="☕ ワンパグカフェ ☕";
+  if(feverMode)title="🌈 ワンパグ・フィーバー 🌈";
+  else if(time<=5)title="🌙 ラスト5秒！ 🌙";
+  else if(time<=15)title="🌇 夕方ステージ 🌇";
+  ctx.fillText(title,400,42);ctx.textAlign="left";
 }
 
-function drawDog(dog){
- const run=frame*.28+dog.phase,bounce=Math.sin(run*2)*6+dog.jump,tilt=Math.sin(run)*.035;
- if(gameRunning){
-  ctx.save();ctx.globalAlpha=feverMode?.55:.25;ctx.strokeStyle=feverMode?"#fff600":"#fff";ctx.lineWidth=feverMode?6:4;
-  for(let i=0;i<(feverMode?5:3);i++){
-   ctx.beginPath();ctx.moveTo(dog.x-25-i*14,dog.y+35+bounce+i*7);ctx.lineTo(dog.x-5-i*14,dog.y+35+bounce+i*7);ctx.stroke();
-  }ctx.restore();
- }
- ctx.save();ctx.translate(dog.x+45,dog.y+45+bounce);ctx.rotate(tilt);ctx.beginPath();ctx.arc(0,0,45,0,Math.PI*2);ctx.clip();
- if(dog.img.complete&&dog.img.naturalWidth)ctx.drawImage(dog.img,-45,-45,90,90);
- else{ctx.fillStyle="#f4c58a";ctx.fillRect(-45,-45,90,90);ctx.font="48px serif";ctx.fillText("🐶",-28,17)}
- ctx.restore();
- ctx.strokeStyle=hitCooldown>0?"#ff3b30":(feverMode?"#fff600":"#fff");ctx.lineWidth=feverMode?7:4;
- ctx.beginPath();ctx.arc(dog.x+45,dog.y+45+bounce,45,0,Math.PI*2);ctx.stroke();
- ctx.fillStyle="#073b2a";ctx.font="bold 16px sans-serif";ctx.fillText(dog.name,dog.x+4,dog.y+110+bounce);
+function drawDog(d){
+  const run=frame*.28+d.phase,bounce=Math.sin(run*2)*6+d.jump,tilt=Math.sin(run)*.035;
+  if(gameRunning){
+    ctx.save();ctx.globalAlpha=feverMode?.55:.25;ctx.strokeStyle=feverMode?"#fff600":"#fff";ctx.lineWidth=feverMode?6:4;
+    for(let i=0;i<(feverMode?5:3);i++){
+      ctx.beginPath();ctx.moveTo(d.x-25-i*14,d.y+35+bounce+i*7);ctx.lineTo(d.x-5-i*14,d.y+35+bounce+i*7);ctx.stroke();
+    }ctx.restore();
+  }
+  ctx.save();ctx.translate(d.x+45,d.y+45+bounce);ctx.rotate(tilt);ctx.beginPath();ctx.arc(0,0,45,0,Math.PI*2);ctx.clip();
+  if(d.img.complete&&d.img.naturalWidth)ctx.drawImage(d.img,-45,-45,90,90);
+  else{ctx.fillStyle="#f4c58a";ctx.fillRect(-45,-45,90,90);ctx.font="48px serif";ctx.fillText("🐶",-28,17)}
+  ctx.restore();
+  ctx.strokeStyle=hitCooldown>0?"#ff3b30":(feverMode?"#fff600":"#fff");ctx.lineWidth=feverMode?7:4;
+  ctx.beginPath();ctx.arc(d.x+45,d.y+45+bounce,45,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle="#073b2a";ctx.font="bold 16px sans-serif";ctx.fillText(d.name,d.x+4,d.y+110+bounce);
 }
 
-function drawSnack(){
- snack.pulse+=feverMode?.14:.08;
- const s=1+Math.sin(snack.pulse)*(feverMode?.18:.1);
- ctx.save();ctx.translate(snack.x+18,snack.y-15);ctx.scale(s,s);ctx.font=feverMode?"54px serif":"42px serif";ctx.textAlign="center";
- ctx.fillText(snack.item.icon,0,0);ctx.restore();ctx.textAlign="left";
-}
-
-function drawBomb(){
- if(!bomb.active)return;
- bomb.pulse+=.14;const s=1+Math.sin(bomb.pulse)*.12;
- ctx.save();ctx.translate(bomb.x,bomb.y);ctx.scale(s,s);ctx.strokeStyle="#ff2d2d";ctx.lineWidth=6;
- ctx.beginPath();ctx.arc(0,-14,34,0,Math.PI*2);ctx.stroke();ctx.font="56px serif";ctx.textAlign="center";ctx.fillText("💣",0,0);ctx.restore();
- ctx.fillStyle="#c40000";ctx.font="bold 16px sans-serif";ctx.textAlign="center";ctx.fillText("キケン！",bomb.x,bomb.y+28);ctx.textAlign="left";
+function drawEmoji(obj,emoji,size,label,color){
+  if(!obj.active)return;
+  obj.pulse=(obj.pulse||0)+.12;
+  const s=1+Math.sin(obj.pulse)*.12;
+  ctx.save();ctx.translate(obj.x,obj.y);ctx.scale(s,s);ctx.font=`${size}px serif`;ctx.textAlign="center";ctx.fillText(emoji,0,0);ctx.restore();
+  if(label){ctx.fillStyle=color;ctx.font="bold 15px sans-serif";ctx.textAlign="center";ctx.fillText(label,obj.x,obj.y+30);ctx.textAlign="left"}
 }
 
 function drawRabbit(){
- if(!rabbit.active)return;
- rabbit.bounce+=.2;
- const y=rabbit.y+Math.sin(rabbit.bounce)*10;
- ctx.font="54px serif";ctx.textAlign="center";ctx.fillText("🐰",rabbit.x,y);
- ctx.fillStyle="#d45b8f";ctx.font="bold 15px sans-serif";ctx.fillText("+20",rabbit.x,y+34);ctx.textAlign="left";
+  if(!rabbit.active)return;
+  rabbit.bounce+=.2;
+  const y=rabbit.y+Math.sin(rabbit.bounce)*10;
+  ctx.font="54px serif";ctx.textAlign="center";ctx.fillText("🐰",rabbit.x,y);
+  ctx.fillStyle="#d40000";ctx.font="bold 15px sans-serif";ctx.fillText("-10",rabbit.x,y+34);ctx.textAlign="left";
 }
 
-function drawGoldenBone(){
- if(!goldenBone.active)return;
- goldenBone.pulse+=.15;const s=1+Math.sin(goldenBone.pulse)*.2;
- ctx.save();ctx.translate(goldenBone.x,goldenBone.y);ctx.scale(s,s);
- ctx.shadowBlur=24;ctx.shadowColor="#ffd700";ctx.font="58px serif";ctx.textAlign="center";ctx.fillText("🦴",0,0);ctx.restore();
- ctx.fillStyle="#a87300";ctx.font="bold 17px sans-serif";ctx.textAlign="center";ctx.fillText("GOLD 100",goldenBone.x,goldenBone.y+35);ctx.textAlign="left";
+function drawBoss(){
+  if(!boss.active)return;
+  boss.phase+=.08;
+  const y=boss.y+Math.sin(boss.phase)*30;
+  ctx.save();ctx.globalAlpha=.92;ctx.font="110px serif";ctx.textAlign="center";ctx.fillText("🐶",boss.x,y);
+  ctx.fillStyle="#6b0000";ctx.font="bold 20px sans-serif";ctx.fillText(`ボスパグ  ${3-boss.hits}/3`,boss.x,y+65);ctx.restore();ctx.textAlign="left";
 }
 
-function addEffect(x,y,text,color="#ff6b00"){effects.push({x,y,text,life:55,color})}
 function drawEffects(){
- effects.forEach(e=>{
-  const a=Math.max(0,e.life/55);ctx.save();ctx.globalAlpha=a;ctx.fillStyle=e.color;ctx.strokeStyle="#fff";ctx.lineWidth=4;
-  ctx.font="bold 30px sans-serif";ctx.textAlign="center";ctx.strokeText(e.text,e.x,e.y);ctx.fillText(e.text,e.x,e.y);ctx.restore();
-  e.y-=1.2;e.life--;
- });effects=effects.filter(e=>e.life>0);ctx.textAlign="left";
+  effects.forEach(e=>{
+    ctx.save();ctx.globalAlpha=Math.max(0,e.life/e.maxLife);ctx.fillStyle=e.color;ctx.strokeStyle="#fff";ctx.lineWidth=4;
+    ctx.font=`bold ${e.size}px sans-serif`;ctx.textAlign="center";ctx.strokeText(e.text,e.x,e.y);ctx.fillText(e.text,e.x,e.y);ctx.restore();
+    e.y-=1.1;e.life--;
+  });effects=effects.filter(e=>e.life>0);ctx.textAlign="left";
 }
-
-function createSparkles(x,y,big=false){
- const symbols=big?["🌈","🌟","✨","💫","⭐","🎉"]:["✨","⭐","💫"];
- const count=big?45:18;
- for(let i=0;i<count;i++){
-  const a=Math.random()*Math.PI*2,s=2+Math.random()*(big?7:4.5);
-  sparkles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-1.5,gravity:.08,life:45+Math.random()*30,maxLife:75,size:16+Math.random()*22,symbol:symbols[Math.floor(Math.random()*symbols.length)]});
- }
-}
-function drawSparkles(){
- sparkles.forEach(s=>{
-  ctx.save();ctx.globalAlpha=Math.max(0,s.life/s.maxLife);ctx.font=`${s.size}px serif`;ctx.textAlign="center";ctx.fillText(s.symbol,s.x,s.y);ctx.restore();
-  s.x+=s.vx;s.y+=s.vy;s.vy+=s.gravity;s.vx*=.985;s.life--;
- });sparkles=sparkles.filter(s=>s.life>0);ctx.textAlign="left";
-}
-
-function createExplosion(x,y){
- for(let i=0;i<18;i++){
-  const a=Math.random()*Math.PI*2,s=2.5+Math.random()*5;
-  explosions.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:30+Math.random()*25,maxLife:55,size:20+Math.random()*22,symbol:["💥","🔥","💨","⚡"][Math.floor(Math.random()*4)]});
- }
-}
-function drawExplosions(){
- explosions.forEach(e=>{
-  ctx.save();ctx.globalAlpha=Math.max(0,e.life/e.maxLife);ctx.font=`${e.size}px serif`;ctx.textAlign="center";ctx.fillText(e.symbol,e.x,e.y);ctx.restore();
-  e.x+=e.vx;e.y+=e.vy;e.vx*=.97;e.vy*=.97;e.life--;
- });explosions=explosions.filter(e=>e.life>0);ctx.textAlign="left";
-}
-
-function drawBanner(){
- if(feverBannerTimer>0){
-  ctx.save();ctx.fillStyle="rgba(255,255,255,.9)";ctx.strokeStyle="#ff4bd8";ctx.lineWidth=8;ctx.beginPath();ctx.roundRect(120,190,560,120,30);ctx.fill();ctx.stroke();
-  ctx.fillStyle="#ff1493";ctx.font="bold 38px sans-serif";ctx.textAlign="center";ctx.fillText("🎊 ワンパグ フィーバー!! 🎊",400,260);ctx.restore();feverBannerTimer--;
- }
- if(jackpotTimer>0){
-  ctx.save();ctx.fillStyle="rgba(255,255,255,.94)";ctx.strokeStyle="#ffd700";ctx.lineWidth=10;ctx.beginPath();ctx.roundRect(130,170,540,150,35);ctx.fill();ctx.stroke();
-  ctx.fillStyle="#d19000";ctx.font="bold 48px sans-serif";ctx.textAlign="center";ctx.fillText("🎉 JACKPOT!! 🎉",400,240);
-  ctx.font="bold 28px sans-serif";ctx.fillText("+100 POINT",400,285);ctx.restore();jackpotTimer--;
- }
+function drawParticles(){
+  particles.forEach(p=>{
+    ctx.save();ctx.globalAlpha=Math.max(0,p.life/p.maxLife);ctx.font=`${p.size}px serif`;ctx.textAlign="center";ctx.fillText(p.symbol,p.x,p.y);ctx.restore();
+    p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.vx*=.985;p.life--;
+  });particles=particles.filter(p=>p.life>0);ctx.textAlign="left";
 }
 
 function resetSnack(){
- const list=feverMode?feverSnacks:normalSnacks;
- snack.x=Math.random()*630+80;snack.y=Math.random()*245+105;snack.item=list[Math.floor(Math.random()*list.length)];snack.pulse=0;
+  const list=feverMode?feverSnacks:normalSnacks;
+  snack.x=Math.random()*620+90;snack.y=Math.random()*235+115;
+  snack.item=list[Math.floor(Math.random()*list.length)];snack.pulse=0;
 }
-function resetBomb(){bomb.x=760;bomb.y=Math.random()*230+125;bomb.active=true;bomb.pulse=0;bomb.speed=feverMode?3.6:(2.2+Math.random()*1.2);bombRespawnTimer=0}
-function resetRabbit(){rabbit.x=760;rabbit.y=320+Math.random()*35;rabbit.active=true;rabbit.speed=2+Math.random()*1.2;rabbitTimer=0}
-function resetGoldenBone(){goldenBone.x=Math.random()*600+100;goldenBone.y=Math.random()*220+120;goldenBone.active=true;goldenBone.pulse=0;goldenBoneTimer=0}
+function spawnBomb(){bomb.x=780;bomb.y=Math.random()*230+120;bomb.speed=2.3+Math.random()*1.2;bomb.active=true;bomb.timer=0}
+function spawnRabbit(){rabbit.x=780;rabbit.y=315+Math.random()*45;rabbit.speed=2.2+Math.random();rabbit.active=true;rabbit.timer=0}
+function spawnGoldenBone(){goldenBone.x=Math.random()*580+110;goldenBone.y=Math.random()*210+120;goldenBone.active=true;goldenBone.timer=0;goldenBone.pulse=0}
+function spawnCoin(){coin.x=Math.random()*580+110;coin.y=Math.random()*210+120;coin.active=true;coin.timer=0;coin.pulse=0}
+function spawnChest(){chest.x=Math.random()*560+120;chest.y=Math.random()*190+150;chest.active=true;chest.timer=0;chest.pulse=0}
 
-function moveSpecials(){
- if(!rabbit.active){rabbitTimer++;if(rabbitTimer>360)resetRabbit()}else{rabbit.x-=rabbit.speed;if(rabbit.x<-50){rabbit.active=false;rabbitTimer=0}}
- if(!goldenBone.active){goldenBoneTimer++;if(goldenBoneTimer>600)resetGoldenBone()}
-}
+function moveObjects(){
+  if(bomb.active){bomb.x-=bomb.speed;if(bomb.x<-60){bomb.active=false;bomb.timer=0}}else if(++bomb.timer>260)spawnBomb();
+  if(rabbit.active){rabbit.x-=rabbit.speed;if(rabbit.x<-60){rabbit.active=false;rabbit.timer=0}}else if(++rabbit.timer>330)spawnRabbit();
+  if(!goldenBone.active&&++goldenBone.timer>650)spawnGoldenBone();
+  if(!coin.active&&++coin.timer>220)spawnCoin();
+  if(!chest.active&&++chest.timer>520)spawnChest();
 
-function moveBomb(){
- if(!bomb.active){bombRespawnTimer++;if(bombRespawnTimer>=300)resetBomb();return}
- bomb.x-=bomb.speed;if(bomb.x<-50){bomb.active=false;bombRespawnTimer=240}
+  if(boss.active){
+    boss.x-=boss.speed;
+    if(boss.x<-100)boss.x=900;
+  }
 }
 
 function startFever(){
- if(feverMode)return;feverMode=true;feverTimer=600;feverBannerTimer=120;playFeverSound();message.textContent="ワンパグ・フィーバー！10秒間、得点2倍！";resetSnack();
+  if(feverMode||feverUsed)return;
+  feverMode=true;feverUsed=true;feverFrames=600;
+  addEffect(400,250,"🌈 ワンパグ フィーバー!! 🌈","#ff1493",38);burst(400,250,true);playTone(380,1200,.45,.14);
+  message.textContent="10秒間、得点2倍！";
 }
-function endFever(){feverMode=false;feverTimer=0;message.textContent="フィーバー終了！";resetSnack()}
+function applyChest(){
+  const r=Math.floor(Math.random()*4);
+  if(r===0){score+=50;addEffect(chest.x,chest.y,"+50","#d19000");message.textContent="宝箱から50点！"}
+  if(r===1){lives=Math.min(3,lives+1);addEffect(chest.x,chest.y,"LIFE UP","#e30055");message.textContent="ライフ回復！"}
+  if(r===2){feverUsed=false;startFever();message.textContent="宝箱からフィーバー！"}
+  if(r===3){bomb.active=false;bomb.timer=-300;addEffect(chest.x,chest.y,"NO BOMB","#2476ff");message.textContent="爆弾がしばらく消えた！"}
+  updateHud();burst(chest.x,chest.y,true);playTone(500,1200,.35,.12);
+}
+
+function collision(cx,cy,x,y,rx=55,ry=62){return Math.abs(cx-x)<rx&&Math.abs(cy-y)<ry}
 
 function moveDogs(){
- dogs.forEach(dog=>{
-  dog.x+=dog.speed*(feverMode?1.5:1);if(dog.x>840)dog.x=-110;
-  if(dog.jump<0){dog.jump+=1.4;if(dog.jump>0)dog.jump=0}
-  const bounce=Math.sin((frame*.28+dog.phase)*2)*6,cx=dog.x+45,cy=dog.y+45+dog.jump+bounce;
+  dogs.forEach(d=>{
+    d.x+=d.speed*(feverMode?1.5:1);
+    if(d.x>840)d.x=-110;
+    if(d.jump<0){d.jump+=1.4;if(d.jump>0)d.jump=0}
+    const bounce=Math.sin((frame*.28+d.phase)*2)*6,cx=d.x+45,cy=d.y+45+d.jump+bounce;
 
-  if(Math.abs(cx-(snack.x+18))<50&&Math.abs(cy-(snack.y-15))<60){
-   const earned=snack.item.point*(feverMode?2:1);score+=earned;pointText.textContent=score;dog.jump=-28;
-   addEffect(snack.x,snack.y,`+${earned}`,feverMode?"#ff00c8":"#ff6b00");createSparkles(snack.x,snack.y,feverMode);playSnackSound();resetSnack();
-   if(score>=30&&!feverMode&&feverTimer===0)startFever();
-  }
+    if(collision(cx,cy,snack.x+18,snack.y-15,50,60)){
+      const earned=snack.item.point*(feverMode?2:1);
+      score+=earned;d.jump=-28;addEffect(snack.x,snack.y,`+${earned}`,feverMode?"#ff00c8":"#ff6b00");burst(snack.x,snack.y,feverMode);
+      playTone(520,820,.12,.09);resetSnack();
+      if(score>=30)startFever();
+    }
+    if(rabbit.active&&collision(cx,cy,rabbit.x,rabbit.y,55,65)){
+      score=Math.max(0,score-10);rabbit.active=false;rabbit.timer=0;d.x-=70;addEffect(rabbit.x,rabbit.y,"-10","#d40000");message.textContent="うさぎに当たって10点減点！";playTone(240,90,.22,.12);
+    }
+    if(goldenBone.active&&collision(cx,cy,goldenBone.x,goldenBone.y,60,65)){
+      score+=100;goldenBone.active=false;goldenBone.timer=0;addEffect(goldenBone.x,goldenBone.y,"JACKPOT +100","#d19000",38);burst(goldenBone.x,goldenBone.y,true);playTone(500,1600,.6,.15);
+    }
+    if(coin.active&&collision(cx,cy,coin.x,coin.y,55,60)){
+      coins++;coin.active=false;coin.timer=0;addEffect(coin.x,coin.y,"+1 COIN","#c58a00");playTone(700,1100,.12,.08);
+    }
+    if(chest.active&&collision(cx,cy,chest.x,chest.y,60,65)){
+      chest.active=false;chest.timer=0;applyChest();
+    }
+    if(bomb.active&&hitCooldown===0&&collision(cx,cy,bomb.x,bomb.y-14,52,62)){
+      lives--;hitCooldown=75;d.x-=80;bomb.active=false;bomb.timer=0;addEffect(bomb.x,bomb.y,"-1 LIFE","#e30000");burst(bomb.x,bomb.y,true);playTone(180,55,.32,.17);
+      message.textContent=`爆弾に当たった！残りライフ${lives}`;
+      if(lives<=0)endGame("爆弾");
+    }
+    if(boss.active&&hitCooldown===0&&collision(cx,cy,boss.x,boss.y+Math.sin(boss.phase)*30,75,95)){
+      boss.hits++;hitCooldown=90;d.x-=100;lives--;addEffect(boss.x,boss.y,"BOSS HIT","#900000",34);burst(boss.x,boss.y,true);playTone(150,45,.4,.18);
+      if(boss.hits>=3||lives<=0)endGame("ボスパグ");
+    }
+  });
 
-  if(rabbit.active&&Math.abs(cx-rabbit.x)<55&&Math.abs(cy-rabbit.y)<65){
-   score+=20;pointText.textContent=score;rabbit.active=false;rabbitTimer=0;addEffect(rabbit.x,rabbit.y,"+20","#d45b8f");createSparkles(rabbit.x,rabbit.y,true);playSnackSound();
-  }
-
-  if(goldenBone.active&&Math.abs(cx-goldenBone.x)<60&&Math.abs(cy-goldenBone.y)<65){
-   score+=100;pointText.textContent=score;goldenBone.active=false;goldenBoneTimer=0;jackpotTimer=150;
-   addEffect(goldenBone.x,goldenBone.y,"+100","#d19000");createSparkles(goldenBone.x,goldenBone.y,true);playJackpotSound();
-  }
-
-  if(bomb.active&&hitCooldown===0&&Math.abs(cx-bomb.x)<52&&Math.abs(cy-(bomb.y-14))<62){
-   lives--;updateLife();hitCooldown=75;dog.x-=80;createExplosion(bomb.x,bomb.y);addEffect(bomb.x,bomb.y,"-1 LIFE","#e30000");playBombSound();bomb.active=false;bombRespawnTimer=0;
-   if(lives<=0)endGame(true);else message.textContent=`爆弾に当たった！残りライフ${lives}`;
-  }
- });
- if(hitCooldown>0)hitCooldown--;
- if(feverMode){feverTimer--;if(feverTimer<=0)endFever()}
+  if(hitCooldown>0)hitCooldown--;
+  if(feverMode&&--feverFrames<=0){feverMode=false;message.textContent="フィーバー終了！"}
+  if(score>=100&&!boss.active){boss.active=true;boss.x=900;boss.hits=0;message.textContent="👑 ボスパグ登場！3回当たると終了！"}
+  updateHud();
 }
 
-function jump(){if(!gameRunning)return;dogs.forEach((d,i)=>setTimeout(()=>{if(d.jump===0)d.jump=-30},i*60))}
-function draw(){drawCafeBackground();drawSnack();drawBomb();drawRabbit();drawGoldenBone();dogs.forEach(drawDog);drawEffects();drawSparkles();drawExplosions();drawBanner()}
+function jump(){
+  if(!gameRunning)return;
+  dogs.forEach((d,i)=>setTimeout(()=>{if(d.jump===0)d.jump=-30},i*60));
+}
+
+function draw(){
+  drawBackground();
+  drawEmoji(snack,snack.item.icon,feverMode?54:44,"","");
+  drawEmoji(bomb,"💣",56,"キケン！","#c40000");
+  drawRabbit();
+  drawEmoji(goldenBone,"🦴",60,"GOLD 100","#a87300");
+  drawEmoji(coin,"🪙",48,"COIN","#a87300");
+  drawEmoji(chest,"🎁",54,"宝箱","#7b3eb8");
+  drawBoss();
+  dogs.forEach(drawDog);
+  drawEffects();
+  drawParticles();
+}
 
 function loop(ts){
- draw();
- if(gameRunning){
-  moveBomb();moveSpecials();moveDogs();frame++;
-  if(!lastSecond)lastSecond=ts;
-  if(ts-lastSecond>=1000){time--;timeText.textContent=time;lastSecond=ts;if(time<=0)endGame(false)}
- }
- requestAnimationFrame(loop);
+  draw();
+  if(gameRunning){
+    moveObjects();moveDogs();frame++;
+    if(!lastSecond)lastSecond=ts;
+    if(ts-lastSecond>=1000){
+      time--;lastSecond=ts;updateHud();
+      if(time<=0)endGame("タイムアップ");
+    }
+  }
+  requestAnimationFrame(loop);
 }
 
 function startGame(){
- score=0;time=30;lives=3;frame=0;lastSecond=0;gameRunning=true;effects=[];sparkles=[];explosions=[];hitCooldown=0;bombRespawnTimer=0;
- feverMode=false;feverTimer=0;feverBannerTimer=0;rabbitTimer=0;goldenBoneTimer=0;jackpotTimer=0;
- dogs[0].x=80;dogs[1].x=-150;dogs[2].x=-300;
- pointText.textContent=score;timeText.textContent=time;updateLife();message.textContent="うさぎ20点、金の骨100点！";startButton.textContent="もう一度スタート";
- resetSnack();resetBomb();resetRabbit();resetGoldenBone();
+  score=0;time=45;lives=3;coins=0;gameRunning=true;frame=0;lastSecond=0;effects=[];particles=[];
+  hitCooldown=0;feverMode=false;feverFrames=0;feverUsed=false;
+  dogs[0].x=70;dogs[1].x=-150;dogs[2].x=-300;
+  bomb.active=false;bomb.timer=0;rabbit.active=false;rabbit.timer=0;goldenBone.active=false;goldenBone.timer=0;
+  coin.active=false;coin.timer=0;chest.active=false;chest.timer=0;boss.active=false;boss.hits=0;
+  resetSnack();spawnBomb();spawnRabbit();spawnCoin();
+  updateHud();message.textContent="30点でフィーバー、100点でボス登場！";startButton.textContent="もう一度スタート";
 }
 
-function endGame(byBomb=false){
- gameRunning=false;bomb.active=false;rabbit.active=false;goldenBone.active=false;feverMode=false;
- if(score>bestScore){bestScore=score;localStorage.setItem("margheritaBestScore",String(bestScore));bestText.textContent=bestScore}
- message.textContent=byBomb?`ゲームオーバー！スコア${score}点 💥`:`タイムアップ！スコア${score}点`;
+function endGame(reason){
+  if(!gameRunning)return;
+  gameRunning=false;boss.active=false;bomb.active=false;rabbit.active=false;
+  if(score>bestScore){bestScore=score;localStorage.setItem("onepugBestScoreV4",String(bestScore));bestText.textContent=bestScore}
+  message.textContent=`ゲーム終了（${reason}） スコア${score}点・コイン${coins}枚`;
+  addEffect(400,250,"GAME OVER","#d40000",44);
 }
 
 startButton.addEventListener("click",startGame);
@@ -274,4 +313,4 @@ soundButton.addEventListener("click",()=>{soundOn=!soundOn;soundButton.textConte
 canvas.addEventListener("pointerdown",jump);
 window.addEventListener("keydown",e=>{if(e.code==="Space"){e.preventDefault();jump()}});
 
-updateLife();draw();requestAnimationFrame(loop);
+updateHud();resetSnack();draw();requestAnimationFrame(loop);
