@@ -206,9 +206,9 @@ function startBgm(){
       osc.connect(gain);gain.connect(bgmContext.destination);
       osc.type="sine";
       osc.frequency.value=notes[bgmStep%notes.length];
-      gain.gain.setValueAtTime(.035,bgmContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(.001,bgmContext.currentTime+.22);
-      osc.start();osc.stop(bgmContext.currentTime+.23);
+      gain.gain.setValueAtTime(.075,bgmContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,bgmContext.currentTime+.26);
+      osc.start();osc.stop(bgmContext.currentTime+.27);
       bgmStep++;
     },280);
   }catch(e){}
