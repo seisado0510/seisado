@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#8b5a2b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="ワンパグゲーム">
-  <title>ワンパグゲーム Ver.7.1</title>
+  <title>ワンパグゲーム Ver.8</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -22,7 +22,7 @@
   </section>
 
   <header>
-    <h1>🐶 ワンパグゲーム Ver.7.1 ☕</h1>
+    <h1>🐶 ワンパグゲーム Ver.8 ☕</h1>
     <p>おやつを集めて、うさぎ・爆弾・ボスをよけよう！</p>
   </header>
 
@@ -35,10 +35,33 @@
       <div>コイン<strong id="coins">0</strong></div>
     </section>
 
+    <section class="status-strip">
+      <span id="powerupText">パワーアップ：なし</span>
+      <span id="achievementCount">実績：0/6</span>
+    </section>
+
     <section class="game-shell">
       <canvas id="gameCanvas" width="800" height="500"></canvas>
     </section>
 
+
+
+    <section class="stage-select">
+      <h2>🗺️ ステージを選んでください</h2>
+      <div class="stage-grid">
+        <button class="stage-card selected" data-stage="cafe">☕<strong>ワンパグカフェ</strong></button>
+        <button class="stage-card" data-stage="dogrun">🌳<strong>ドッグラン</strong></button>
+        <button class="stage-card" data-stage="park">🌸<strong>お花見公園</strong></button>
+        <button class="stage-card" data-stage="beach">🏖️<strong>海辺</strong></button>
+        <button class="stage-card" data-stage="snow">❄️<strong>雪景色</strong></button>
+      </div>
+      <p id="selectedStageText" class="selected-stage-text">選択中：ワンパグカフェ</p>
+    </section>
+
+    <section class="weather-panel">
+      <span>天気：</span>
+      <strong id="weatherText">☀️ 晴れ</strong>
+    </section>
 
     <section class="character-select">
       <h2>🐶 遊ぶパグを選んでください</h2>
@@ -75,6 +98,8 @@
       <button id="soundButton" class="sub">🔊 効果音あり</button>
       <button id="bgmButton" class="bgm-btn">🎵 BGMあり</button>
       <button id="rankingButton" class="rank-btn">🏆 ランキング</button>
+      <button id="achievementButton" class="achievement-btn">🏅 実績</button>
+      <button id="photoButton" class="photo-btn">📸 フォト</button>
     </div>
 
     <section class="season-panel">
@@ -96,9 +121,26 @@
         <button id="resetRanking" class="reset-ranking">ランキングをリセット</button>
       </div>
     </section>
+
+    <section id="achievementPanel" class="ranking-panel">
+      <div class="ranking-card">
+        <button id="closeAchievement" class="close-ranking" aria-label="閉じる">×</button>
+        <h2>🏅 実績</h2>
+        <ul id="achievementList" class="achievement-list"></ul>
+      </div>
+    </section>
+
+    <section id="photoPanel" class="ranking-panel">
+      <div class="ranking-card photo-card">
+        <button id="closePhoto" class="close-ranking" aria-label="閉じる">×</button>
+        <h2>📸 ワンパグ記念写真</h2>
+        <canvas id="photoCanvas" width="800" height="500"></canvas>
+        <p>この画面をスクリーンショットで保存できます。</p>
+      </div>
+    </section>
   </main>
 
   <footer>© 青彩堂・ワンパグ</footer>
-  <script src="script.js?v=16"></script>
+  <script src="script.js?v=17"></script>
 </body>
 </html>

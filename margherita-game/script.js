@@ -22,6 +22,20 @@ const openingStartButton=document.getElementById("openingStartButton");
 const jumpButton=document.getElementById("jumpButton");
 const bgmButton=document.getElementById("bgmButton");
 const seasonButtons=[...document.querySelectorAll(".season-btn")];
+const stageCards=[...document.querySelectorAll(".stage-card")];
+const selectedStageText=document.getElementById("selectedStageText");
+const weatherText=document.getElementById("weatherText");
+const powerupText=document.getElementById("powerupText");
+const achievementCount=document.getElementById("achievementCount");
+const achievementButton=document.getElementById("achievementButton");
+const achievementPanel=document.getElementById("achievementPanel");
+const closeAchievement=document.getElementById("closeAchievement");
+const achievementList=document.getElementById("achievementList");
+const photoButton=document.getElementById("photoButton");
+const photoPanel=document.getElementById("photoPanel");
+const closePhoto=document.getElementById("closePhoto");
+const photoCanvas=document.getElementById("photoCanvas");
+const photoCtx=photoCanvas.getContext("2d");
 const CHARACTER_KEY="onepugSelectedCharacterV6";
 
 const characterSettings={
@@ -57,6 +71,33 @@ let bgmOn=true;
 let bgmContext=null;
 let bgmTimer=null;
 let bgmStep=0;
+const STAGE_KEY="onepugStageV8";
+const ACHIEVEMENT_KEY="onepugAchievementsV8";
+let selectedStage=localStorage.getItem(STAGE_KEY)||"cafe";
+let weather="sunny";
+let weatherTimer=0;
+let activePowerup=null;
+let powerupFrames=0;
+let totalGoldenBones=Number(localStorage.getItem("onepugGoldenBonesV8")||0);
+let bossDefeats=Number(localStorage.getItem("onepugBossDefeatsV8")||0);
+let achievements=JSON.parse(localStorage.getItem(ACHIEVEMENT_KEY)||"{}");
+
+const stageNames={
+  cafe:"ワンパグカフェ",
+  dogrun:"ドッグラン",
+  park:"お花見公園",
+  beach:"海辺",
+  snow:"雪景色"
+};
+
+const achievementDefs=[
+  {id:"score100",name:"100点達成",check:()=>score>=100},
+  {id:"score300",name:"300点達成",check:()=>score>=300},
+  {id:"gold5",name:"金の骨を5本獲得",check:()=>totalGoldenBones>=5},
+  {id:"boss1",name:"ボスを1回撃破",check:()=>bossDefeats>=1},
+  {id:"coin20",name:"コインを20枚獲得",check:()=>coins>=20},
+  {id:"noDamage",name:"ノーダメージで終了",check:()=>lives===maxLives}
+];
 let maxLives=characterSettings[selectedCharacter].maxLives;
 
 let score=0,time=45,lives=3,coins=0,gameRunning=false,frame=0,lastSecond=0,soundOn=true;
@@ -104,8 +145,34 @@ seasonButtons.forEach(btn=>{
     selectedSeason=btn.dataset.season;
     localStorage.setItem("onepugSeasonV7",selectedSeason);
     updateSeasonButtons();
+updateStageCards();
+chooseWeather();
+renderAchievements();
   });
 });
+
+stageCards.forEach(card=>{
+  card.addEventListener("click",()=>{
+    selectedStage=card.dataset.stage;
+    localStorage.setItem(STAGE_KEY,selectedStage);
+    updateStageCards();
+    chooseWeather();
+  });
+});
+
+achievementButton.addEventListener("click",()=>{
+  renderAchievements();
+  achievementPanel.classList.add("open");
+});
+closeAchievement.addEventListener("click",()=>achievementPanel.classList.remove("open"));
+achievementPanel.addEventListener("click",e=>{if(e.target===achievementPanel)achievementPanel.classList.remove("open")});
+
+photoButton.addEventListener("click",()=>{
+  createPhoto();
+  photoPanel.classList.add("open");
+});
+closePhoto.addEventListener("click",()=>photoPanel.classList.remove("open"));
+photoPanel.addEventListener("click",e=>{if(e.target===photoPanel)photoPanel.classList.remove("open")});
 
 characterCards.forEach(card=>{
     card.classList.toggle("selected",card.dataset.character===selectedCharacter);
@@ -128,6 +195,7 @@ let goldenBone={x:620,y:160,active:false,timer:0,pulse:0};
 let coin={x:700,y:220,active:false,timer:0,pulse:0};
 let chest={x:690,y:290,active:false,timer:0,pulse:0};
 let boss={x:860,y:175,active:false,speed:1.35,hits:0,phase:0};
+let powerItem={x:680,y:220,active:false,timer:0,pulse:0,type:"speed"};
 
 
 function loadRanking(){
@@ -218,11 +286,88 @@ function stopBgm(){
   if(bgmTimer){clearInterval(bgmTimer);bgmTimer=null}
 }
 
+
+function updateStageCards(){
+  stageCards.forEach(card=>card.classList.toggle("selected",card.dataset.stage===selectedStage));
+  selectedStageText.textContent=`選択中：${stageNames[selectedStage]}`;
+}
+
+function chooseWeather(){
+  const list=["sunny","cloudy","rain","snow"];
+  weather=list[Math.floor(Math.random()*list.length)];
+  if(selectedStage==="snow")weather="snow";
+  const labels={sunny:"☀️ 晴れ",cloudy:"☁️ 曇り",rain:"🌧️ 雨",snow:"❄️ 雪"};
+  weatherText.textContent=labels[weather];
+}
+
+function unlockAchievement(id){
+  if(achievements[id])return;
+  achievements[id]=true;
+  localStorage.setItem(ACHIEVEMENT_KEY,JSON.stringify(achievements));
+  const def=achievementDefs.find(a=>a.id===id);
+  if(def){
+    addEffect(400,210,`🏅 ${def.name}`,"#d19000",30);
+    burst(400,210,true);
+  }
+  renderAchievements();
+}
+
+function checkAchievements(){
+  achievementDefs.forEach(def=>{
+    if(def.check())unlockAchievement(def.id);
+  });
+}
+
+function renderAchievements(){
+  achievementList.innerHTML="";
+  achievementDefs.forEach(def=>{
+    const li=document.createElement("li");
+    li.className=achievements[def.id]?"unlocked":"";
+    li.textContent=`${achievements[def.id]?"✅":"🔒"} ${def.name}`;
+    achievementList.appendChild(li);
+  });
+  const count=achievementDefs.filter(def=>achievements[def.id]).length;
+  achievementCount.textContent=`実績：${count}/${achievementDefs.length}`;
+}
+
+function activatePowerup(type){
+  activePowerup=type;
+  powerupFrames=type==="timeStop"?240:600;
+  const labels={
+    speed:"⚡ スピードアップ",
+    shield:"🛡️ バリア",
+    timeStop:"⏰ 時間停止",
+    double:"🦴 得点2倍"
+  };
+  powerupText.textContent=`パワーアップ：${labels[type]}`;
+  addEffect(400,260,labels[type],"#6a35c7",34);
+  burst(400,260,true);
+}
+
+function clearPowerup(){
+  activePowerup=null;
+  powerupFrames=0;
+  powerupText.textContent="パワーアップ：なし";
+}
+
+function createPhoto(){
+  photoCtx.clearRect(0,0,800,500);
+  photoCtx.drawImage(canvas,0,0,800,500);
+  photoCtx.fillStyle="rgba(255,255,255,.9)";
+  photoCtx.fillRect(0,410,800,90);
+  photoCtx.fillStyle="#8b5a2b";
+  photoCtx.font="bold 30px sans-serif";
+  photoCtx.textAlign="center";
+  photoCtx.fillText(`ワンパグゲーム Ver.8　${score}点　🪙${coins}`,400,452);
+  photoCtx.font="20px sans-serif";
+  photoCtx.fillText(`${characterSettings[selectedCharacter].name} ／ ${stageNames[selectedStage]}`,400,482);
+}
+
 function updateHud(){
   pointText.textContent=score;
   timeText.textContent=time;
   lifeText.textContent="❤️".repeat(Math.max(0,lives))+"🖤".repeat(Math.max(0,maxLives-lives));
-  coinText.textContent=coins;
+  coinText.textContent=coins;checkAchievements();
 }
 
 function playTone(a,b,d,v=.08){
@@ -268,6 +413,11 @@ function drawBackground(){
   else if(time<=15){top="#f2a16e";bottom="#844d63"}
   if(feverMode){top=`hsl(${(frame*4)%360},90%,72%)`;bottom=`hsl(${(frame*4+150)%360},90%,72%)`}
 
+  if(selectedStage==="dogrun"){top="#9ee8ff";bottom="#c8f4b8"}
+  if(selectedStage==="park"){top="#ffd6e7";bottom="#c7efb1"}
+  if(selectedStage==="beach"){top="#8edcff";bottom="#f7df9b"}
+  if(selectedStage==="snow"){top="#cbeaff";bottom="#f5fbff"}
+
   const g=ctx.createLinearGradient(0,0,0,500);
   g.addColorStop(0,top);g.addColorStop(1,bottom);
   ctx.fillStyle=g;ctx.fillRect(0,0,800,500);
@@ -297,6 +447,25 @@ function drawBackground(){
   ctx.fillStyle="#2f8f4e";ctx.beginPath();ctx.arc(760,300,34,0,Math.PI*2);ctx.fill();
   ctx.fillStyle="#7b4d28";ctx.fillRect(752,325,16,45);
 
+  if(selectedStage==="dogrun"){
+    ctx.fillStyle="#67c95e";ctx.fillRect(0,340,800,160);
+    ctx.fillStyle="#4b9d45";
+    for(let x=0;x<800;x+=55)ctx.fillRect(x,325,28,28);
+  }
+  if(selectedStage==="park"){
+    ctx.fillStyle="#7ecf68";ctx.fillRect(0,350,800,150);
+    ctx.font="48px serif";ctx.fillText("🌸",80,160);ctx.fillText("🌸",710,145);
+  }
+  if(selectedStage==="beach"){
+    ctx.fillStyle="#f3d78c";ctx.fillRect(0,345,800,155);
+    ctx.fillStyle="#46b9e8";ctx.fillRect(0,300,800,55);
+    ctx.font="52px serif";ctx.fillText("⛱️",680,310);
+  }
+  if(selectedStage==="snow"){
+    ctx.fillStyle="#ffffff";ctx.fillRect(0,340,800,160);
+    ctx.font="48px serif";ctx.fillText("⛄",690,330);
+  }
+
   if(!feverMode&&time>15){
     const season=getSeason();
     const symbol={spring:"🌸",summer:"🌻",autumn:"🍁",winter:"❄️"}[season];
@@ -305,6 +474,25 @@ function drawBackground(){
       const x=(i*91+frame*.35)%850-25;
       const y=65+(i*47)%250;
       ctx.fillText(symbol,x,y);
+    }
+  }
+
+  if(weather==="cloudy"){
+    ctx.fillStyle="rgba(120,130,145,.24)";ctx.fillRect(0,0,800,500);
+    ctx.font="52px serif";ctx.fillText("☁️",120,90);ctx.fillText("☁️",620,110);
+  }
+  if(weather==="rain"){
+    ctx.strokeStyle="rgba(60,110,180,.65)";ctx.lineWidth=3;
+    for(let i=0;i<45;i++){
+      const x=(i*83+frame*6)%850-25,y=(i*47+frame*10)%520-20;
+      ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-8,y+20);ctx.stroke();
+    }
+  }
+  if(weather==="snow"){
+    ctx.font="20px serif";
+    for(let i=0;i<35;i++){
+      const x=(i*71+frame*1.2)%840-20,y=(i*43+frame*2)%520-20;
+      ctx.fillText("❄️",x,y);
     }
   }
 
@@ -381,6 +569,15 @@ function spawnRabbit(){rabbit.x=780;rabbit.y=315+Math.random()*45;rabbit.speed=2
 function spawnGoldenBone(){goldenBone.x=Math.random()*580+110;goldenBone.y=Math.random()*210+120;goldenBone.active=true;goldenBone.timer=0;goldenBone.pulse=0}
 function spawnCoin(){coin.x=Math.random()*580+110;coin.y=Math.random()*210+120;coin.active=true;coin.timer=0;coin.pulse=0}
 function spawnChest(){chest.x=Math.random()*560+120;chest.y=Math.random()*190+150;chest.active=true;chest.timer=0;chest.pulse=0}
+function spawnPowerItem(){
+  const types=["speed","shield","timeStop","double"];
+  powerItem.type=types[Math.floor(Math.random()*types.length)];
+  powerItem.x=Math.random()*560+120;
+  powerItem.y=Math.random()*190+135;
+  powerItem.active=true;
+  powerItem.timer=0;
+  powerItem.pulse=0;
+}
 
 function moveObjects(){
   if(bomb.active){bomb.x-=bomb.speed;if(bomb.x<-60){bomb.active=false;bomb.timer=0}}else if(++bomb.timer>260)spawnBomb();
@@ -388,6 +585,8 @@ function moveObjects(){
   if(!goldenBone.active&&++goldenBone.timer>650)spawnGoldenBone();
   if(!coin.active&&++coin.timer>220)spawnCoin();
   if(!chest.active&&++chest.timer>520)spawnChest();
+  if(!powerItem.active&&++powerItem.timer>430)spawnPowerItem();
+  if(++weatherTimer>480){chooseWeather();weatherTimer=0;}
 
   if(boss.active){
     boss.x-=boss.speed;
@@ -414,13 +613,13 @@ function collision(cx,cy,x,y,rx=55,ry=62){return Math.abs(cx-x)<rx&&Math.abs(cy-
 
 function moveDogs(){
   dogs.forEach(d=>{
-    d.x+=d.speed*(feverMode?1.5:1);
+    d.x+=d.speed*(feverMode?1.5:1)*(activePowerup==="speed"?1.45:1);
     if(d.x>840)d.x=-110;
     if(d.jump<0){d.jump+=1.4;if(d.jump>0)d.jump=0}
     const bounce=Math.sin((frame*.28+d.phase)*2)*6,cx=d.x+45,cy=d.y+45+d.jump+bounce;
 
     if(collision(cx,cy,snack.x+18,snack.y-15,50,60)){
-      const earned=snack.item.point*(feverMode?2:1);
+      const earned=snack.item.point*(feverMode?2:1)*(activePowerup==="double"?2:1);
       score+=earned;d.jump=-28;addEffect(snack.x,snack.y,`+${earned}`,feverMode?"#ff00c8":"#ff6b00");burst(snack.x,snack.y,feverMode);
       playTone(520,820,.12,.09);resetSnack();
       if(score>=30)startFever();
@@ -429,7 +628,8 @@ function moveDogs(){
       score=Math.max(0,score-10);rabbit.active=false;rabbit.timer=0;d.x-=70;addEffect(rabbit.x,rabbit.y,"-10","#d40000");message.textContent="うさぎに当たって10点減点！";playTone(240,90,.22,.12);
     }
     if(goldenBone.active&&collision(cx,cy,goldenBone.x,goldenBone.y,60,65)){
-      score+=100;goldenBone.active=false;goldenBone.timer=0;addEffect(goldenBone.x,goldenBone.y,"JACKPOT +100","#d19000",38);burst(goldenBone.x,goldenBone.y,true);playTone(500,1600,.6,.15);
+      score+=100;totalGoldenBones++;localStorage.setItem("onepugGoldenBonesV8",String(totalGoldenBones));
+      goldenBone.active=false;goldenBone.timer=0;addEffect(goldenBone.x,goldenBone.y,"JACKPOT +100","#d19000",38);burst(goldenBone.x,goldenBone.y,true);playTone(500,1600,.6,.15);
     }
     if(coin.active&&collision(cx,cy,coin.x,coin.y,55,60)){
       coins++;coin.active=false;coin.timer=0;addEffect(coin.x,coin.y,"+1 COIN","#c58a00");playTone(700,1100,.12,.08);
@@ -437,14 +637,29 @@ function moveDogs(){
     if(chest.active&&collision(cx,cy,chest.x,chest.y,60,65)){
       chest.active=false;chest.timer=0;applyChest();
     }
+    if(powerItem.active&&collision(cx,cy,powerItem.x,powerItem.y,58,62)){
+      const type=powerItem.type;
+      powerItem.active=false;powerItem.timer=0;
+      activatePowerup(type);
+      playTone(620,1300,.35,.12);
+    }
     if(bomb.active&&hitCooldown===0&&collision(cx,cy,bomb.x,bomb.y-14,52,62)){
-      lives--;hitCooldown=75;d.x-=80;bomb.active=false;bomb.timer=0;addEffect(bomb.x,bomb.y,"-1 LIFE","#e30000");burst(bomb.x,bomb.y,true);playTone(180,55,.32,.17);
-      message.textContent=`爆弾に当たった！残りライフ${lives}`;
+      if(activePowerup==="shield"){
+        clearPowerup();hitCooldown=75;bomb.active=false;bomb.timer=0;
+        addEffect(bomb.x,bomb.y,"SHIELD","#2476ff");
+      }else{
+        lives--;hitCooldown=75;d.x-=80;bomb.active=false;bomb.timer=0;addEffect(bomb.x,bomb.y,"-1 LIFE","#e30000");
+      }burst(bomb.x,bomb.y,true);playTone(180,55,.32,.17);
+      message.textContent=activePowerup?"バリアで爆弾を防いだ！":`爆弾に当たった！残りライフ${lives}`;
       if(lives<=0)endGame("爆弾");
     }
     if(boss.active&&hitCooldown===0&&collision(cx,cy,boss.x,boss.y+Math.sin(boss.phase)*30,75,95)){
       boss.hits++;hitCooldown=90;d.x-=100;lives--;addEffect(boss.x,boss.y,"BOSS HIT","#900000",34);burst(boss.x,boss.y,true);playTone(150,45,.4,.18);
-      if(boss.hits>=3||lives<=0)endGame("ボスパグ");
+      if(boss.hits>=3){
+        boss.active=false;bossDefeats++;
+        localStorage.setItem("onepugBossDefeatsV8",String(bossDefeats));
+        score+=150;addEffect(400,180,"BOSS CLEAR +150","#d19000",38);burst(400,180,true);
+      }else if(lives<=0)endGame("ボスパグ");
     }
   });
 
@@ -467,6 +682,8 @@ function draw(){
   drawEmoji(goldenBone,"🦴",60,"GOLD 100","#a87300");
   drawEmoji(coin,"🪙",48,"COIN","#a87300");
   drawEmoji(chest,"🎁",54,"宝箱","#7b3eb8");
+  const powerEmoji={speed:"⚡",shield:"🛡️",timeStop:"⏰",double:"💎"}[powerItem.type];
+  drawEmoji(powerItem,powerEmoji,52,"POWER","#6a35c7");
   drawBoss();
   dogs.forEach(drawDog);
   drawEffects();
@@ -476,10 +693,13 @@ function draw(){
 function loop(ts){
   draw();
   if(gameRunning){
-    moveObjects();moveDogs();frame++;
+    if(activePowerup!=="timeStop")moveObjects();
+    moveDogs();frame++;
+    if(powerupFrames>0&&--powerupFrames<=0)clearPowerup();
     if(!lastSecond)lastSecond=ts;
     if(ts-lastSecond>=1000){
-      time--;lastSecond=ts;updateHud();
+      if(activePowerup!=="timeStop")time--;
+      lastSecond=ts;updateHud();
       if(time<=0)endGame("タイムアップ");
     }
   }
@@ -494,7 +714,8 @@ function startGame(){
   hitCooldown=0;feverMode=false;feverFrames=0;feverUsed=false;
   playerDog.x=70;playerDog.y=250;playerDog.jump=0;
   bomb.active=false;bomb.timer=0;rabbit.active=false;rabbit.timer=0;goldenBone.active=false;goldenBone.timer=0;
-  coin.active=false;coin.timer=0;chest.active=false;chest.timer=0;boss.active=false;boss.hits=0;
+  coin.active=false;coin.timer=0;chest.active=false;chest.timer=0;powerItem.active=false;powerItem.timer=0;
+  boss.active=false;boss.hits=0;clearPowerup();weatherTimer=0;chooseWeather();
   resetSnack();spawnBomb();spawnRabbit();spawnCoin();
   updateHud();message.textContent="30点でフィーバー、100点でボス登場！";startButton.textContent="もう一度スタート";startBgm();
 }
