@@ -161,9 +161,8 @@
     }
     .mini-crowdfund strong { color: var(--gold-light); }
 
-    nav{
-    position: static;
-}
+    nav {
+      position: static;
       z-index: 1000;
       background: rgba(8, 11, 11, .95);
       border-bottom: 1px solid rgba(215, 173, 79, .25);
@@ -418,6 +417,87 @@
       cursor: pointer;
     }
 
+    .problem-band {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 64px max(18px, calc((100% - 1140px)/2));
+      background: linear-gradient(135deg, #efe5cc, #fbf8f0);
+      border-top: 1px solid rgba(215, 173, 79, .3);
+      border-bottom: 1px solid rgba(215, 173, 79, .3);
+    }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 28px;
+    }
+    .problem-card {
+      min-height: 150px;
+      padding: 26px 20px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(77,55,17,.12);
+      text-align: center;
+      box-shadow: 0 10px 28px rgba(77,55,17,.08);
+    }
+    .problem-card strong { display:block; margin-top:10px; color:var(--deep); font-size:18px; }
+    .problem-icon { font-size: 34px; }
+
+    .cta-band {
+      width: min(1140px, calc(100% - 34px));
+      margin: 58px auto;
+      padding: 34px 24px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #0a1d1a, #0b5c4e);
+      color: #fff;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .cta-band h2 { color:#fff; margin:0; font-size:clamp(25px,4vw,36px); }
+    .cta-band h2::after { display:none; }
+    .cta-band p { margin:10px 0 22px; color:rgba(255,255,255,.78); }
+
+    .faq-list { display:grid; gap:14px; margin-top:30px; }
+    .faq-item {
+      overflow:hidden;
+      border-radius:12px;
+      background:#fff;
+      box-shadow:0 8px 24px rgba(0,0,0,.07);
+      border:1px solid rgba(8,69,58,.08);
+    }
+    .faq-item summary {
+      cursor:pointer;
+      list-style:none;
+      padding:18px 52px 18px 20px;
+      position:relative;
+      color:var(--deep);
+      font-weight:800;
+    }
+    .faq-item summary::-webkit-details-marker { display:none; }
+    .faq-item summary::after {
+      content:'＋';
+      position:absolute;
+      right:20px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--gold);
+      font-size:22px;
+    }
+    .faq-item[open] summary::after { content:'−'; }
+    .faq-answer { padding:0 20px 20px; color:var(--muted); }
+
+    .price-clarity {
+      margin-top:18px;
+      padding:16px 18px;
+      border-radius:10px;
+      background:#fff8e8;
+      border:1px solid #ead39f;
+      color:#5f4b1d;
+      font-size:14px;
+      text-align:center;
+    }
+
     @media (max-width: 800px) {
       body { padding-bottom: 64px; }
       .hero { min-height: 82vh; padding: 78px 18px 55px; }
@@ -433,6 +513,9 @@
       .before-after { grid-template-columns: 1fr; }
       .photo-box img { height: 340px; }
       .profile-box, .contact, .cafe-banner { padding: 26px 18px; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .problem-band { padding-top: 48px; padding-bottom: 48px; }
+      .cta-band { margin: 42px auto; padding: 28px 18px; }
       .fixed-contact {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -479,6 +562,7 @@
       <li><a href="#price">料金目安</a></li>
       <li><a href="#promise">選ばれる理由</a></li>
       <li><a href="#flow">施工の流れ</a></li>
+      <li><a href="#faq">よくある質問</a></li>
       <li><a href="#profile">会社案内</a></li>
       <li><a href="#contact">お問い合わせ</a></li>
     </ul>
@@ -490,6 +574,16 @@
     <div class="trust-item"><strong>5種類</strong><span>主要な住宅設備に対応</span></div>
     <div class="trust-item"><strong>LINE</strong><span>写真でかんたん相談</span></div>
   </div>
+
+  <section class="problem-band reveal" aria-labelledby="problem-title">
+    <p class="section-kicker">Trouble</p>
+    <h2 id="problem-title">こんなお困りごとはありませんか？</h2>
+    <div class="problem-grid">
+      <div class="problem-card"><div class="problem-icon">♨️</div><strong>お湯が出ない・給湯器が古い</strong><p>突然の故障や交換時期のご相談に対応します。</p></div>
+      <div class="problem-card"><div class="problem-icon">🔥</div><strong>コンロや換気扇を新しくしたい</strong><p>機種選びから交換工事まで分かりやすくご案内します。</p></div>
+      <div class="problem-card"><div class="problem-icon">📱</div><strong>まず写真だけで相談したい</strong><p>LINEで写真を送って、工事内容を気軽にご相談いただけます。</p></div>
+    </div>
+  </section>
 
   <section id="service" class="reveal">
     <p class="section-kicker">Service</p>
@@ -555,6 +649,15 @@
     </div>
   </section>
 
+  <div class="cta-band reveal">
+    <h2>写真を送るだけでも大丈夫です</h2>
+    <p>型番や設置状況が分かる写真をLINEで送っていただければ、交換工事についてご案内します。</p>
+    <div class="button-area">
+      <a href="https://line.me/ti/p/Nkr58LmcFn" class="btn btn-line">LINEで写真を送る</a>
+      <a href="tel:09033567827" class="btn btn-gold">電話で相談する</a>
+    </div>
+  </div>
+
   <section id="price" class="reveal">
     <p class="section-kicker">Price</p>
     <h2>料金の目安</h2>
@@ -567,6 +670,7 @@
       <div class="card price-card"><strong>キッチン水栓交換</strong><div class="price">10,000円</div></div>
     </div>
     <p class="price-note">他社のお見積りがある場合や、お急ぎの場合もお気軽にご相談ください。</p>
+    <div class="price-clarity">表示金額は工事内容ごとの目安です。商品代・処分費・追加部材などの有無は、現場状況を確認したうえで事前にご案内します。</div>
   </section>
 
   <section id="promise" class="dark-section reveal">
@@ -601,6 +705,19 @@
       <div class="card"><h3>主な対応エリア</h3><p>加須市・久喜市・羽生市・幸手市・白岡市・蓮田市・古河市・館林市・行田市・熊谷市・鴻巣市・北本市・桶川市・伊奈町 ほか</p></div>
       <div class="card"><h3>給湯器・ガス機器</h3><p>リンナイ・ノーリツ・パロマ・パーパス</p></div>
       <div class="card"><h3>キッチン・水まわり</h3><p>LIXIL・TOTO・クリナップ・タカラスタンダード・Panasonic・富士工業 ほか</p></div>
+    </div>
+  </section>
+
+  <section id="faq" class="reveal">
+    <p class="section-kicker">FAQ</p>
+    <h2>よくある質問</h2>
+    <p class="section-lead">ご依頼前によくいただくご質問をまとめました。</p>
+    <div class="faq-list">
+      <details class="faq-item"><summary>見積りは本当に無料ですか？</summary><div class="faq-answer">はい。ご相談・お見積りは無料です。工事内容や地域によって現地確認が必要な場合があります。</div></details>
+      <details class="faq-item"><summary>他店やインターネットで購入した商品も取り付けできますか？</summary><div class="faq-answer">商品や設置状況によって対応できる場合があります。型番と設置場所の写真をLINEでお送りください。</div></details>
+      <details class="faq-item"><summary>土日や祝日も対応できますか？</summary><div class="faq-answer">可能な限り対応します。空き状況がありますので、ご希望日をお知らせください。</div></details>
+      <details class="faq-item"><summary>追加料金が発生することはありますか？</summary><div class="faq-answer">追加部材や現場状況により必要になる場合があります。その際は、施工前に内容と金額をご説明します。</div></details>
+      <details class="faq-item"><summary>どの写真を送ればよいですか？</summary><div class="faq-answer">設備全体、型番シール、周辺の配管や設置状況が分かる写真があると確認がスムーズです。</div></details>
     </div>
   </section>
 
