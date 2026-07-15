@@ -125,3 +125,34 @@ linear-gradient(135deg,#6f4326,#d39555 48%,#fff0d2)}
   .dual-hud{grid-template-columns:1fr}
   .dual-center{text-align:center}
 }
+.game-shell{
+    position:relative;
+}
+
+.start-on-screen{
+    position:absolute;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%);
+    z-index:999;
+
+    background:#ff7a00;
+    color:#fff;
+    font-size:24px;
+    font-weight:bold;
+
+    padding:18px 40px;
+    border:none;
+    border-radius:50px;
+
+    box-shadow:0 6px 0 #c45d00;
+    cursor:pointer;
+}
+
+.start-on-screen:hover{
+    transform:translateX(-50%) scale(1.05);
+}
+
+.start-on-screen:active{
+    transform:translateX(-50%) translateY(4px);
+}
