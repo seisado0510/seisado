@@ -17,6 +17,11 @@ const resetRankingButton=document.getElementById("resetRanking");
 const RANKING_KEY="onepugRankingV5";
 const characterCards=[...document.querySelectorAll(".character-card")];
 const selectedCharacterText=document.getElementById("selectedCharacterText");
+const openingScreen=document.getElementById("openingScreen");
+const openingStartButton=document.getElementById("openingStartButton");
+const jumpButton=document.getElementById("jumpButton");
+const bgmButton=document.getElementById("bgmButton");
+const seasonButtons=[...document.querySelectorAll(".season-btn")];
 const CHARACTER_KEY="onepugSelectedCharacterV6";
 
 const characterSettings={
@@ -47,6 +52,11 @@ const characterSettings={
 };
 
 let selectedCharacter=localStorage.getItem(CHARACTER_KEY)||"margherita";
+let selectedSeason=localStorage.getItem("onepugSeasonV7")||"auto";
+let bgmOn=true;
+let bgmContext=null;
+let bgmTimer=null;
+let bgmStep=0;
 let maxLives=characterSettings[selectedCharacter].maxLives;
 
 let score=0,time=45,lives=3,coins=0,gameRunning=false,frame=0,lastSecond=0,soundOn=true;
@@ -76,7 +86,28 @@ function applySelectedCharacter(){
   playerDog.jumpPower=setting.jumpPower;
   maxLives=setting.maxLives;
 
-  characterCards.forEach(card=>{
+  openingStartButton.addEventListener("click",()=>{
+  openingScreen.classList.add("hide");
+  localStorage.setItem("onepugOpeningSeenV7","1");
+});
+
+jumpButton.addEventListener("click",jump);
+
+bgmButton.addEventListener("click",()=>{
+  bgmOn=!bgmOn;
+  bgmButton.textContent=bgmOn?"🎵 BGMあり":"🔇 BGMなし";
+  if(bgmOn)startBgm();else stopBgm();
+});
+
+seasonButtons.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    selectedSeason=btn.dataset.season;
+    localStorage.setItem("onepugSeasonV7",selectedSeason);
+    updateSeasonButtons();
+  });
+});
+
+characterCards.forEach(card=>{
     card.classList.toggle("selected",card.dataset.character===selectedCharacter);
   });
   selectedCharacterText.textContent=`選択中：${setting.name}（${setting.ability}）`;
@@ -148,6 +179,45 @@ function closeRankingPanel(){
   rankingPanel.classList.remove("open");
 }
 
+
+function getSeason(){
+  if(selectedSeason!=="auto") return selectedSeason;
+  const month=new Date().getMonth()+1;
+  if(month>=3&&month<=5)return "spring";
+  if(month>=6&&month<=8)return "summer";
+  if(month>=9&&month<=11)return "autumn";
+  return "winter";
+}
+
+function updateSeasonButtons(){
+  seasonButtons.forEach(btn=>btn.classList.toggle("selected",btn.dataset.season===selectedSeason));
+}
+
+function startBgm(){
+  if(!bgmOn||bgmTimer)return;
+  try{
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    bgmContext=bgmContext||new AudioCtx();
+    const notes=[261.63,329.63,392.00,329.63,293.66,349.23,440.00,349.23];
+    bgmTimer=setInterval(()=>{
+      if(!bgmOn||!gameRunning)return;
+      const osc=bgmContext.createOscillator();
+      const gain=bgmContext.createGain();
+      osc.connect(gain);gain.connect(bgmContext.destination);
+      osc.type="sine";
+      osc.frequency.value=notes[bgmStep%notes.length];
+      gain.gain.setValueAtTime(.035,bgmContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,bgmContext.currentTime+.22);
+      osc.start();osc.stop(bgmContext.currentTime+.23);
+      bgmStep++;
+    },280);
+  }catch(e){}
+}
+
+function stopBgm(){
+  if(bgmTimer){clearInterval(bgmTimer);bgmTimer=null}
+}
+
 function updateHud(){
   pointText.textContent=score;
   timeText.textContent=time;
@@ -186,7 +256,14 @@ function burst(x,y,big=false){
 }
 
 function drawBackground(){
-  let top="#f7d8b0",bottom="#f2c58f";
+  const season=getSeason();
+  const palettes={
+    spring:["#ffd6e7","#f8c4d8"],
+    summer:["#9ee8ff","#f7e77f"],
+    autumn:["#f5b06b","#9e5742"],
+    winter:["#c9e9ff","#eaf6ff"]
+  };
+  let [top,bottom]=palettes[season];
   if(time<=5){top="#18213d";bottom="#3d315f"}
   else if(time<=15){top="#f2a16e";bottom="#844d63"}
   if(feverMode){top=`hsl(${(frame*4)%360},90%,72%)`;bottom=`hsl(${(frame*4+150)%360},90%,72%)`}
@@ -219,6 +296,17 @@ function drawBackground(){
 
   ctx.fillStyle="#2f8f4e";ctx.beginPath();ctx.arc(760,300,34,0,Math.PI*2);ctx.fill();
   ctx.fillStyle="#7b4d28";ctx.fillRect(752,325,16,45);
+
+  if(!feverMode&&time>15){
+    const season=getSeason();
+    const symbol={spring:"🌸",summer:"🌻",autumn:"🍁",winter:"❄️"}[season];
+    ctx.font="28px serif";
+    for(let i=0;i<10;i++){
+      const x=(i*91+frame*.35)%850-25;
+      const y=65+(i*47)%250;
+      ctx.fillText(symbol,x,y);
+    }
+  }
 
   ctx.fillStyle="rgba(255,255,255,.92)";ctx.font="bold 25px sans-serif";ctx.textAlign="center";
   let title="☕ ワンパグカフェ ☕";
@@ -408,12 +496,12 @@ function startGame(){
   bomb.active=false;bomb.timer=0;rabbit.active=false;rabbit.timer=0;goldenBone.active=false;goldenBone.timer=0;
   coin.active=false;coin.timer=0;chest.active=false;chest.timer=0;boss.active=false;boss.hits=0;
   resetSnack();spawnBomb();spawnRabbit();spawnCoin();
-  updateHud();message.textContent="30点でフィーバー、100点でボス登場！";startButton.textContent="もう一度スタート";
+  updateHud();message.textContent="30点でフィーバー、100点でボス登場！";startButton.textContent="もう一度スタート";startBgm();
 }
 
 function endGame(reason){
   if(!gameRunning)return;
-  gameRunning=false;boss.active=false;bomb.active=false;rabbit.active=false;
+  gameRunning=false;boss.active=false;bomb.active=false;rabbit.active=false;stopBgm();
   if(score>bestScore){bestScore=score;localStorage.setItem("onepugBestScoreV4",String(bestScore));bestText.textContent=bestScore}
   const playerName=(playerNameInput.value||"ゲスト").trim().slice(0,10)||"ゲスト";
   const ranking=saveRanking(playerName,score,coins);
@@ -450,5 +538,9 @@ window.addEventListener("keydown",e=>{if(e.code==="Space"){e.preventDefault();ju
 
 playerNameInput.value=localStorage.getItem("onepugPlayerName")||"ゲスト";
 applySelectedCharacter();
+updateSeasonButtons();
 lives=maxLives;
+if(localStorage.getItem("onepugOpeningSeenV7")==="1"){
+  openingScreen.classList.add("hide");
+}
 updateHud();resetSnack();renderRanking();draw();requestAnimationFrame(loop);

@@ -53,3 +53,20 @@ button.rank-btn{background:#c39200;box-shadow:0 4px 0 #8d6900}
   .character-card{flex-direction:row;justify-content:flex-start;text-align:left}
   .character-card img{width:72px;height:72px;flex:0 0 auto}
 }
+
+.opening-screen{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#f7d8b0,#d08b45);display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .5s ease,visibility .5s ease}
+.opening-screen.hide{opacity:0;visibility:hidden;pointer-events:none}
+.opening-card{width:min(92vw,560px);background:rgba(255,255,255,.95);border:6px solid #8b5a2b;border-radius:30px;padding:34px 24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:openingPop .7s ease}
+.opening-logo{font-size:76px;animation:logoBounce 1.1s infinite alternate}
+.opening-card h2{font-size:clamp(30px,7vw,48px);color:#8b5a2b;margin:8px 0}
+.opening-card p{font-size:18px;color:#5b4637}
+@keyframes openingPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes logoBounce{from{transform:translateY(0) rotate(-4deg)}to{transform:translateY(-12px) rotate(4deg)}}
+button.jump-btn{background:#12a05c;box-shadow:0 4px 0 #08763f}
+button.bgm-btn{background:#9b4fc3;box-shadow:0 4px 0 #663184}
+.season-panel{display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap;margin:14px 0 2px;font-weight:bold;color:#8b5a2b}
+.season-btn{min-width:auto;padding:9px 13px;font-size:14px;background:#b98b62;box-shadow:0 3px 0 #7f5b3b}
+.season-btn.selected{background:#ff8c12;transform:translateY(-2px)}
+@media(max-width:650px){
+  #jumpButton{position:sticky;bottom:10px;z-index:12;font-size:22px;padding:18px 26px}
+}
