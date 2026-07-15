@@ -463,6 +463,51 @@
       .fixed-mail { background: #1769aa; }
       footer { padding-bottom: 30px; }
     }
+
+    /* 最終調整：見やすさと統一感 */
+    nav a {
+      min-width: 112px;
+      text-align: center;
+    }
+
+    .work-card,
+    .card,
+    .profile-box,
+    .contact,
+    .cafe-banner {
+      border-radius: 18px;
+    }
+
+    .button-area .btn,
+    .hero-actions .btn {
+      border-radius: 999px;
+      padding-left: 28px;
+      padding-right: 28px;
+    }
+
+    #contact-last {
+      padding: 38px 24px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #efffec, #fff8d6);
+      border: 1px solid rgba(216, 170, 47, .45);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    #voice .card {
+      border-top-color: var(--gold);
+    }
+
+    @media (max-width: 800px) {
+      nav a {
+        min-width: auto;
+      }
+
+      #contact-last {
+        padding: 28px 18px;
+      }
+    }
+
   </style>
 </head>
 
@@ -491,8 +536,6 @@
       <li><a href="#service">工事内容</a></li>
       <li><a href="#works">施工事例</a></li>
       <li><a href="#price">料金目安</a></li>
-      <li><a href="#promise">選ばれる理由</a></li>
-      <li><a href="#flow">施工の流れ</a></li>
       <li><a href="#profile">会社案内</a></li>
       <li><a href="#contact">お問い合わせ</a></li>
     </ul>
@@ -640,145 +683,7 @@
   </div>
 
 </section>
-<section id="maker" class="reveal">
 
-  <p class="section-kicker">Supported Brands</p>
-  <h2>主な対応メーカー</h2>
-
-  <p class="section-lead">
-    国内主要メーカーに対応しております。お気軽にご相談ください。
-  </p>
-
-  <div class="cards">
-
-    <div class="card" style="text-align:center;"><h3>🔥 リンナイ</h3></div>
-
-    <div class="card" style="text-align:center;"><h3>♨️ ノーリツ</h3></div>
-
-    <div class="card" style="text-align:center;"><h3>🍳 パロマ</h3></div>
-
-    <div class="card" style="text-align:center;"><h3>⚡ パナソニック</h3></div>
-
-    <div class="card" style="text-align:center;"><h3>🚰 LIXIL</h3></div>
-
-    <div class="card" style="text-align:center;"><h3>🚿 TOTO</h3></div>
-
-    <div class="card" style="text-align:center;"><h3>🏠 クリナップ</h3></div>
-
-    <div class="card" style="text-align:center;"><h3>✨ タカラスタンダード</h3></div>
-
-  </div>
-
-</section>
-
-<section id="work-list" class="reveal">
-
-  <p class="section-kicker">Service</p>
-  <h2>対応工事一覧</h2>
-
-  <div class="cards">
-
-    <div class="card">✅ 給湯器交換</div>
-
-    <div class="card">✅ ビルトインコンロ交換</div>
-
-    <div class="card">✅ レンジフード交換</div>
-
-    <div class="card">✅ 食洗機交換</div>
-
-    <div class="card">✅ キッチン水栓交換</div>
-
-    <div class="card">✅ 浴室水栓交換</div>
-
-    <div class="card">✅ 洗面水栓交換</div>
-
-  </div>
-
-</section>
-<section class="reveal">
-  <div style="
-    background:linear-gradient(135deg,#19c36b,#0f8f4f);
-    color:#fff;
-    border-radius:20px;
-    padding:40px;
-    text-align:center;
-    margin:30px 0;
-    box-shadow:0 12px 30px rgba(0,0,0,.15);
-  ">
-
-    <h2 style="color:#fff;font-size:34px;margin-bottom:20px;">
-      安心・丁寧な施工をお約束します
-    </h2>
-
-    <p style="font-size:18px;line-height:1.9;">
-      青彩堂では、お客様との信頼関係を大切にし、
-      工事内容・料金を分かりやすくご説明したうえで施工いたします。<br><br>
-
-      小さな修理から住宅設備の交換まで、
-      「頼んでよかった」と思っていただける仕事を心掛けています。
-    </p>
-
-    <div style="margin-top:30px;">
-      <span style="background:#fff;color:#19c36b;padding:10px 18px;border-radius:999px;margin:6px;display:inline-block;font-weight:bold;">
-        お見積り無料
-      </span>
-
-      <span style="background:#fff;color:#19c36b;padding:10px 18px;border-radius:999px;margin:6px;display:inline-block;font-weight:bold;">
-        地域密着
-      </span>
-
-      <span style="background:#fff;color:#19c36b;padding:10px 18px;border-radius:999px;margin:6px;display:inline-block;font-weight:bold;">
-        丁寧施工
-      </span>
-
-      <span style="background:#fff;color:#19c36b;padding:10px 18px;border-radius:999px;margin:6px;display:inline-block;font-weight:bold;">
-        LINE相談OK
-      </span>
-    </div>
-
-  </div>
-</section>
-<section id="about" class="reveal">
-
-  <p class="section-kicker">About</p>
-  <h2>青彩堂について</h2>
-
-  <p class="section-lead">
-    青彩堂は加須市を中心に、住宅設備機器の交換・取付工事を行っています。
-  </p>
-
-  <div class="cards">
-
-    <div class="card">
-      <div class="icon">🏡</div>
-      <h3>地域密着</h3>
-      <p>
-        加須市・久喜市・羽生市・幸手市など、
-        地域のお客様を大切にしています。
-      </p>
-    </div>
-
-    <div class="card">
-      <div class="icon">🔧</div>
-      <h3>丁寧な施工</h3>
-      <p>
-        一件一件責任を持ち、
-        分かりやすい説明と丁寧な施工を心掛けています。
-      </p>
-    </div>
-
-    <div class="card">
-      <div class="icon">🤝</div>
-      <h3>安心対応</h3>
-      <p>
-        小さなお困りごとでもお気軽にご相談ください。
-        お見積りは無料です。
-      </p>
-    </div>
-
-  </div>
-
-</section>
   <section id="works" class="reveal">
     <p class="section-kicker">Before & After</p>
     <h2>施工事例</h2>
@@ -866,47 +771,6 @@
 
   </div>
 </section>
-<section id="reason" class="reveal">
-  <p class="section-kicker">Why Seisado</p>
-  <h2>青彩堂が選ばれる理由</h2>
-  <p class="section-lead">
-    お問い合わせから施工後まで、安心してご依頼いただける対応を心がけています。
-  </p>
-
-  <div class="cards">
-    <div class="card" style="text-align:center;">
-      <div class="icon">🔧</div>
-      <h3>丁寧・確実な施工</h3>
-      <p>
-        住宅設備の施工経験を活かし、一件一件責任を持って丁寧に施工します。
-      </p>
-    </div>
-
-    <div class="card" style="text-align:center;">
-      <div class="icon">💰</div>
-      <h3>見積り無料・明朗会計</h3>
-      <p>
-        工事前に料金をご説明し、ご納得いただいてから施工を行います。
-      </p>
-    </div>
-
-    <div class="card" style="text-align:center;">
-      <div class="icon">🚚</div>
-      <h3>地域密着・迅速対応</h3>
-      <p>
-        加須市を中心に、久喜市・羽生市など周辺地域へ対応しています。
-      </p>
-    </div>
-
-    <div class="card" style="text-align:center;">
-      <div class="icon">😊</div>
-      <h3>安心のアフターフォロー</h3>
-      <p>
-        施工後に気になることがありましたら、お気軽にご相談ください。
-      </p>
-    </div>
-  </div>
-</section>
 <section id="contact-last" class="reveal">
 
   <h2>お気軽にお問い合わせください</h2>
@@ -926,7 +790,7 @@
       📱 LINEで相談する
     </a>
 
-    <a href="mailto:○○○@○○○.com" class="btn">
+    <a href="mailto:konbu19700308@gmail.com" class="btn btn-white">
       ✉️ メールで相談する
     </a>
 
@@ -1038,18 +902,7 @@
     <p class="price-note">表示価格は工事費の目安です。商品代・部材代・現場状況により変わります。他社のお見積りがある場合や、お急ぎの場合もお気軽にご相談ください。</p>
   </section>
 
-  <section id="promise" class="dark-section reveal">
-    <p class="section-kicker">Promise</p>
-    <h2>青彩堂が大切にしていること</h2>
-    <p class="section-lead">安さだけではなく、工事前から工事後まで安心していただける対応を心がけています。</p>
-    <div class="cards promise-grid">
-      <div class="card promise-card"><h3>お見積り無料</h3><p>現地確認やお見積りは無料です。</p></div>
-      <div class="card promise-card"><h3>無理な営業はしません</h3><p>必要な工事だけをご提案します。</p></div>
-      <div class="card promise-card"><h3>事前に料金をご説明</h3><p>追加料金が必要な場合も事前にご説明します。</p></div>
-      <div class="card promise-card"><h3>丁寧・確実な施工</h3><p>一件一件に責任を持って施工します。</p></div>
-      <div class="card promise-card"><h3>工事後もご相談可能</h3><p>気になることがあればお気軽にご連絡ください。</p></div>
-    </div>
-  </section>
+  
 
   <section id="flow" class="reveal">
     <p class="section-kicker">Flow</p>
@@ -1065,7 +918,7 @@
 
   <section id="area" class="reveal">
     <p class="section-kicker">Area & Maker</p>
-    <h2>対応エリア・メーカー</h2>
+    <h2>対応エリア・主なメーカー</h2>
     <div class="cards" style="margin-top:30px;">
       <div class="card"><h3>主な対応エリア</h3><p>加須市・久喜市・羽生市・幸手市・白岡市・蓮田市・古河市・館林市・行田市・熊谷市・鴻巣市・北本市・桶川市・伊奈町 ほか</p></div>
       <div class="card"><h3>給湯器・ガス機器</h3><p>リンナイ・ノーリツ・パロマ・パーパス</p></div>
@@ -1074,8 +927,12 @@
   </section>
 
   <section id="profile" class="reveal">
-    <p class="section-kicker">About</p>
-    <h2>代表挨拶</h2>
+    <p class="section-kicker">About Seisado</p>
+    <h2>青彩堂について・代表挨拶</h2>
+    <p class="section-lead">
+      青彩堂は、加須市を中心に住宅設備機器の交換・取付工事を行っています。
+      小さなご相談にも、分かりやすく丁寧に対応いたします。
+    </p>
     <div class="profile-box" style="margin-top:30px;">
       <p>この度は、青彩堂のホームページをご覧いただき、誠にありがとうございます。代表の山﨑さとこです。</p>
       <p>青彩堂は、加須市を中心に、給湯器・ビルトインコンロ・レンジフード・食洗機・キッチン水栓などの住宅設備交換工事を行っております。</p>
