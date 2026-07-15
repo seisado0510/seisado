@@ -19,6 +19,7 @@ let effects = [];
 let sparkles = [];
 let explosions = [];
 let hitCooldown = 0;
+let bombRespawnTimer = 0;
 let bestScore = Number(localStorage.getItem("margheritaBestScore") || 0);
 bestText.textContent = bestScore;
 
@@ -42,7 +43,7 @@ const snacks = [
 ];
 
 let snack = {x:650, y:240, item:snacks[0], pulse:0};
-let bomb = {x:720, y:320, active:false, pulse:0};
+let bomb = {x:720, y:320, active:false, pulse:0, speed:2.6};
 
 function updateLife(){
   lifeText.textContent = "❤️".repeat(lives) + "🖤".repeat(3-lives);
@@ -153,15 +154,30 @@ function drawSnack(){
 
 function drawBomb(){
   if(!bomb.active) return;
-  bomb.pulse+=.12;
-  const scale=1+Math.sin(bomb.pulse)*.08;
+
+  bomb.pulse+=.14;
+  const scale=1+Math.sin(bomb.pulse)*.12;
+
   ctx.save();
   ctx.translate(bomb.x,bomb.y);
   ctx.scale(scale,scale);
-  ctx.font="48px serif";
+
+  // 赤い警告リングを付けて必ず見えるようにする
+  ctx.strokeStyle="#ff2d2d";
+  ctx.lineWidth=6;
+  ctx.beginPath();
+  ctx.arc(0,-14,34,0,Math.PI*2);
+  ctx.stroke();
+
+  ctx.font="56px serif";
   ctx.textAlign="center";
   ctx.fillText("💣",0,0);
   ctx.restore();
+
+  ctx.fillStyle="#c40000";
+  ctx.font="bold 16px sans-serif";
+  ctx.textAlign="center";
+  ctx.fillText("キケン！",bomb.x,bomb.y+28);
   ctx.textAlign="left";
 }
 
@@ -263,10 +279,29 @@ function resetSnack(){
 }
 
 function resetBomb(){
-  bomb.x=Math.random()*620+100;
-  bomb.y=Math.random()*235+120;
+  bomb.x=760;
+  bomb.y=Math.random()*230+125;
   bomb.active=true;
   bomb.pulse=0;
+  bomb.speed=2.2+Math.random()*1.2;
+  bombRespawnTimer=0;
+}
+
+function moveBomb(){
+  if(!bomb.active){
+    bombRespawnTimer++;
+    // 約5秒で必ず再出現
+    if(bombRespawnTimer>=300) resetBomb();
+    return;
+  }
+
+  bomb.x-=bomb.speed;
+
+  // 左端まで行ったら5秒待たず、1秒ほどで再出現
+  if(bomb.x<-50){
+    bomb.active=false;
+    bombRespawnTimer=240;
+  }
 }
 
 function moveDogs(){
@@ -294,15 +329,13 @@ function moveDogs(){
       createSparkles(snack.x,snack.y,snack.item.point);
       playSnackSound();
       resetSnack();
-
-      if(!bomb.active && Math.random()<.45) resetBomb();
     }
 
     if(bomb.active && hitCooldown===0){
       const bombDx=centerX-bomb.x;
-      const bombDy=centerY-bomb.y;
+      const bombDy=centerY-(bomb.y-14);
 
-      if(Math.abs(bombDx)<50 && Math.abs(bombDy)<60){
+      if(Math.abs(bombDx)<52 && Math.abs(bombDy)<62){
         lives--;
         updateLife();
         hitCooldown=75;
@@ -312,14 +345,12 @@ function moveDogs(){
         addEffect(bomb.x,bomb.y,"-1 LIFE","#e30000");
         playBombSound();
         bomb.active=false;
+        bombRespawnTimer=0;
 
         if(lives<=0){
           endGame(true);
         }else{
           message.textContent=`爆弾に当たった！ 残りライフ ${lives}`;
-          setTimeout(()=>{
-            if(gameRunning) resetBomb();
-          },1200);
         }
       }
     }
@@ -351,6 +382,7 @@ function loop(timestamp){
   draw();
 
   if(gameRunning){
+    moveBomb();
     moveDogs();
     frame++;
 
@@ -379,6 +411,7 @@ function startGame(){
   sparkles=[];
   explosions=[];
   hitCooldown=0;
+  bombRespawnTimer=0;
 
   dogs[0].x=80;
   dogs[1].x=-150;
@@ -387,7 +420,7 @@ function startGame(){
   pointText.textContent=score;
   timeText.textContent=time;
   updateLife();
-  message.textContent="おやつを集めて爆弾をよけよう！";
+  message.textContent="開始直後から爆弾が出ます。ジャンプしてよけよう！";
   startButton.textContent="もう一度スタート";
 
   resetSnack();
