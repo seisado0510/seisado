@@ -8,6 +8,13 @@ const coinText=document.getElementById("coins");
 const startButton=document.getElementById("startButton");
 const soundButton=document.getElementById("soundButton");
 const message=document.getElementById("message");
+const playerNameInput=document.getElementById("playerName");
+const rankingButton=document.getElementById("rankingButton");
+const rankingPanel=document.getElementById("rankingPanel");
+const rankingList=document.getElementById("rankingList");
+const closeRanking=document.getElementById("closeRanking");
+const resetRankingButton=document.getElementById("resetRanking");
+const RANKING_KEY="onepugRankingV5";
 
 let score=0,time=45,lives=3,coins=0,gameRunning=false,frame=0,lastSecond=0,soundOn=true;
 let effects=[],particles=[];
@@ -39,6 +46,56 @@ let goldenBone={x:620,y:160,active:false,timer:0,pulse:0};
 let coin={x:700,y:220,active:false,timer:0,pulse:0};
 let chest={x:690,y:290,active:false,timer:0,pulse:0};
 let boss={x:860,y:175,active:false,speed:1.35,hits:0,phase:0};
+
+
+function loadRanking(){
+  try{
+    const data=JSON.parse(localStorage.getItem(RANKING_KEY)||"[]");
+    return Array.isArray(data)?data:[];
+  }catch(e){
+    return [];
+  }
+}
+
+function saveRanking(name,newScore,newCoins){
+  const cleanName=(name||"ゲスト").trim().slice(0,10)||"ゲスト";
+  const list=loadRanking();
+  list.push({
+    name:cleanName,
+    score:Number(newScore)||0,
+    coins:Number(newCoins)||0,
+    date:new Date().toLocaleDateString("ja-JP")
+  });
+  list.sort((a,b)=>b.score-a.score||b.coins-a.coins);
+  const top5=list.slice(0,5);
+  localStorage.setItem(RANKING_KEY,JSON.stringify(top5));
+  return top5;
+}
+
+function renderRanking(){
+  const list=loadRanking();
+  rankingList.innerHTML="";
+  if(list.length===0){
+    const li=document.createElement("li");
+    li.textContent="まだ記録がありません";
+    rankingList.appendChild(li);
+    return;
+  }
+  list.forEach((item,index)=>{
+    const li=document.createElement("li");
+    li.textContent=`${index+1}位　${item.name}　${item.score}点　🪙${item.coins}`;
+    rankingList.appendChild(li);
+  });
+}
+
+function openRankingPanel(){
+  renderRanking();
+  rankingPanel.classList.add("open");
+}
+
+function closeRankingPanel(){
+  rankingPanel.classList.remove("open");
+}
 
 function updateHud(){
   pointText.textContent=score;
@@ -291,6 +348,8 @@ function loop(ts){
 }
 
 function startGame(){
+  if(!playerNameInput.value.trim()) playerNameInput.value="ゲスト";
+  localStorage.setItem("onepugPlayerName",playerNameInput.value.trim().slice(0,10));
   score=0;time=45;lives=3;coins=0;gameRunning=true;frame=0;lastSecond=0;effects=[];particles=[];
   hitCooldown=0;feverMode=false;feverFrames=0;feverUsed=false;
   dogs[0].x=70;dogs[1].x=-150;dogs[2].x=-300;
@@ -304,13 +363,27 @@ function endGame(reason){
   if(!gameRunning)return;
   gameRunning=false;boss.active=false;bomb.active=false;rabbit.active=false;
   if(score>bestScore){bestScore=score;localStorage.setItem("onepugBestScoreV4",String(bestScore));bestText.textContent=bestScore}
-  message.textContent=`ゲーム終了（${reason}） スコア${score}点・コイン${coins}枚`;
+  const playerName=(playerNameInput.value||"ゲスト").trim().slice(0,10)||"ゲスト";
+  const ranking=saveRanking(playerName,score,coins);
+  const rank=ranking.findIndex(item=>item.name===playerName&&item.score===score&&item.coins===coins)+1;
+  message.textContent=`ゲーム終了（${reason}） ${playerName}：${score}点・コイン${coins}枚${rank>0?`／第${rank}位！`:""}`;
   addEffect(400,250,"GAME OVER","#d40000",44);
+  setTimeout(openRankingPanel,700);
 }
 
 startButton.addEventListener("click",startGame);
 soundButton.addEventListener("click",()=>{soundOn=!soundOn;soundButton.textContent=soundOn?"🔊 音あり":"🔇 音なし"});
+rankingButton.addEventListener("click",openRankingPanel);
+closeRanking.addEventListener("click",closeRankingPanel);
+rankingPanel.addEventListener("click",e=>{if(e.target===rankingPanel)closeRankingPanel()});
+resetRankingButton.addEventListener("click",()=>{
+  if(confirm("ランキングを全部消しますか？")){
+    localStorage.removeItem(RANKING_KEY);
+    renderRanking();
+  }
+});
 canvas.addEventListener("pointerdown",jump);
 window.addEventListener("keydown",e=>{if(e.code==="Space"){e.preventDefault();jump()}});
 
-updateHud();resetSnack();draw();requestAnimationFrame(loop);
+playerNameInput.value=localStorage.getItem("onepugPlayerName")||"ゲスト";
+updateHud();resetSnack();renderRanking();draw();requestAnimationFrame(loop);

@@ -6,13 +6,13 @@
   <meta name="theme-color" content="#8b5a2b">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="ワンパグゲーム">
-  <title>ワンパグゲーム Ver.4</title>
+  <title>ワンパグゲーム Ver.5</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>🐶 ワンパグゲーム Ver.4 ☕</h1>
+    <h1>🐶 ワンパグゲーム Ver.5 ☕</h1>
     <p>おやつを集めて、うさぎ・爆弾・ボスをよけよう！</p>
   </header>
 
@@ -29,16 +29,30 @@
       <canvas id="gameCanvas" width="800" height="500"></canvas>
     </section>
 
+    <section class="player-panel">
+      <label for="playerName">プレイヤー名</label>
+      <input id="playerName" type="text" maxlength="10" placeholder="名前を入力" value="ゲスト">
+    </section>
+
     <div class="controls">
       <button id="startButton">ゲームスタート</button>
       <button id="soundButton" class="sub">🔊 音あり</button>
+      <button id="rankingButton" class="rank-btn">🏆 ランキング</button>
     </div>
 
     <p class="help">スマホ：画面をタップ ／ パソコン：スペースキーでジャンプ</p>
     <p id="message" class="message">30点でフィーバー、100点でボス登場！</p>
+    <section id="rankingPanel" class="ranking-panel">
+      <div class="ranking-card">
+        <button id="closeRanking" class="close-ranking" aria-label="閉じる">×</button>
+        <h2>🏆 TOP5ランキング</h2>
+        <ol id="rankingList"></ol>
+        <button id="resetRanking" class="reset-ranking">ランキングをリセット</button>
+      </div>
+    </section>
   </main>
 
   <footer>© 青彩堂・ワンパグ</footer>
-  <script src="script.js?v=11"></script>
+  <script src="script.js?v=12"></script>
 </body>
 </html>

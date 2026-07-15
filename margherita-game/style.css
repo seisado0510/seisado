@@ -23,3 +23,18 @@ footer{text-align:center;padding:18px;color:#7b6b60}
   .scoreboard div:last-child{grid-column:1 / -1}
   button{width:100%;max-width:340px}
 }
+
+.player-panel{display:flex;justify-content:center;align-items:center;gap:10px;margin:14px 0 4px;font-weight:bold;color:#8b5a2b}
+.player-panel input{width:min(260px,70vw);padding:11px 14px;border:2px solid #d7a678;border-radius:12px;font-size:17px;background:#fff}
+button.rank-btn{background:#c39200;box-shadow:0 4px 0 #8d6900}
+.ranking-panel{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.58);align-items:center;justify-content:center;padding:18px}
+.ranking-panel.open{display:flex}
+.ranking-card{position:relative;width:min(92vw,480px);background:#fffdf8;border:5px solid #d7a678;border-radius:24px;padding:24px;box-shadow:0 16px 45px rgba(0,0,0,.35)}
+.ranking-card h2{text-align:center;color:#8b5a2b;margin:0 0 18px;font-size:28px}
+.ranking-card ol{margin:0;padding-left:34px}
+.ranking-card li{margin:9px 0;padding:10px 12px;border-radius:10px;background:#fff2df;font-size:18px;font-weight:bold}
+.ranking-card li:nth-child(1){background:#fff3a6}
+.ranking-card li:nth-child(2){background:#ececec}
+.ranking-card li:nth-child(3){background:#f2c49a}
+.close-ranking{position:absolute;top:8px;right:10px;min-width:42px;width:42px;height:42px;padding:0;border-radius:50%;font-size:28px;background:#8b5a2b;box-shadow:none}
+.reset-ranking{display:block;margin:20px auto 0;background:#a44a4a;box-shadow:0 4px 0 #6e2d2d}
