@@ -1,8 +1,8 @@
 {
-  "name": "マルゲリータたちのおやつ争奪戦",
-  "short_name": "おやつ争奪戦",
+  "name": "ワンパグカフェ・おやつ争奪戦",
+  "short_name": "ワンパグカフェ",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#edf8ff",
-  "theme_color": "#087bc1"
+  "background_color": "#fff7ef",
+  "theme_color": "#8b5a2b"
 }

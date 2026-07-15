@@ -1,22 +1,22 @@
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:"Yu Gothic","Meiryo",sans-serif;background:#edf8ff;color:#15344d}
-header{background:linear-gradient(135deg,#006ec4,#1296db);color:#fff;text-align:center;padding:18px 12px}
+html,body{margin:0;min-height:100%;font-family:"Yu Gothic","Meiryo",sans-serif;background:#fff7ef;color:#3b2a1e}
+header{background:linear-gradient(135deg,#8b5a2b,#d08b45);color:#fff;text-align:center;padding:18px 12px}
 header h1{font-size:clamp(21px,5vw,36px);margin:0}
 header p{margin:8px 0 0}
 main{width:min(100%,920px);margin:auto;padding:14px}
 .scoreboard{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:12px}
-.scoreboard div{background:#fff;border:2px solid #87c9ef;border-radius:14px;text-align:center;padding:9px 5px;font-weight:bold;color:#116ca8}
+.scoreboard div{background:#fff;border:2px solid #d7a678;border-radius:14px;text-align:center;padding:9px 5px;font-weight:bold;color:#8b5a2b}
 .scoreboard strong{display:block;font-size:clamp(18px,4vw,28px)}
 #life{letter-spacing:2px;font-size:clamp(18px,4vw,25px)}
-.game-shell{overflow:hidden;border:4px solid #087bc1;border-radius:18px;background:#fff;box-shadow:0 7px 20px rgba(0,0,0,.17)}
+.game-shell{overflow:hidden;border:4px solid #8b5a2b;border-radius:18px;background:#fff;box-shadow:0 7px 20px rgba(0,0,0,.17)}
 #gameCanvas{display:block;width:100%;height:auto;touch-action:manipulation}
 .controls{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:17px}
 button{min-width:190px;border:0;border-radius:999px;padding:14px 25px;font-size:18px;font-weight:bold;cursor:pointer;color:#fff;background:#ff8c12;box-shadow:0 4px 0 #c96700}
-button.sub{background:#47728d;box-shadow:0 4px 0 #29485c}
+button.sub{background:#6a7f8a;box-shadow:0 4px 0 #40535c}
 button:active{transform:translateY(3px)}
 .help,.message{text-align:center}
-.message{font-weight:bold;color:#087bc1;min-height:1.5em}
-footer{text-align:center;padding:18px;color:#6b7e8b}
+.message{font-weight:bold;color:#8b5a2b;min-height:1.5em}
+footer{text-align:center;padding:18px;color:#7b6b60}
 @media(max-width:650px){
   main{padding:8px}
   .scoreboard{grid-template-columns:repeat(2,1fr);gap:6px}
