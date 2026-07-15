@@ -168,3 +168,97 @@ linear-gradient(135deg,#6f4326,#d39555 48%,#fff0d2)}
   border-radius:10px;
   padding:9px 12px;
 }
+
+
+/* 完成版：スタート前は中央、スタート後はゲーム枠外の右下 */
+.game-shell{
+  position:relative;
+  overflow:visible;
+}
+
+/* スタート前 */
+.start-on-screen{
+  position:absolute;
+  left:50%;
+  top:50%;
+  bottom:auto;
+  right:auto;
+  transform:translate(-50%,-50%);
+  z-index:30;
+
+  min-width:270px;
+  padding:18px 36px;
+  border:none;
+  border-radius:999px;
+
+  background:linear-gradient(180deg,#ffa52f,#ff7600);
+  color:#fff;
+  font-size:clamp(21px,4vw,28px);
+  font-weight:bold;
+  box-shadow:0 7px 0 #bb5400,0 13px 30px rgba(0,0,0,.28);
+  cursor:pointer;
+  transition:
+    width .25s ease,
+    min-width .25s ease,
+    padding .25s ease,
+    font-size .25s ease,
+    transform .25s ease,
+    left .25s ease,
+    top .25s ease,
+    right .25s ease,
+    bottom .25s ease;
+}
+
+.start-on-screen:hover{
+  transform:translate(-50%,-50%) scale(1.04);
+}
+
+.start-on-screen:active{
+  transform:translate(-50%,-50%) translateY(4px);
+  box-shadow:0 3px 0 #bb5400;
+}
+
+/* スタート後：ゲーム枠の外、画面右下へ小さく移動 */
+body.game-started .start-on-screen{
+  position:fixed;
+  left:auto;
+  top:auto;
+  right:18px;
+  bottom:18px;
+  transform:none;
+
+  min-width:0;
+  width:102px;
+  height:58px;
+  padding:8px 10px;
+  border-radius:18px;
+
+  font-size:14px;
+  line-height:1.15;
+  box-shadow:0 4px 0 #bb5400,0 7px 16px rgba(0,0,0,.22);
+  z-index:999;
+}
+
+body.game-started .start-on-screen:hover{
+  transform:scale(1.04);
+}
+
+body.game-started .start-on-screen:active{
+  transform:translateY(3px);
+  box-shadow:0 1px 0 #bb5400;
+}
+
+@media(max-width:650px){
+  .start-on-screen{
+    min-width:230px;
+    padding:16px 25px;
+  }
+
+  body.game-started .start-on-screen{
+    right:10px;
+    bottom:10px;
+    width:88px;
+    height:52px;
+    font-size:12px;
+  }
+}

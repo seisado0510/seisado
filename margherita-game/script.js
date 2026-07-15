@@ -796,6 +796,7 @@ function loop(ts){
 }
 
 function startGame(){
+  document.body.classList.add("game-started");
   if(!playerNameInput.value.trim()) playerNameInput.value="ゲスト";
   localStorage.setItem("onepugPlayerName",playerNameInput.value.trim().slice(0,10));
   applySelectedCharacter();
@@ -823,7 +824,7 @@ function startGame(){
   coin.active=false;coin.timer=0;chest.active=false;chest.timer=0;powerItem.active=false;powerItem.timer=0;
   boss.active=false;boss.hits=0;clearPowerup();weatherTimer=0;chooseWeather();
   resetSnack();spawnBomb();spawnRabbit();spawnCoin();
-  updateHud();message.textContent="30点でフィーバー、100点でボス登場！";startButton.textContent="もう一度スタート";startBgm();
+  updateHud();message.textContent="30点でフィーバー、100点でボス登場！";startButton.innerHTML="🎮<br>もう一度";startBgm();
 }
 
 function endGame(reason){
@@ -954,6 +955,7 @@ window.addEventListener("keydown",e=>{
   if(e.code==="ArrowUp"){e.preventDefault();jumpPlayer(1)}
 });
 
+document.body.classList.remove("game-started");
 playerNameInput.value=localStorage.getItem("onepugPlayerName")||"ゲスト";
 applySelectedCharacter();
 updateSeasonButtons();
