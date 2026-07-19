@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>青彩堂｜加須市周辺の住宅設備工事</title>
+  <meta name="description" content="埼玉県加須市の青彩堂です。給湯器・ビルトインコンロ・レンジフード・水栓・食洗機の交換工事ならお任せください。加須市・久喜市・羽生市・幸手市・古河市などに対応しています。">
+  <meta name="keywords" content="加須市 給湯器交換,加須市 コンロ交換,レンジフード交換,住宅設備,青彩堂,久喜市,羽生市,幸手市,古河市">
+  <meta name="author" content="青彩堂">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="青彩堂｜加須市の住宅設備工事">
+  <meta property="og:description" content="給湯器・ビルトインコンロ・レンジフード・水栓・食洗機の交換なら青彩堂へ">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <style>
+    :root {
+      --black: #073b22;
+      --deep: #075c31;
+      --green: #159447;
+      --green-light: #29bd59;
+      --gold: #d8aa2f;
+      --gold-light: #ffe08a;
+      --white: #ffffff;
+      --cream: #f5f1e8;
+      --text: #202524;
+      --muted: #6b7471;
+      --shadow: 0 18px 45px rgba(0, 0, 0, .14);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Yu Gothic", "Meiryo", sans-serif;
+      color: var(--text);
+      background: #f8fbf4;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; }
+
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      color: #fff;
+      text-align: center;
+      padding: 92px 20px 72px;
+      background:
+        linear-gradient(120deg, rgba(3, 91, 38, .92), rgba(25, 174, 73, .68) 48%, rgba(255,255,255,.12)),
+        url("assets/range-after.png") center/cover no-repeat;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 78% 18%, rgba(255,255,255,.38), transparent 28%),
+        linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,49,19,.34));
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: min(980px, 100%);
+      animation: heroIn 1s ease both;
+    }
+
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border: 1px solid rgba(243, 215, 142, .7);
+      background: rgba(0, 91, 38, .74);
+      color: var(--gold-light);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      backdrop-filter: blur(6px);
+    }
+
+    .hero h1 {
+      margin-top: 22px;
+      font-size: clamp(54px, 11vw, 110px);
+      line-height: 1;
+      letter-spacing: .18em;
+      text-indent: .18em;
+      font-weight: 900;
+      text-shadow: 0 5px 0 rgba(255,255,255,.18), 0 12px 35px rgba(0, 55, 20, .48);
+    }
+
+    .hero-copy {
+      margin: 24px auto 0;
+      font-size: clamp(24px, 4vw, 43px);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .hero-copy span { color: var(--gold-light); }
+
+    .hero-sub {
+      max-width: 680px;
+      margin: 20px auto 0;
+      color: rgba(255,255,255,.9);
+      font-size: clamp(15px, 2vw, 19px);
+    }
+
+    .hero-actions,
+    .button-area {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero-actions { margin-top: 34px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 13px 24px;
+      border-radius: 8px;
+      font-weight: 800;
+      transition: .25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn:hover { transform: translateY(-3px); filter: brightness(1.05); }
+    .btn-gold {
+      color: #17130a;
+      background: linear-gradient(135deg, #f0d17b, #c18e2e);
+      box-shadow: 0 10px 30px rgba(215, 173, 79, .28);
+    }
+    .btn-line { background: #06c755; color: #fff; }
+    .btn-dark { background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.5); }
+    .btn-white { background: #fff; color: var(--green); }
+
+    .mini-crowdfund {
+      max-width: 760px;
+      margin: 22px auto 0;
+      padding: 11px 16px;
+      border-left: 3px solid var(--gold);
+      background: rgba(5, 91, 38, .68);
+      color: rgba(255,255,255,.88);
+      font-size: 13px;
+      text-align: left;
+      border-radius: 6px;
+      backdrop-filter: blur(5px);
+    }
+    .mini-crowdfund strong { color: var(--gold-light); }
+
+    nav {
+      position: static;
+      z-index: 1000;
+      background: linear-gradient(90deg, #087337, #12a94d);
+      border-bottom: 3px solid var(--gold);
+      box-shadow: 0 7px 20px rgba(0, 92, 38, .20);
+    }
+    nav ul {
+      max-width: 1180px;
+      margin: auto;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    nav a {
+      display: block;
+      padding: 14px 16px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    nav a:hover { color: #173b1f; background: var(--gold-light); }
+
+    .trust-strip {
+      position: relative;
+      z-index: 3;
+      max-width: 1080px;
+      margin: 20px auto 45px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: linear-gradient(180deg, #fffef8, #f7f5e9);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .trust-item {
+      padding: 24px 14px;
+      text-align: center;
+      border-right: 1px solid #ece9e0;
+    }
+    .trust-item:last-child { border-right: 0; }
+    .trust-item strong {
+      display: block;
+      color: #0b873d;
+      font-size: 25px;
+      line-height: 1.2;
+    }
+    .trust-item span { color: var(--muted); font-size: 13px; }
+
+    section {
+      width: min(1140px, calc(100% - 34px));
+      margin: 70px auto;
+    }
+
+    .section-kicker {
+      text-align: center;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    section h2 {
+      margin-top: 5px;
+      text-align: center;
+      color: #08743a;
+      font-size: clamp(29px, 4vw, 42px);
+      line-height: 1.35;
+    }
+    section h2::after {
+      content: "";
+      display: block;
+      width: 70px;
+      height: 3px;
+      margin: 14px auto 0;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    }
+
+    .section-lead {
+      max-width: 760px;
+      margin: 18px auto 32px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .dark-section {
+      width: 100%;
+      max-width: none;
+      padding: 75px max(18px, calc((100% - 1140px)/2));
+      background: linear-gradient(135deg, #075d30, #0fa348);
+      color: #fff;
+    }
+    .dark-section h2 { color: #fff; }
+    .dark-section .section-lead { color: rgba(255,255,255,.72); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 28px 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      border: 1px solid rgba(19, 153, 68, .16);
+      border-top: 5px solid #20ae52;
+      transition: .3s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .card .icon { font-size: 40px; }
+    .card h3 { color: var(--green); margin: 10px 0 6px; font-size: 20px; }
+
+
+    .service-card { padding: 0; overflow: hidden; }
+    .service-card img { height: 180px; object-fit: cover; }
+    .service-card .service-body { padding: 22px; }
+    .service-card .service-tag { display:inline-block; margin-top:10px; padding:4px 10px; border-radius:999px; background:#eff9e9; color:#08743a; font-size:12px; font-weight:800; }
+
+    .work-card {
+      margin-top: 28px;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+    .work-card h3 {
+      padding: 16px 20px;
+      color: #fff;
+      background: linear-gradient(90deg, #0b3f36, #0f715f);
+      text-align: center;
+      font-size: 22px;
+    }
+    .before-after { display: grid; grid-template-columns: 1fr 1fr; }
+    .photo-box { position: relative; overflow: hidden; background: #ddd; }
+    .photo-box img {
+      height: 430px;
+      object-fit: cover;
+      cursor: zoom-in;
+      transition: transform .5s ease;
+    }
+    .photo-box:hover img { transform: scale(1.03); }
+    .photo-label {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+
+    padding: 10px 20px;
+    border-radius: 999px;
+
+    background: #19c36b;
+    color: #fff;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,.25);
+}
+    .before-label { background: #424746; }
+    .after-label { background: var(--green-light); }
+    .work-text { padding: 18px 20px 22px; text-align: center; color: var(--muted); }
+
+    .promise-grid { counter-reset: promise; }
+    .promise-card {
+      position: relative;
+      padding-top: 54px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.82);
+      box-shadow: none;
+    }
+    .promise-card::before {
+      counter-increment: promise;
+      content: "0" counter(promise);
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      color: var(--gold-light);
+      font-size: 25px;
+      font-weight: 900;
+    }
+    .promise-card h3 { color: #fff; }
+
+    .price-card { text-align: center; }
+    .price-card strong { display: block; color: var(--deep); font-size: 20px; }
+    .price-card .price { margin-top: 7px; color: var(--green); font-size: 30px; font-weight: 900; }
+    .price-note { margin-top: 20px; text-align: center; color: var(--muted); font-size: 14px; }
+
+    .profile-box,
+    .contact,
+    .cafe-banner {
+      border-radius: 18px;
+      padding: 36px;
+      box-shadow: var(--shadow);
+    }
+    .profile-box { background: #fff; }
+    .profile-box p + p { margin-top: 12px; }
+
+    .cafe-banner {
+      background: linear-gradient(135deg, #f8ffe9, #fff2b8);
+      border: 1px solid #dfbd72;
+      text-align: center;
+    }
+    .cafe-banner h2 { color: #4d3711; }
+    .cafe-banner .cafe-small {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: #4d3711;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .contact {
+      background: linear-gradient(135deg, #08743a, #15b856);
+      color: #fff;
+      text-align: center;
+    }
+    .contact h2 { color: #fff; }
+    .contact-details { margin: 22px 0; font-size: 17px; }
+    .contact-details a { font-weight: 800; }
+
+
+
+    /* ホームページお問い合わせフォーム */
+    .contact-form-wrap {
+      max-width: 860px;
+      margin: 30px auto 0;
+      padding: 34px;
+      background: #fff;
+      border: 1px solid rgba(19, 153, 68, .18);
+      border-top: 6px solid var(--green);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group { text-align: left; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--deep);
+      font-weight: 800;
+    }
+
+    .form-required {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: #d94a3a;
+      color: #fff;
+      font-size: 11px;
+      vertical-align: 2px;
+    }
+
+    .contact-form-wrap input,
+    .contact-form-wrap select,
+    .contact-form-wrap textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #cdd8d1;
+      border-radius: 9px;
+      background: #fbfdfb;
+      color: var(--text);
+      font: inherit;
+      transition: .2s ease;
+    }
+
+    .contact-form-wrap textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .contact-form-wrap input:focus,
+    .contact-form-wrap select:focus,
+    .contact-form-wrap textarea:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(21, 148, 71, .14);
+      background: #fff;
+    }
+
+    .form-note {
+      margin: 18px 0;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #eff9e9;
+      color: #31533d;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .form-submit {
+      display: block;
+      width: min(100%, 360px);
+      margin: 24px auto 0;
+      min-height: 58px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1fbd5b, #08743a);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(8, 116, 58, .25);
+      transition: .25s ease;
+    }
+
+    .form-submit:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
+
+    iframe { width: 100%; border: 0; border-radius: 12px; }
+
+    footer {
+      margin-top: 60px;
+      padding: 28px 15px 90px;
+      background: #050808;
+      color: rgba(255,255,255,.7);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .fixed-contact { display: none; }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: .75s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+
+    #imageModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.92);
+    }
+    #modalImage { max-width: 92vw; max-height: 88vh; object-fit: contain; }
+    .modal-close {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(255,255,255,.14);
+      font-size: 34px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 800px) {
+      body { padding-bottom: 64px; }
+      .hero { min-height: 82vh; padding: 78px 18px 55px; }
+      .hero h1 { letter-spacing: .12em; text-indent: .12em; }
+      .hero-actions .btn { width: min(100%, 320px); }
+      nav { position: static; }
+      nav a { padding: 10px 8px; font-size: 11px; }
+      .trust-strip { grid-template-columns: repeat(2, 1fr); margin: 18px 17px 38px; }
+      .trust-item:nth-child(2) { border-right: 0; }
+      .trust-item:nth-child(-n+2) { border-bottom: 1px solid #ece9e0; }
+      section { margin: 52px auto; }
+      .dark-section { padding-top: 58px; padding-bottom: 58px; }
+      .before-after { grid-template-columns: 1fr; }
+      .photo-box img { height: 340px; }
+      .profile-box, .contact, .cafe-banner { padding: 26px 18px; }
+      .fixed-contact {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3000;
+        box-shadow: 0 -5px 20px rgba(0,0,0,.25);
+      }
+      .fixed-contact a { padding: 12px 4px; color: #fff; text-align: center; font-size: 13px; font-weight: 800; }
+      .fixed-tel { background: #c38d27; }
+      .fixed-line { background: #06c755; }
+      .fixed-mail { background: #1769aa; }
+      footer { padding-bottom: 30px; }
+    }
+
+    /* 最終調整：見やすさと統一感 */
+    nav a {
+      min-width: 112px;
+      text-align: center;
+    }
+
+    .work-card,
+    .card,
+    .profile-box,
+    .contact,
+    .cafe-banner {
+      border-radius: 18px;
+    }
+
+    .button-area .btn,
+    .hero-actions .btn {
+      border-radius: 999px;
+      padding-left: 28px;
+      padding-right: 28px;
+    }
+
+    #contact-last {
+      padding: 38px 24px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #efffec, #fff8d6);
+      border: 1px solid rgba(216, 170, 47, .45);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    #voice .card {
+      border-top-color: var(--gold);
+    }
+
+    @media (max-width: 800px) {
+      nav a {
+        min-width: auto;
+      }
+
+      #contact-last {
+        padding: 28px 18px;
+      }
+
+      .contact-form-wrap { padding: 24px 18px; }
+      .contact-form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: auto; }
+    }
+
+  </style>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">加須市を中心に　地域密着！迅速対応！</div>
+      <h1>青彩堂</h1>
+      <p class="hero-copy"><span>住宅設備のプロフェッショナル</span><br>安心・丁寧・確実な施工</p>
+      <p class="hero-sub">給湯器・ビルトインコンロ・レンジフード・食洗機・キッチン水栓の交換に対応。工事内容と料金を分かりやすくご案内します。</p>
+
+      <div class="hero-actions">
+        <a href="tel:09033567827" class="btn btn-gold">📞今すぐ電話する</a>
+        <a href="https://line.me/ti/p/Nkr58LmcFn" class="btn btn-line">LINEで写真を送って無料見積り</a>
+        <a href="#works" class="btn btn-dark">施工事例を見る ▼</a>
+      </div>
+<p style="font-size:22px;font-weight:bold;color:#ff5722;margin:20px 0;">
+
+🔥 最短当日対応・お見積り無料・出張費無料（対応エリア内）
+</p>
+      <div class="mini-crowdfund">
+        <strong>🐶 ワンパグプロジェクト</strong>　2027年春オープンを目指し、クラウドファンディング公開準備中です。
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#service">工事内容</a></li>
+      <li><a href="#works">施工事例</a></li>
+      <li><a href="#price">料金目安</a></li>
+      <li><a href="#profile">会社案内</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+    </ul>
+  </nav>
+
+  <div class="trust-strip reveal">
+    <div class="trust-item"><strong>地域密着</strong><span>加須市と周辺地域</span></div>
+    <div class="trust-item"><strong>見積無料</strong><span>相談・現地確認</span></div>
+    <div class="trust-item"><strong>安心施工</strong><span>丁寧に事前説明</span></div>
+    <div class="trust-item"><strong>迅速対応</strong><span>日程はご相談ください</span></div>
+  </div>
+
+  <section id="service" class="reveal">
+    <p class="section-kicker">Service</p>
+    <h2>住宅設備の交換は青彩堂へ</h2>
+    <p class="section-lead">暮らしに欠かせない設備を、丁寧な説明と確かな施工で交換します。</p>
+    <div class="cards">
+      <div class="card service-card"><img src="assets/waterheater-after.png" alt="給湯器交換"><div class="service-body"><h3>給湯器交換</h3><p>ガス給湯器の撤去・設置・試運転まで対応します。</p><span class="service-tag">各メーカー対応</span></div></div>
+      <div class="card service-card"><img src="assets/stove-after.png" alt="3つ口ビルトインコンロ交換"><div class="service-body"><h3>ビルトインコンロ交換</h3><p>3つ口タイプを中心に、古いコンロの撤去から新品設置まで行います。</p><span class="service-tag">3つ口タイプ</span></div></div>
+      <div class="card service-card"><img src="assets/range-after.png" alt="レンジフード交換"><div class="service-body"><h3>レンジフード交換</h3><p>交換・ダクト接続・動作確認まで丁寧に施工します。</p><span class="service-tag">すっきり快適</span></div></div>
+      <div class="card service-card"><img src="assets/faucet-after.png" alt="キッチン水栓交換"><div class="service-body"><h3>キッチン水栓交換</h3><p>水栓交換や水漏れのご相談にも対応します。</p><span class="service-tag">水まわり対応</span></div></div>
+      <div class="card service-card"><img src="assets/dishwasher-after.png" alt="ビルトイン食洗機交換"><div class="service-body"><h3>ビルトイン食洗機交換</h3><p>交換・給排水接続・試運転まで対応します。</p><span class="service-tag">家事を快適に</span></div></div>
+    </div>
+  </section>
+<section id="trouble" class="reveal">
+
+  <p class="section-kicker">Trouble</p>
+  <h2>こんなお困りごとはありませんか？</h2>
+
+  <p class="section-lead">
+    住宅設備の故障や交換でお困りの際は、青彩堂へお気軽にご相談ください。
+  </p>
+
+  <div class="cards">
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">♨️</div>
+      <h3>お湯が出ない</h3>
+      <p>
+        給湯器の電源が入らない、エラーが出る、お湯の温度が安定しない。
+      </p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">🔥</div>
+      <h3>コンロの調子が悪い</h3>
+      <p>
+        火がつかない、途中で消える、点火しにくいなど。
+      </p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">💨</div>
+      <h3>換気扇の音が大きい</h3>
+      <p>
+        レンジフードの吸い込みが弱い、異音がする、動かない。
+      </p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">🚰</div>
+      <h3>水漏れしている</h3>
+      <p>
+        キッチン水栓から水が漏れる、レバーが固い、止まりにくい。
+      </p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">🍽️</div>
+      <h3>食洗機が動かない</h3>
+      <p>
+        水がたまる、乾燥しない、エラー表示が出るなど。
+      </p>
+    </div>
+
+  </div>
+
+  <div style="
+    margin-top:30px;
+    padding:30px 20px;
+    border-radius:18px;
+    text-align:center;
+    color:#fff;
+    background:linear-gradient(135deg,#19b85e,#087a40);
+    box-shadow:0 12px 30px rgba(0,0,0,.15);
+  ">
+
+    <h3 style="font-size:26px;color:#ffe58a;">
+      青彩堂にお任せください！
+    </h3>
+
+    <p style="margin:12px 0 22px;">
+      電話またはLINEで、症状や施工箇所の写真をお送りください。<br>
+      お見積り・ご相談は無料です。
+    </p>
+
+    <div class="button-area">
+      <a href="tel:09033567827" class="btn btn-gold">
+        📞 電話で相談する
+      </a>
+
+      <a href="https://line.me/ti/p/Nkr58LmcFn" class="btn btn-line">
+        LINEで写真を送る
+      </a>
+    </div>
+
+  </div>
+
+</section>
+<section id="three-promises" class="reveal">
+
+  <p class="section-kicker">Our Promise</p>
+  <h2>青彩堂 3つのお約束</h2>
+
+  <p class="section-lead">
+    安心してご依頼いただけるよう、誠実で分かりやすい対応を大切にしています。
+  </p>
+
+  <div class="cards">
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">🔧</div>
+      <h3>丁寧・確実な施工</h3>
+      <p>
+        施工内容をきちんと確認し、一件一件責任を持って丁寧に作業します。
+      </p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">💰</div>
+      <h3>見積り無料・事前説明</h3>
+      <p>
+        工事内容と料金を事前にご説明し、ご納得いただいてから施工します。
+      </p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">🏡</div>
+      <h3>地域密着・相談しやすい対応</h3>
+      <p>
+        加須市を中心に周辺地域へ対応し、小さなご相談にも親身にお応えします。
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+  <section id="works" class="reveal">
+    <p class="section-kicker">Before & After</p>
+    <h2>施工事例</h2>
+    <p class="section-lead">写真をタップすると大きく表示できます。</p>
+
+    <div class="work-card">
+      <h3>レンジフード交換</h3>
+      <div class="before-after">
+        <div class="photo-box"><span class="photo-label before-label">施工前</span><img src="assets/range-before.jpg" alt="レンジフード交換の施工前" onclick="openModal(this.src)"></div>
+        <div class="photo-box"><span class="photo-label after-label">施工後</span><img src="assets/range-after.png" alt="レンジフード交換の施工後" onclick="openModal(this.src)"></div>
+      </div>
+      <div class="work-text">既存のレンジフードを撤去し、新しいレンジフードへ交換しました。</div>
+    </div>
+
+    <div class="work-card">
+      <h3>ビルトインコンロ交換</h3>
+      <div class="before-after">
+        <div class="photo-box"><span class="photo-label before-label">施工前</span><img src="assets/stove-before.jpg" alt="ビルトインコンロ交換の施工前" onclick="openModal(this.src)"></div>
+        <div class="photo-box"><span class="photo-label after-label">施工後</span><img src="assets/stove-after.png" alt="ビルトインコンロ交換の施工後" onclick="openModal(this.src)"></div>
+      </div>
+      <div class="work-text">古いビルトインコンロを撤去し、新しいコンロを設置しました。</div>
+    </div>
+
+    <div class="work-card">
+      <h3>給湯器交換</h3>
+      <div class="before-after">
+        <div class="photo-box"><span class="photo-label before-label">施工前</span><img src="assets/waterheater-before.jpg" alt="給湯器交換の施工前" onclick="openModal(this.src)"></div>
+        <div class="photo-box"><span class="photo-label after-label">施工後</span><img src="assets/waterheater-after.png" alt="給湯器交換の施工後" onclick="openModal(this.src)"></div>
+      </div>
+      <div class="work-text">既存の給湯器を撤去し、新しい給湯器へ交換しました。</div>
+    </div>
+
+    <div class="work-card">
+      <h3>ビルトイン食洗機交換</h3>
+      <div class="before-after">
+        <div class="photo-box"><span class="photo-label before-label">施工前</span><img src="assets/dishwasher-before.jpg" alt="食洗機交換の施工前" onclick="openModal(this.src)"></div>
+        <div class="photo-box"><span class="photo-label after-label">施工後</span><img src="assets/dishwasher-after.png" alt="食洗機交換の施工後" onclick="openModal(this.src)"></div>
+      </div>
+      <div class="work-text">既存の食洗機を撤去し、新しいビルトイン食洗機へ交換しました。</div>
+    </div>
+
+    <div class="work-card">
+      <h3>キッチン水栓交換</h3>
+      <div class="before-after">
+        <div class="photo-box"><span class="photo-label before-label">施工前</span><img src="assets/faucet-before.jpg" alt="キッチン水栓交換の施工前" onclick="openModal(this.src)"></div>
+        <div class="photo-box"><span class="photo-label after-label">施工後</span><img src="assets/faucet-after.png" alt="キッチン水栓交換の施工後" onclick="openModal(this.src)"></div>
+      </div>
+      <div class="work-text">古いキッチン水栓を撤去し、新しい水栓へ交換しました。</div>
+    </div>
+  </section>
+<section id="line-photo">
+  <div class="card" style="background:linear-gradient(135deg,#19c36b,#0d8d4b);color:#fff;text-align:center;border-radius:20px;padding:40px;">
+
+    <h2 style="color:#fff;">📸 写真を送るだけ！無料見積り</h2>
+
+    <p style="font-size:20px;margin-top:20px;">
+      給湯器・コンロ・レンジフード・食洗機・水栓など
+    </p>
+
+    <h3 style="font-size:32px;color:#ffe082;margin:25px 0;">
+      LINEで写真を送るだけ！
+    </h3>
+
+    <p>
+      「交換できるかな？」<br>
+      「いくらぐらい？」<br><br>
+
+      写真を送っていただければ、
+      おおよその金額をご案内いたします。
+    </p>
+
+    <div style="margin:30px 0;">
+
+      ✅ お見積り無料<br>
+      ✅ 他社見積り歓迎<br>
+      ✅ 無理な営業はいたしません
+
+    </div>
+
+    <a href="https://line.me/ti/p/Nkr58LmcFn"
+       class="btn btn-line"
+       style="font-size:22px;padding:18px 35px;">
+       LINEで無料相談する
+    </a>
+
+  </div>
+</section>
+<section id="contact-last" class="reveal">
+
+  <h2>お気軽にお問い合わせください</h2>
+
+  <p class="section-lead">
+    お見積り・ご相談は無料です。<br>
+    LINEで写真を送っていただければ、おおよそのご案内も可能です。
+  </p>
+
+  <div class="button-area">
+
+    <a href="tel:09033567827" class="btn btn-gold">
+      📞 電話で相談する
+    </a>
+
+    <a href="https://line.me/ti/p/Nkr58LmcFn" class="btn btn-line">
+      📱 LINEで相談する
+    </a>
+
+    <a href="mailto:konbu19700308@gmail.com" class="btn btn-white">
+      ✉️ メールで相談する
+    </a>
+
+  </div>
+
+</section>
+<section id="voice" class="reveal">
+
+  <p class="section-kicker">Customer Voice</p>
+  <h2>お客様の声</h2>
+
+  <p class="section-lead">
+    青彩堂をご利用いただいたお客様から、嬉しいお言葉をいただいております。
+  </p>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="icon">⭐⭐⭐⭐⭐</div>
+      <h3>加須市　A様</h3>
+      <p><strong>施工内容</strong><br>給湯器交換</p>
+      <p>
+        「接客も説明もとても丁寧で、安心してお願いすることができました。
+        また何かあれば青彩堂さんにお願いしたいと思います。」
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">⭐⭐⭐⭐⭐</div>
+      <h3>久喜市　K様</h3>
+      <p><strong>施工内容</strong><br>キッチン水栓交換</p>
+      <p>
+        「問い合わせをしてからのレスポンスがとても早く、
+        工事までスムーズに進めていただき、本当に助かりました。」
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">⭐⭐⭐⭐⭐</div>
+      <h3>羽生市　T様</h3>
+      <p><strong>施工内容</strong><br>レンジフード交換</p>
+      <p>
+        「親身になって相談に乗っていただき、
+        分かりやすく説明してくださったので安心してお願いできました。」
+      </p>
+    </div>
+
+  </div>
+
+</section>
+<section id="results" class="reveal">
+
+  <p class="section-kicker">Achievements</p>
+  <h2>施工実績</h2>
+
+  <p class="section-lead">
+    地域密着で、一件一件丁寧な施工を心掛けています。
+  </p>
+
+  <div class="cards">
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">🏠</div>
+<h3>施工実績</h3>
+
+<p style="font-size:28px;font-weight:bold;color:#19c36b;">
+  年間 512件
+</p>
+
+<p style="font-size:14px;color:#666;">
+  2025年度施工実績
+</p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">😊</div>
+      <h3>お客様第一</h3>
+      <p style="font-size:24px;font-weight:bold;color:#19c36b;">
+        丁寧な接客・安心施工
+      </p>
+      <p>
+        お客様に安心してご依頼いただけるよう、
+        分かりやすい説明と丁寧な対応を心掛けています。
+      </p>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <div class="icon">📍</div>
+      <h3>対応エリア</h3>
+      <p>
+        加須市・久喜市・羽生市・幸手市・古河市など
+      </p>
+    </div>
+
+  </div>
+
+</section>
+  <section id="price" class="reveal">
+    <p class="section-kicker">Price</p>
+    <h2>料金の目安</h2>
+    <p class="section-lead">工事内容や現場状況により変わる場合があります。正式な金額は事前にご説明します。</p>
+    <div class="cards">
+      <div class="card price-card"><strong>ビルトインコンロ交換</strong><div class="price">18,000円</div></div>
+      <div class="card price-card"><strong>レンジフード交換</strong><div class="price">20,000円</div></div>
+      <div class="card price-card"><strong>給湯器交換</strong><div class="price">25,000円</div></div>
+      <div class="card price-card"><strong>食洗機交換</strong><div class="price">18,000円</div></div>
+      <div class="card price-card"><strong>キッチン水栓交換</strong><div class="price">10,000円</div></div>
+    </div>
+    <p class="price-note">表示価格は工事費の目安です。商品代・部材代・現場状況により変わります。他社のお見積りがある場合や、お急ぎの場合もお気軽にご相談ください。</p>
+  </section>
+
+  
+
+  <section id="flow" class="reveal">
+    <p class="section-kicker">Flow</p>
+    <h2>施工の流れ</h2>
+    <div class="cards" style="margin-top:30px;">
+      <div class="card"><h3>① お問い合わせ</h3><p>電話・LINE・メールからご連絡ください。</p></div>
+      <div class="card"><h3>② 無料お見積り</h3><p>現地確認または写真で内容を確認します。</p></div>
+      <div class="card"><h3>③ 日程調整</h3><p>ご希望を伺い、施工日を決定します。</p></div>
+      <div class="card"><h3>④ 施工</h3><p>丁寧・確実に交換工事を行います。</p></div>
+      <div class="card"><h3>⑤ 確認・お支払い</h3><p>施工後にご確認いただき完了です。</p></div>
+    </div>
+  </section>
+ <section id="payment" class="reveal">
+  <p class="section-kicker">Payment</p>
+  <h2>お支払い方法</h2>
+
+  <div class="cards" style="margin-top:30px;">
+
+    <div class="card">
+      <h3>💴 現金</h3>
+      <p>工事完了後に現地でお支払いいただけます。</p>
+    </div>
+
+    <div class="card">
+      <h3>🏦 銀行振込</h3>
+      <p>工事完了後にお振込みいただけます。</p>
+    </div>
+
+    <div class="card">
+      <h3>💳 クレジットカード</h3>
+      <p>LINEまたはメールで専用決済リンクをお送りします。カード端末は不要です。</p>
+    </div>
+
+  </div>
+
+  <p style="margin-top:25px;text-align:center;font-weight:bold;color:#2e7d32;">
+    クレジットカードをご希望のお客様は、お見積もり時または工事完了時にお申し付けください。
+  </p>
+</section> 
+
+  <section id="area" class="reveal">
+    <p class="section-kicker">Area & Maker</p>
+    <h2>対応エリア・主なメーカー</h2>
+    <div class="cards" style="margin-top:30px;">
+      <div class="card"><h3>主な対応エリア</h3><p>加須市・久喜市・羽生市・幸手市・白岡市・蓮田市・古河市・館林市・行田市・熊谷市・鴻巣市・北本市・桶川市・伊奈町 ほか</p></div>
+      <div class="card"><h3>給湯器・ガス機器</h3><p>リンナイ・ノーリツ・パロマ・パーパス</p></div>
+      <div class="card"><h3>キッチン・水まわり</h3><p>LIXIL・TOTO・クリナップ・タカラスタンダード・Panasonic・富士工業 ほか</p></div>
+    </div>
+  </section>
+
+  <section id="profile" class="reveal">
+    <p class="section-kicker">About Seisado</p>
+    <h2>青彩堂について・代表挨拶</h2>
+    <p class="section-lead">
+      青彩堂は、加須市を中心に住宅設備機器の交換・取付工事を行っています。
+      小さなご相談にも、分かりやすく丁寧に対応いたします。
+    </p>
+    <div class="profile-box" style="margin-top:30px;">
+      <p>この度は、青彩堂のホームページをご覧いただき、誠にありがとうございます。代表の山﨑さとこです。</p>
+      <p>青彩堂は、加須市を中心に、給湯器・ビルトインコンロ・レンジフード・食洗機・キッチン水栓などの住宅設備交換工事を行っております。</p>
+      <p>お客様に「青彩堂にお願いして良かった」と思っていただけるよう、誠実な対応と安心できる施工を心がけています。</p>
+      <p>お見積りは無料です。小さな工事からお気軽にご相談ください。</p>
+      <p style="margin-top:20px;text-align:right;font-weight:bold;">青彩堂<br>代表　山﨑さとこ</p>
+    </div>
+    <div class="cards" style="margin-top:20px;">
+      <div class="card"><h3>営業時間</h3><p>8:00～19:00</p></div>
+      <div class="card"><h3>定休日</h3><p>不定休</p></div>
+      <div class="card"><h3>所在地</h3><p>埼玉県加須市南大桑<br>※詳しい住所はご予約時にご案内します。</p></div>
+    </div>
+  </section>
+
+  <section id="future-cafe" class="reveal">
+    <div class="cafe-banner">
+      <p class="section-kicker">Coming Soon</p>
+      <h2>🐶 パグカフェ「ワンパグ」🐰</h2>
+      <p style="margin-top:18px;">人とパグが笑顔になれる癒しの場所を目指し、2027年春のオープンに向けて準備を進めています。</p>
+      <span class="cafe-small">クラウドファンディング公開準備中</span>
+    </div>
+  </section>
+
+  <section id="game" class="reveal">
+    <div class="cafe-banner">
+      <h2>🐶 マルゲリータたちのおやつ争奪戦！</h2>
+      <p style="margin:18px 0 22px;">青彩堂の看板犬、マルゲリータ・こんぶ・おかゆが登場するミニゲームです。</p>
+      <a href="margherita-game/index.html" class="btn btn-gold">ゲームを開く</a>
+    </div>
+  </section>
+
+  <section id="map" class="reveal">
+    <p class="section-kicker">Map</p>
+    <h2>所在地</h2>
+    <div class="card" style="margin-top:30px;text-align:center;">
+      <p><strong>青彩堂</strong><br>埼玉県加須市南大桑</p>
+      <iframe src="https://www.google.com/maps?q=埼玉県加須市南大桑&output=embed" height="380" loading="lazy" style="margin-top:18px;"></iframe>
+      <p style="margin-top:12px;font-size:14px;color:#6b7471;">※詳しい住所は、ご予約・お問い合わせ時にご案内します。</p>
+    </div>
+  </section>
+
+
+
+  <section id="web-form" class="reveal">
+    <p class="section-kicker">Estimate Form</p>
+    <h2>ホームページから無料見積り</h2>
+    <p class="section-lead">
+      必要事項をご入力ください。内容を確認後、青彩堂からご連絡いたします。
+    </p>
+
+    <div class="contact-form-wrap">
+      <form action="https://formspree.io/f/mgogkdny" method="POST">
+        <input type="hidden" name="_subject" value="青彩堂ホームページからのお問い合わせ">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <div class="contact-form-grid">
+          <div class="form-group">
+            <label for="customer-name">お名前<span class="form-required">必須</span></label>
+            <input id="customer-name" name="お名前" type="text" autocomplete="name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="customer-tel">電話番号<span class="form-required">必須</span></label>
+            <input id="customer-tel" name="電話番号" type="tel" inputmode="tel" autocomplete="tel" placeholder="例：090-1234-5678" required>
+          </div>
+
+          <div class="form-group">
+            <label for="customer-email">メールアドレス<span class="form-required">必須</span></label>
+            <input id="customer-email" name="email" type="email" autocomplete="email" placeholder="例：sample@gmail.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="customer-address">ご住所・施工地域</label>
+            <input id="customer-address" name="ご住所・施工地域" type="text" autocomplete="street-address" placeholder="例：加須市〇〇">
+          </div>
+
+          <div class="form-group">
+            <label for="work-type">ご希望の工事<span class="form-required">必須</span></label>
+            <select id="work-type" name="ご希望の工事" required>
+              <option value="">選択してください</option>
+              <option>給湯器交換</option>
+              <option>ビルトインコンロ交換</option>
+              <option>レンジフード交換</option>
+              <option>ビルトイン食洗機交換</option>
+              <option>キッチン水栓交換</option>
+              <option>その他・相談したい</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="preferred-date">ご希望日時</label>
+            <input id="preferred-date" name="ご希望日時" type="text" placeholder="例：7月25日 午前中">
+          </div>
+
+          <div class="form-group full">
+            <label for="inquiry-detail">お問い合わせ内容<span class="form-required">必須</span></label>
+            <textarea id="inquiry-detail" name="お問い合わせ内容" placeholder="症状、メーカー、型番、ご希望などをご入力ください。" required></textarea>
+          </div>
+        </div>
+
+        <div class="form-note">
+          📷 写真を送りたい場合は、フォーム送信後にLINEからお送りください。お見積り・ご相談は無料です。
+        </div>
+
+        <button class="form-submit" type="submit">無料見積りを送信する</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <div class="contact">
+      <p class="section-kicker" style="color:#f3d78e;">Contact</p>
+      <h2>お気軽にご相談ください</h2>
+      <p style="margin-top:16px;">住宅設備の交換・取付について、電話・LINE・メールからお問い合わせいただけます。</p>
+      <div class="contact-details">
+        <p>電話：<a href="tel:09033567827">090-3356-7827</a></p>
+        <p>メール：<a href="mailto:konbu19700308@gmail.com">konbu19700308@gmail.com</a></p>
+        <p>LINE ID：seisado0510</p>
+      </div>
+      <div class="button-area">
+        <a href="tel:09033567827" class="btn btn-gold">電話する</a>
+        <a href="https://line.me/ti/p/Nkr58LmcFn" class="btn btn-line">LINEで相談</a>
+        <a href="mailto:konbu19700308@gmail.com" class="btn btn-white">メールを送る</a>
+      </div>
+      <p style="margin-top:18px;font-size:13px;color:rgba(255,255,255,.72);">作業中などで電話に出られない場合は、LINEまたはメールをご利用ください。</p>
+    </div>
+  </section>
+<footer>
+  <div class="container">
+
+    <h2 style="color:#19c36b;">青彩堂</h2>
+
+    <p>
+      加須市を中心に住宅設備工事を行っております。<br>
+      給湯器・ビルトインコンロ・レンジフード・食洗機・水栓交換など、
+      お気軽にご相談ください。
+    </p>
+
+    <br>
+
+    <p>
+      📍 埼玉県加須市周辺対応
+    </p>
+
+    <p>
+      📞 お見積り無料
+    </p>
+
+    <p>
+      📱 LINEで写真相談OK
+    </p>
+
+    <hr style="margin:30px 0;opacity:.2;">
+
+    <small>
+      © 2026 青彩堂 All Rights Reserved.
+    </small>
+
+  </div>
+</footer>
+
+  <div class="fixed-contact">
+    <a href="tel:09033567827" class="fixed-tel">📞 電話</a>
+    <a href="https://line.me/ti/p/Nkr58LmcFn" class="fixed-line">LINE</a>
+    <a href="mailto:konbu19700308@gmail.com" class="fixed-mail">✉️ メール</a>
+  </div>
+
+  <div id="imageModal" onclick="closeModal()">
+    <button class="modal-close" type="button" aria-label="閉じる" onclick="closeModal()">×</button>
+    <img id="modalImage" alt="施工事例の拡大画像">
+  </div>
+
+  <script>
+    function openModal(src) {
+      document.getElementById("modalImage").src = src;
+      document.getElementById("imageModal").style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      document.getElementById("imageModal").style.display = "none";
+      document.body.style.overflow = "";
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("show");
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+  </script>
+</body>
+</html>
