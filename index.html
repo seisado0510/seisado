@@ -391,6 +391,106 @@
     .contact-details { margin: 22px 0; font-size: 17px; }
     .contact-details a { font-weight: 800; }
 
+
+
+    /* ホームページお問い合わせフォーム */
+    .contact-form-wrap {
+      max-width: 860px;
+      margin: 30px auto 0;
+      padding: 34px;
+      background: #fff;
+      border: 1px solid rgba(19, 153, 68, .18);
+      border-top: 6px solid var(--green);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group { text-align: left; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--deep);
+      font-weight: 800;
+    }
+
+    .form-required {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: #d94a3a;
+      color: #fff;
+      font-size: 11px;
+      vertical-align: 2px;
+    }
+
+    .contact-form-wrap input,
+    .contact-form-wrap select,
+    .contact-form-wrap textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #cdd8d1;
+      border-radius: 9px;
+      background: #fbfdfb;
+      color: var(--text);
+      font: inherit;
+      transition: .2s ease;
+    }
+
+    .contact-form-wrap textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .contact-form-wrap input:focus,
+    .contact-form-wrap select:focus,
+    .contact-form-wrap textarea:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(21, 148, 71, .14);
+      background: #fff;
+    }
+
+    .form-note {
+      margin: 18px 0;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #eff9e9;
+      color: #31533d;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .form-submit {
+      display: block;
+      width: min(100%, 360px);
+      margin: 24px auto 0;
+      min-height: 58px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1fbd5b, #08743a);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(8, 116, 58, .25);
+      transition: .25s ease;
+    }
+
+    .form-submit:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
+
     iframe { width: 100%; border: 0; border-radius: 12px; }
 
     footer {
@@ -506,6 +606,10 @@
       #contact-last {
         padding: 28px 18px;
       }
+
+      .contact-form-wrap { padding: 24px 18px; }
+      .contact-form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: auto; }
     }
 
   </style>
@@ -1004,6 +1108,74 @@
     </div>
   </section>
 
+
+
+  <section id="web-form" class="reveal">
+    <p class="section-kicker">Estimate Form</p>
+    <h2>ホームページから無料見積り</h2>
+    <p class="section-lead">
+      必要事項をご入力ください。内容を確認後、青彩堂からご連絡いたします。
+    </p>
+
+    <div class="contact-form-wrap">
+      <form action="https://formspree.io/f/mgogkdny" method="POST">
+        <input type="hidden" name="_subject" value="青彩堂ホームページからのお問い合わせ">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <div class="contact-form-grid">
+          <div class="form-group">
+            <label for="customer-name">お名前<span class="form-required">必須</span></label>
+            <input id="customer-name" name="お名前" type="text" autocomplete="name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="customer-tel">電話番号<span class="form-required">必須</span></label>
+            <input id="customer-tel" name="電話番号" type="tel" inputmode="tel" autocomplete="tel" placeholder="例：090-1234-5678" required>
+          </div>
+
+          <div class="form-group">
+            <label for="customer-email">メールアドレス<span class="form-required">必須</span></label>
+            <input id="customer-email" name="email" type="email" autocomplete="email" placeholder="例：sample@gmail.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="customer-address">ご住所・施工地域</label>
+            <input id="customer-address" name="ご住所・施工地域" type="text" autocomplete="street-address" placeholder="例：加須市〇〇">
+          </div>
+
+          <div class="form-group">
+            <label for="work-type">ご希望の工事<span class="form-required">必須</span></label>
+            <select id="work-type" name="ご希望の工事" required>
+              <option value="">選択してください</option>
+              <option>給湯器交換</option>
+              <option>ビルトインコンロ交換</option>
+              <option>レンジフード交換</option>
+              <option>ビルトイン食洗機交換</option>
+              <option>キッチン水栓交換</option>
+              <option>その他・相談したい</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="preferred-date">ご希望日時</label>
+            <input id="preferred-date" name="ご希望日時" type="text" placeholder="例：7月25日 午前中">
+          </div>
+
+          <div class="form-group full">
+            <label for="inquiry-detail">お問い合わせ内容<span class="form-required">必須</span></label>
+            <textarea id="inquiry-detail" name="お問い合わせ内容" placeholder="症状、メーカー、型番、ご希望などをご入力ください。" required></textarea>
+          </div>
+        </div>
+
+        <div class="form-note">
+          📷 写真を送りたい場合は、フォーム送信後にLINEからお送りください。お見積り・ご相談は無料です。
+        </div>
+
+        <button class="form-submit" type="submit">無料見積りを送信する</button>
+      </form>
+    </div>
+  </section>
+
   <section id="contact" class="reveal">
     <div class="contact">
       <p class="section-kicker" style="color:#f3d78e;">Contact</p>
@@ -1054,7 +1226,6 @@
     </small>
 
   </div>
-  
 </footer>
 
   <div class="fixed-contact">
