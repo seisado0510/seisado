@@ -898,6 +898,293 @@
     min-width: 0;
   }
 }
+/* ================================
+   青彩堂のご利用の流れ
+================================ */
+
+.seisado-flow {
+  padding: 80px 20px;
+  background:
+    linear-gradient(rgba(244, 251, 247, 0.94), rgba(244, 251, 247, 0.94)),
+    repeating-linear-gradient(
+      45deg,
+      #ffffff,
+      #ffffff 12px,
+      #f2f8f4 12px,
+      #f2f8f4 24px
+    );
+  color: #26332c;
+}
+
+.seisado-flow-inner {
+  width: min(100%, 980px);
+  margin: 0 auto;
+}
+
+.seisado-flow-label {
+  margin: 0 0 8px;
+  color: #39845b;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-align: center;
+}
+
+.seisado-flow-title {
+  position: relative;
+  margin: 0 0 22px;
+  padding-bottom: 18px;
+  color: #173d2b;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.35;
+  text-align: center;
+}
+
+.seisado-flow-title::after {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 70px;
+  height: 4px;
+  background: #55a575;
+  border-radius: 999px;
+  content: "";
+  transform: translateX(-50%);
+}
+
+.seisado-flow-lead {
+  margin: 0 auto 48px;
+  color: #4b5c52;
+  font-size: 16px;
+  line-height: 2;
+  text-align: center;
+}
+
+.seisado-flow-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seisado-flow-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 28px;
+  align-items: center;
+  width: 100%;
+  padding: 34px;
+  background: #ffffff;
+  border: 1px solid #dcebe2;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(28, 77, 49, 0.08);
+}
+
+.seisado-flow-number {
+  position: absolute;
+  top: -14px;
+  left: 24px;
+  padding: 7px 17px;
+  background: #28764d;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.seisado-flow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  height: 130px;
+  background: #eaf7ef;
+  border-radius: 50%;
+  color: #36865a;
+}
+
+.seisado-flow-icon svg {
+  width: 82px;
+  height: 82px;
+}
+
+.seisado-flow-text h3 {
+  margin: 0 0 13px;
+  color: #19472f;
+  font-size: 23px;
+  line-height: 1.5;
+}
+
+.seisado-flow-text p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.seisado-flow-text strong {
+  color: #177044;
+  font-size: 1.08em;
+}
+
+.seisado-flow-note {
+  margin-top: 10px !important;
+  padding: 12px 15px;
+  background: #f3f8f5;
+  border-left: 4px solid #64a981;
+  border-radius: 4px 10px 10px 4px;
+  color: #44554b;
+  font-size: 14px !important;
+}
+
+.seisado-flow-arrow {
+  margin: 9px 0;
+  color: #55a575;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.seisado-flow-warranty {
+  border: 2px solid #53a273;
+  background: linear-gradient(135deg, #ffffff, #f0faf4);
+}
+
+.seisado-flow-warranty .seisado-flow-number {
+  background: #c89028;
+}
+
+.seisado-flow-warranty .seisado-flow-icon {
+  background: #fff6df;
+  color: #b27b16;
+}
+
+.seisado-flow-caution {
+  margin-top: 38px;
+  padding: 26px 30px;
+  background: #fffaf0;
+  border: 1px solid #ead8ae;
+  border-radius: 18px;
+}
+
+.seisado-flow-caution h3 {
+  margin: 0 0 12px;
+  color: #6f531b;
+  font-size: 20px;
+}
+
+.seisado-flow-caution p {
+  margin: 0;
+  color: #564b36;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.seisado-flow-caution .seisado-flow-small {
+  margin-top: 12px;
+  color: #736957;
+  font-size: 12px;
+}
+
+.seisado-flow-contact {
+  margin-top: 38px;
+  text-align: center;
+}
+
+.seisado-flow-contact p {
+  margin: 0 0 17px;
+  color: #254b36;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.seisado-flow-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 290px;
+  min-height: 58px;
+  padding: 14px 30px;
+  background: linear-gradient(135deg, #32865a, #1d6843);
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(31, 107, 69, 0.23);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.seisado-flow-button::after {
+  margin-left: 11px;
+  content: "→";
+}
+
+.seisado-flow-button:hover {
+  box-shadow: 0 12px 24px rgba(31, 107, 69, 0.3);
+  transform: translateY(-2px);
+}
+
+/* スマートフォン */
+@media (max-width: 700px) {
+  .seisado-flow {
+    padding: 60px 15px;
+  }
+
+  .seisado-flow-lead {
+    margin-bottom: 38px;
+    text-align: left;
+  }
+
+  .pc-only {
+    display: none;
+  }
+
+  .seisado-flow-item {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 38px 20px 25px;
+    text-align: center;
+  }
+
+  .seisado-flow-number {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .seisado-flow-icon {
+    width: 105px;
+    height: 105px;
+  }
+
+  .seisado-flow-icon svg {
+    width: 68px;
+    height: 68px;
+  }
+
+  .seisado-flow-text h3 {
+    font-size: 20px;
+  }
+
+  .seisado-flow-text p {
+    font-size: 15px;
+    text-align: left;
+  }
+
+  .seisado-flow-note {
+    text-align: left;
+  }
+
+  .seisado-flow-caution {
+    padding: 22px 18px;
+  }
+
+  .seisado-flow-button {
+    width: 100%;
+    min-width: 0;
+  }
+}
   </style>
 </head>
 
@@ -1075,6 +1362,177 @@
 
   </div>
 
+
+</section>
+<!-- 青彩堂のご利用の流れ -->
+<section class="seisado-flow" id="service-flow">
+  <div class="seisado-flow-inner">
+
+    <p class="seisado-flow-label">SERVICE FLOW</p>
+    <h2 class="seisado-flow-title">青彩堂のご利用の流れ</h2>
+
+    <p class="seisado-flow-lead">
+      青彩堂では、お客様と一緒に商品を選び、<br class="pc-only">
+      商品代を抑えながら安心して工事を進められる方法をご案内しています。
+    </p>
+
+    <div class="seisado-flow-list">
+
+      <!-- STEP 1 -->
+      <div class="seisado-flow-item">
+        <div class="seisado-flow-number">STEP 1</div>
+
+        <div class="seisado-flow-icon">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="48" cy="42" r="18" fill="none" stroke="currentColor" stroke-width="5"/>
+            <path d="M20 94c3-23 15-34 28-34s25 11 28 34" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+            <rect x="70" y="23" width="35" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="5"/>
+            <path d="M78 34h19M78 45h19M78 56h12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            <path d="M72 82l10 10 22-25" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="seisado-flow-text">
+          <h3>商品・機種を一緒に選定</h3>
+          <p>
+            設置場所や現在お使いの商品を確認し、
+            お客様のご希望やご予算に合った機種を一緒に選びます。
+          </p>
+          <p class="seisado-flow-note">
+            ECサイトやインターネット通販の商品もご相談いただけます。
+          </p>
+        </div>
+      </div>
+
+      <div class="seisado-flow-arrow" aria-hidden="true">↓</div>
+
+      <!-- STEP 2 -->
+      <div class="seisado-flow-item">
+        <div class="seisado-flow-number">STEP 2</div>
+
+        <div class="seisado-flow-icon">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <rect x="24" y="15" width="72" height="90" rx="7" fill="none" stroke="currentColor" stroke-width="5"/>
+            <path d="M39 32h42M39 46h42M39 60h26" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+            <path d="M39 80l10 10 28-30" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="60" cy="97" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+
+        <div class="seisado-flow-text">
+          <h3>お客様ご自身で商品を発注</h3>
+          <p>
+            購入する商品が決まりましたら、
+            お客様ご自身で注文と決済をお願いいたします。
+          </p>
+          <p class="seisado-flow-note">
+            注文方法や購入画面の確認はお手伝いしますが、
+            誤注文防止のため、青彩堂がお客様に代わって注文操作や決済を行うことはありません。
+          </p>
+        </div>
+      </div>
+
+      <div class="seisado-flow-arrow" aria-hidden="true">↓</div>
+
+      <!-- STEP 3 -->
+      <div class="seisado-flow-item">
+        <div class="seisado-flow-number">STEP 3</div>
+
+        <div class="seisado-flow-icon">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <rect x="17" y="28" width="86" height="72" rx="7" fill="none" stroke="currentColor" stroke-width="5"/>
+            <path d="M17 48h86M37 18v20M83 18v20" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+            <path d="M35 65h12M54 65h12M73 65h12M35 82h12M54 82h12" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+            <path d="M76 84l7 7 17-19" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="seisado-flow-text">
+          <h3>商品到着後の工事日を決定</h3>
+          <p>
+            商品の発送日・お届け日が確定しましたら、
+            お届け日以降の日程で工事日をご相談します。
+          </p>
+          <p class="seisado-flow-note">
+            商品が到着していることをご確認いただいたうえで、工事にお伺いします。
+          </p>
+        </div>
+      </div>
+
+      <div class="seisado-flow-arrow" aria-hidden="true">↓</div>
+
+      <!-- STEP 4 -->
+      <div class="seisado-flow-item">
+        <div class="seisado-flow-number">STEP 4</div>
+
+        <div class="seisado-flow-icon">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <path d="M70 19a25 25 0 0 0-25 32L17 79a10 10 0 0 0 0 14l9 9a10 10 0 0 0 14 0l28-28a25 25 0 0 0 32-31L82 61 59 38l18-18a25 25 0 0 0-7-1z"
+              fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="30" cy="89" r="5" fill="currentColor"/>
+          </svg>
+        </div>
+
+        <div class="seisado-flow-text">
+          <h3>設置工事</h3>
+          <p>
+            既存商品の取り外しから新しい商品の設置、
+            動作確認まで丁寧に対応します。
+          </p>
+          <p class="seisado-flow-note">
+            工事完了後は、お客様と一緒に動作や使用方法を確認します。
+          </p>
+        </div>
+      </div>
+
+      <div class="seisado-flow-arrow" aria-hidden="true">↓</div>
+
+      <!-- STEP 5 -->
+      <div class="seisado-flow-item seisado-flow-warranty">
+        <div class="seisado-flow-number">STEP 5</div>
+
+        <div class="seisado-flow-icon">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <path d="M60 13l39 15v29c0 25-15 41-39 51-24-10-39-26-39-51V28z"
+              fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/>
+            <path d="M40 61l13 13 28-31" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="seisado-flow-text">
+          <h3>施工箇所は10年間の工事保証</h3>
+          <p>
+            青彩堂が施工した箇所には、
+            工事完了日から<strong>10年間の工事保証</strong>をお付けします。
+          </p>
+          <p class="seisado-flow-note">
+            青彩堂の施工が原因となる不具合が発生した場合は、責任をもって対応します。
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="seisado-flow-caution">
+      <h3>商品保証について</h3>
+      <p>
+        お客様ご自身で購入された商品については、青彩堂による商品保証はお付けできません。
+        商品本体の故障や不具合については、購入店またはメーカーの保証をご利用ください。
+      </p>
+      <p class="seisado-flow-small">
+        ※商品本体の故障、経年劣化、消耗品、天災、お客様による移動・分解・改造、
+        他業者による作業などは工事保証の対象外となります。
+      </p>
+    </div>
+
+    <div class="seisado-flow-contact">
+      <p>機種選びからお気軽にご相談ください</p>
+      <a href="#contact" class="seisado-flow-button">
+        無料相談・お問い合わせ
+      </a>
+    </div>
+
+  </div>
 </section>
 
   <section id="works" class="reveal">
@@ -1546,14 +2004,7 @@
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
   </script>
-  <!-- 青彩堂のご利用の流れ -->
-<section class="seisado-flow" id="service-flow">
-  <div class="seisado-flow-inner">
-
-    <p class="seisado-flow-label">SERVICE FLOW</p>
-    <h2 class="seisado-flow-title">青彩堂のご利用の流れ</h2>
-
-    <p class="seisado-flow-lead">
+<p class="seisado-flow-lead">
       青彩堂では、お客様と一緒に商品を選び、<br class="pc-only">
       商品代を抑えながら安心して工事を進められる方法をご案内しています。
     </p>
@@ -1566,11 +2017,19 @@
 
         <div class="seisado-flow-icon">
           <svg viewBox="0 0 120 120" aria-hidden="true">
-            <circle cx="48" cy="42" r="18" fill="none" stroke="currentColor" stroke-width="5"/>
-            <path d="M20 94c3-23 15-34 28-34s25 11 28 34" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-            <rect x="70" y="23" width="35" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="5"/>
-            <path d="M78 34h19M78 45h19M78 56h12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-            <path d="M72 82l10 10 22-25" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="48" cy="42" r="18"
+              fill="none" stroke="currentColor" stroke-width="5"/>
+            <path d="M20 94c3-23 15-34 28-34s25 11 28 34"
+              fill="none" stroke="currentColor" stroke-width="5"
+              stroke-linecap="round"/>
+            <rect x="70" y="23" width="35" height="50" rx="4"
+              fill="none" stroke="currentColor" stroke-width="5"/>
+            <path d="M78 34h19M78 45h19M78 56h12"
+              stroke="currentColor" stroke-width="4"
+              stroke-linecap="round"/>
+            <path d="M72 82l10 10 22-25"
+              fill="none" stroke="currentColor" stroke-width="5"
+              stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
 
@@ -1594,9 +2053,14 @@
 
         <div class="seisado-flow-icon">
           <svg viewBox="0 0 120 120" aria-hidden="true">
-            <rect x="24" y="15" width="72" height="90" rx="7" fill="none" stroke="currentColor" stroke-width="5"/>
-            <path d="M39 32h42M39 46h42M39 60h26" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-            <path d="M39 80l10 10 28-30" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="24" y="15" width="72" height="90" rx="7"
+              fill="none" stroke="currentColor" stroke-width="5"/>
+            <path d="M39 32h42M39 46h42M39 60h26"
+              stroke="currentColor" stroke-width="5"
+              stroke-linecap="round"/>
+            <path d="M39 80l10 10 28-30"
+              fill="none" stroke="currentColor" stroke-width="6"
+              stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="60" cy="97" r="3" fill="currentColor"/>
           </svg>
         </div>
@@ -1609,7 +2073,8 @@
           </p>
           <p class="seisado-flow-note">
             注文方法や購入画面の確認はお手伝いしますが、
-            誤注文防止のため、青彩堂がお客様に代わって注文操作や決済を行うことはありません。
+            誤注文防止のため、青彩堂がお客様に代わって
+            注文操作や決済を行うことはありません。
           </p>
         </div>
       </div>
@@ -1622,10 +2087,17 @@
 
         <div class="seisado-flow-icon">
           <svg viewBox="0 0 120 120" aria-hidden="true">
-            <rect x="17" y="28" width="86" height="72" rx="7" fill="none" stroke="currentColor" stroke-width="5"/>
-            <path d="M17 48h86M37 18v20M83 18v20" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-            <path d="M35 65h12M54 65h12M73 65h12M35 82h12M54 82h12" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-            <path d="M76 84l7 7 17-19" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="17" y="28" width="86" height="72" rx="7"
+              fill="none" stroke="currentColor" stroke-width="5"/>
+            <path d="M17 48h86M37 18v20M83 18v20"
+              stroke="currentColor" stroke-width="5"
+              stroke-linecap="round"/>
+            <path d="M35 65h12M54 65h12M73 65h12M35 82h12M54 82h12"
+              stroke="currentColor" stroke-width="5"
+              stroke-linecap="round"/>
+            <path d="M76 84l7 7 17-19"
+              fill="none" stroke="currentColor" stroke-width="5"
+              stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
 
@@ -1636,7 +2108,8 @@
             お届け日以降の日程で工事日をご相談します。
           </p>
           <p class="seisado-flow-note">
-            商品が到着していることをご確認いただいたうえで、工事にお伺いします。
+            商品が到着していることをご確認いただいたうえで、
+            工事にお伺いします。
           </p>
         </div>
       </div>
@@ -1650,7 +2123,8 @@
         <div class="seisado-flow-icon">
           <svg viewBox="0 0 120 120" aria-hidden="true">
             <path d="M70 19a25 25 0 0 0-25 32L17 79a10 10 0 0 0 0 14l9 9a10 10 0 0 0 14 0l28-28a25 25 0 0 0 32-31L82 61 59 38l18-18a25 25 0 0 0-7-1z"
-              fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              fill="none" stroke="currentColor" stroke-width="5"
+              stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="30" cy="89" r="5" fill="currentColor"/>
           </svg>
         </div>
@@ -1676,8 +2150,11 @@
         <div class="seisado-flow-icon">
           <svg viewBox="0 0 120 120" aria-hidden="true">
             <path d="M60 13l39 15v29c0 25-15 41-39 51-24-10-39-26-39-51V28z"
-              fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/>
-            <path d="M40 61l13 13 28-31" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+              fill="none" stroke="currentColor" stroke-width="5"
+              stroke-linejoin="round"/>
+            <path d="M40 61l13 13 28-31"
+              fill="none" stroke="currentColor" stroke-width="7"
+              stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
 
@@ -1688,7 +2165,8 @@
             工事完了日から<strong>10年間の工事保証</strong>をお付けします。
           </p>
           <p class="seisado-flow-note">
-            青彩堂の施工が原因となる不具合が発生した場合は、責任をもって対応します。
+            青彩堂の施工が原因となる不具合が発生した場合は、
+            責任をもって対応します。
           </p>
         </div>
       </div>
@@ -1698,11 +2176,15 @@
     <div class="seisado-flow-caution">
       <h3>商品保証について</h3>
       <p>
-        お客様ご自身で購入された商品については、青彩堂による商品保証はお付けできません。
-        商品本体の故障や不具合については、購入店またはメーカーの保証をご利用ください。
+        お客様ご自身で購入された商品については、
+        青彩堂による商品保証はお付けできません。
+        商品本体の故障や不具合については、
+        購入店またはメーカーの保証をご利用ください。
       </p>
+
       <p class="seisado-flow-small">
-        ※商品本体の故障、経年劣化、消耗品、天災、お客様による移動・分解・改造、
+        ※商品本体の故障、経年劣化、消耗品、天災、
+        お客様による移動・分解・改造、
         他業者による作業などは工事保証の対象外となります。
       </p>
     </div>
