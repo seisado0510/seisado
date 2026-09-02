@@ -1337,7 +1337,8 @@
 }
 
 .pipe-service-item {
-  padding: 15px 10px;
+  overflow: hidden;
+  padding: 0 0 13px;
   border: 2px solid #a8e0ed;
   border-radius: 14px;
   background: #ffffff;
@@ -1347,15 +1348,34 @@
   font-weight: 900;
 }
 
-.pipe-service-item span {
+.pipe-service-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.pipe-service-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 8px 0;
+}
+
+.pipe-service-caption span {
   display: grid;
   place-items: center;
   width: 31px;
   height: 31px;
-  margin: 0 auto 7px;
+  flex: 0 0 31px;
   border-radius: 50%;
   background: #13a8c9;
   color: #ffffff;
+}
+
+.pipe-service-caption strong {
+  font-size: inherit;
 }
 
 .pipe-estimate-free {
@@ -1403,6 +1423,12 @@
   color: #ef2e26;
   font-size: clamp(20px, 3vw, 27px);
   line-height: 1.3;
+}
+
+.pipe-price-card .pipe-price-range {
+  display: inline;
+  color: inherit;
+  font-weight: inherit;
 }
 
 .pipe-tax-note {
@@ -1520,8 +1546,22 @@ body.pipe-modal-open {
   }
 
   .pipe-service-item {
-    padding: 12px 3px;
+    padding: 0 0 10px;
     font-size: 14px;
+  }
+
+  .pipe-service-item img {
+    aspect-ratio: 1 / 1;
+  }
+
+  .pipe-service-caption {
+    display: grid;
+    gap: 5px;
+    padding: 8px 2px 0;
+  }
+
+  .pipe-service-caption span {
+    margin: 0 auto;
   }
 
   .pipe-price-card {
@@ -1529,7 +1569,11 @@ body.pipe-modal-open {
   }
 
   .pipe-price-card strong {
-    font-size: 18px;
+    font-size: 16px;
+  }
+
+  .pipe-price-card .pipe-price-range {
+    display: block;
   }
 
   .pipe-contact-buttons {
@@ -2560,18 +2604,27 @@ body.pipe-modal-open {
       </div>
 
       <div class="pipe-service-list" aria-label="洗浄対象">
-        <div class="pipe-service-item"><span>1</span>台所</div>
-        <div class="pipe-service-item"><span>2</span>洗面台</div>
-        <div class="pipe-service-item"><span>3</span>お風呂</div>
+        <div class="pipe-service-item">
+          <img src="assets/pipe-cleaning-kitchen.png" alt="台所の配管洗浄作業" loading="lazy">
+          <div class="pipe-service-caption"><span>1</span><strong>台所</strong></div>
+        </div>
+        <div class="pipe-service-item">
+          <img src="assets/pipe-cleaning-washbasin.png" alt="洗面台の配管洗浄作業" loading="lazy">
+          <div class="pipe-service-caption"><span>2</span><strong>洗面台</strong></div>
+        </div>
+        <div class="pipe-service-item">
+          <img src="assets/pipe-cleaning-bathroom.png" alt="お風呂の配管洗浄作業" loading="lazy">
+          <div class="pipe-service-caption"><span>3</span><strong>お風呂</strong></div>
+        </div>
       </div>
 
       <p class="pipe-estimate-free">お見積り無料 0円</p>
 
       <h3 class="pipe-price-title">料金目安</h3>
       <div class="pipe-price-grid">
-        <div class="pipe-price-card"><span>1ヶ所</span><strong>15,000円〜</strong></div>
-        <div class="pipe-price-card"><span>2ヶ所</span><strong>25,000円〜</strong></div>
-        <div class="pipe-price-card"><span>3ヶ所</span><strong>30,000円〜</strong></div>
+        <div class="pipe-price-card"><span>1ヶ所</span><strong>15,000円<span class="pipe-price-range">〜20,000円</span></strong></div>
+        <div class="pipe-price-card"><span>2ヶ所</span><strong>25,000円<span class="pipe-price-range">〜30,000円</span></strong></div>
+        <div class="pipe-price-card"><span>3ヶ所</span><strong>30,000円<span class="pipe-price-range">〜35,000円</span></strong></div>
       </div>
       <p class="pipe-tax-note">すべて税別</p>
 
